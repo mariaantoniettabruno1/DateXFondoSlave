@@ -73,7 +73,7 @@ class TemplateFondo
 
             <div class="row">
                 <?php
-                MasterTemplateTable::render();
+                TemplateFondoTable::render();
                 ?>
             </div>
         </div>

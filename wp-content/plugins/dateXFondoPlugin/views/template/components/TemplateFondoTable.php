@@ -2,7 +2,7 @@
 
 namespace dateXFondoPlugin;
 
-class MasterTemplateTable
+class TemplateFondoTable
 {
     public static function render_scripts()
     {
@@ -42,20 +42,18 @@ class MasterTemplateTable
                     sottotitolo = art.sottotitolo_articolo ?? '';
                     link = art.link ?? '';
                     nome_articolo = art.nome_articolo ?? '';
-                    valore = art.valore ?? '';
+                    if (art.valore === '' || art.valore === undefined || art.valore === null) {
+                        valore = `<medium  class="form-text text-danger">Valore obbligatorio, per favore inseriscilo.</medium>`;
+                    } else {
+                        valore = art.valore
+                    }
+
                     valore_precedente = art.valore_anno_precedente ?? '';
 
                     if (art.row_type === 'special') {
                         delete_button = ` <button class="btn btn-link btn-delete-row" data-id='${art.id}' data-toggle="modal" data-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>`;
                     }
 
-                    if (Number(art.heredity) === 0) {
-                        heredity = "Nè nota nè valore ereditati";
-                    } else if (Number(art.heredity) === 1) {
-                        heredity = "Valore ereditato";
-                    } else if (Number(art.heredity) === 2) {
-                        heredity = "Nota e valore ereditati";
-                    }
 
                     $('#dataTemplateTableBody' + index).append(`
                                  <tr>
@@ -153,7 +151,7 @@ class MasterTemplateTable
                 $('#editRowButton').click(function () {
                     let valore = $('#idValore').val();
                     let valore_anno_precedente = $('#idValorePrecedente').val();
-                    let nota = $('#idNotaArticolo').val();
+                    let nota = $('#idNotaArticolo').val().replaceAll("[^a-zA-Z0-9]+", "");
 
 
                     const payload = {

@@ -30,7 +30,7 @@ require_once(plugin_dir_path(__FILE__) . 'views/template/AllTemplate.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/MasterTemplateToActive.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/MasterTemplateHistory.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateHeader.php');
-require_once(plugin_dir_path(__FILE__) . 'views/template/components/MasterTemplateTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFondoTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/AllTemplateTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/MasterTemplateHistoryTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/MasterTemplateToActiveRow.php');
