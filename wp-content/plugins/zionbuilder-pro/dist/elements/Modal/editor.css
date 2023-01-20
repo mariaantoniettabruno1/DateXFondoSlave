@@ -1,0 +1,8 @@
+.zb-modal--inline {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+.zb-modal--open {
+  position: fixed !important;
+}

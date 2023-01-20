@@ -1,0 +1,4 @@
+.zu-cart-counter-btn.zu-show-cart-counter--no .zu-cart-counter,
+.zu-cart-counter-btn.zu-show-cart-price--no .zu-cart-price {
+	display: none!important;
+}

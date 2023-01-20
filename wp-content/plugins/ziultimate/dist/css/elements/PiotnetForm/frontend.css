@@ -1,0 +1,32 @@
+.zb-el-zuPf select, 
+.zb-el-zuPf textarea, 
+.zb-el-zuPf input[type='url'], 
+.zb-el-zuPf input[type='tel'], 
+.zb-el-zuPf input[type='text'], 
+.zb-el-zuPf input[type='date'], 
+.zb-el-zuPf input[type='email'], 
+.zb-el-zuPf input[type='number'], 
+.zb-el-zuPf input[type='search'], 
+.zb-el-zuPf input[type='password'], 
+.zb-el-zuPf .ct-widget select, 
+.zb-el-zuPf fieldset .wc-stripe-elements-field {
+	height: auto;
+	padding: 12px;
+}
+
+ul.piotnetforms-icon-list__inner.horizontal {
+	padding: 0;
+	margin: 0;
+}
+
+body.znpb-editor-preview .zb-el-zuPf #piotnetforms:not(.piotnetforms-widget-preview) .piotnetforms-pdf-generator-preview, 
+body.znpb-editor-preview .zb-el-zuPf #piotnetforms:not(.piotnetforms-widget-preview) [data-piotnetforms-conditional-logic-not-field], 
+body.znpb-editor-preview .zb-el-zuPf #piotnetforms:not(.piotnetforms-widget-preview) [data-piotnetforms-honeypot] {
+	display: block;
+}
+
+.zb-el-zuPf select {
+	background-image: none;
+}
+
+.zb-el-zuPf .znpb__server-element--empty { display: none; }

@@ -1,0 +1,15 @@
+
+.input-button, #insertCondition, #insertFormula {
+    border-color: #26282f;
+    color: #26282f;
+}
+
+.input-button:hover, .input-button:active, #insertCondition:hover, #insertCondition:active, #insertFormula:hover, #insertFormula:active {
+    border-color: #870e12;
+    color: #870e12;
+    background-color: white;
+}
+
+.btn-link, .btn-link:hover {
+    color: #26282f;
+}

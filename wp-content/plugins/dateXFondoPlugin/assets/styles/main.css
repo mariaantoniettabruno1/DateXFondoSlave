@@ -1,0 +1,10 @@
+
+.datetable thead tr th{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.datetable {
+    width: 100%;
+    table-layout: fixed;
+}

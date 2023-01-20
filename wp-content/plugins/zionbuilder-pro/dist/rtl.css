@@ -1,0 +1,61 @@
+.znpbpro-themeBuilder-templates-box__template-name span:first-child {
+  margin-right: 0;
+  margin-left: 12px;
+}
+
+.znpbpro-themeBuilder-templates-item > .znpb-editor-icon-wrapper {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.znpbpro-themeBuilder-templates {
+  margin-right: 0;
+  margin-left: 40px;
+}
+
+.znpbpro-themeBuilder-templates-header__right span:first-child {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.znpbpro-theme-builder-headerLogo {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.znpbpro-themeBuilder-components-item--name span {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.znpbpro-themeBuilder-components-item--status {
+  padding-right: 32px;
+  padding-left: 0;
+}
+
+.znpbpro-themeBuilder-components-item--actions span {
+  margin-right: 0;
+  margin-left: 14px;
+}
+
+.znpbpro-themeBuilder-components-item--actions span:last-child {
+  margin-left: 0;
+}
+
+.znpbpro-themeBuilder-components-titles-heading--name {
+  padding-right: 32px;
+  padding-left: 0;
+}
+
+.znpbpro-themeBuilder-components-titles-heading--actions {
+  text-align: left;
+}
+
+.znpbpro-templates-ruleCheckbox {
+  margin-right: 0;
+  margin-left: 20px;
+}
+
+.zb-el-countdown__wrapper {
+  flex-direction: row-reverse;
+}

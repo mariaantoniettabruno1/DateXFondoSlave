@@ -1,0 +1,35 @@
+#btnDecurtazione {
+    border-color: #26282f;
+    color: #26282f;
+}
+
+#btnDecurtazione:hover, #btnDecurtazione:active {
+    border-color: #870e12;
+    color: #870e12;
+    background-color: white;
+}
+
+#addNewDecurtationButton {
+
+    border-color: #26282f;
+    background-color: #26282f;
+
+}
+
+#addNewDecurtationButton:hover {
+    border-color: #870e12;
+    background-color: #870e12;
+}
+
+.subsDecButtonGroup1, .subsDecButtonGroup2 {
+    border-color: #26282f;
+    color: #26282f;
+    background-color: white;
+
+}
+
+.subsDecButtonGroup1:active, .subsDecButtonGroup2:active, .subsDecButtonGroup1:hover, .subsDecButtonGroup2:hover {
+    border-color: #26282f;
+    color: #26282f;
+    background-color: white;
+}

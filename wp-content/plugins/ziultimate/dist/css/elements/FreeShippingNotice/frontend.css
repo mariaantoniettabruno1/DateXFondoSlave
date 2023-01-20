@@ -1,0 +1,65 @@
+.zb-el-zuFreeShippingNotice {
+	-webkit-transition: all 0.15s ease-in-out; 
+	-moz-transition: all 0.15s ease-in-out; 
+	transition: all 0.15s ease-in-out;
+	position: relative;
+	--fsn-progress-bar-width: 100%;
+}
+.zb-el-zuFreeShippingNotice p { padding: 0; margin: 0;}
+.zb-el-zuFreeShippingNotice .call-to-action {
+	margin-left: 10px; 
+	text-decoration: none; 
+	-webkit-transition: all 0.2s ease; 
+	-moz-transition: all 0.2s ease; 
+	transition: all 0.2s ease; 
+	opacity: 1;
+}
+.zb-el-zuFreeShippingNotice .remaining-qty { 
+	font-weight: bold;
+}
+.zb-el-zuFreeShippingNotice .free-shipping-content:not(.hide-defaultmsg) .fs-aftermsg,
+.zb-el-zuFreeShippingNotice .free-shipping-content.hide-defaultmsg .fs-defaultmsg,
+.zb-el-zuFreeShippingNotice .call-to-action.hide-defaultmsg,
+.hide-fsn{
+	display: none;
+}
+.fsn-progress-bar-wrap {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+}
+.fsn-progress-bar-wrap span.fsn-progress-bar-min-price,
+.fsn-progress-bar-min-qty {
+	margin-right: 10px;
+}
+.fsn-progress-bar-wrap span.fsn-progress-amount,
+.fsn-progress-qty {
+	margin-left: 10px;
+}
+.fsn-progress-bar {
+	background: #dacece;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	height: 5px;
+	overflow: hidden;
+}
+.fsn-progress-bar-res {
+	background: #f73a3a;
+	height: 100%;
+	-webkit-transition: width .4s ease-in-out;
+	transition: width .4s ease-in-out;
+	width: 0;
+}
+.fsn-progress-bar-min-price .woocommerce-Price-amount,
+.fsn-progress-amount .woocommerce-Price-amount {
+	font-weight: 400;
+}

@@ -1,0 +1,7 @@
+.zb-el-sliderBuilder {
+  width: 100%;
+  max-width: 100%;
+}
+.zb-el-sliderBuilder .swiper-button-prev:focus, .zb-el-sliderBuilder .swiper-button-next:focus {
+  outline: none;
+}

@@ -1,0 +1,8 @@
+.btn-active-row, #activeRowButton{
+    border-color: #26282f;
+    background-color: #26282f;
+}
+.btn-active-row:hover. #activeRowButton:hover{
+    border-color:#870e12 ;
+    background-color: #870e12;
+}

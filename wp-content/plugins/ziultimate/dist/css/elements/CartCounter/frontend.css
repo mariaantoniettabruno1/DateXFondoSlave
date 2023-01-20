@@ -1,0 +1,120 @@
+.zb-el-zuCartCounter {
+	display: flex;
+	flex-direction: column;
+	align-items: self-start;
+}
+
+.zu-cart-counter-btn,
+.zu-cart-counter,
+.zucc-btn-container,
+.zu-cart-counter-it-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.zu-cart-counter-btn {
+	color: #555;
+	flex-direction: row;
+	position: relative;
+	padding: 8px;
+}
+
+.zu-cart-counter-btn:focus,
+.zu-cart-counter:focus {
+	outline: none;
+}
+
+.zu-cart-counter-in-bubble .zu-cart-counter {
+	background-color: #006dd2;
+	border-radius: 100px;
+	color: #fff;
+	font-size: 10px;
+	height: 18px;
+	line-height: 1;
+	width: 18px;
+	position: absolute;
+	top: 5px;
+	right: -4px;
+	transition-property: color, background-color;
+	transition-duration: 0.3s;
+	transition-timing-function: ease;
+}
+
+.zu-cart-counter-btn-icon {
+	font-size: 20px;
+	transition-property: color, background-color;
+	transition-duration: 0.3s;
+	transition-timing-function: ease;
+}
+
+.zu-cart-price--left .zucc-btn-container,
+.zu-cart-icon--left .zu-cart-counter-it-wrapper {
+	flex-direction: row;
+}
+
+.zu-cart-price--right .zucc-btn-container,
+.zu-cart-icon--right .zu-cart-counter-it-wrapper,
+.zu-cart-counter-btn.zu-cart-counter--right {
+	flex-direction: row-reverse;
+}
+
+.zu-cart-price--left .zu-cart-price,
+.zu-cart-icon--left .zu-cart-counter-btn-icon {
+	padding-right: 6px;
+}
+
+.zu-cart-price--right .zu-cart-price,
+.zu-cart-icon--right .zu-cart-counter-btn-icon {
+	padding-left: 6px;
+}
+
+.zu-cart-counter--left .zu-cart-counter {
+	margin-right: 6px;
+}
+
+.zu-cart-counter--right .zu-cart-counter {
+	margin-left: 6px;
+}
+
+.zu-cart-counter-items {
+	background-color: #efefef;
+	opacity: 0;
+	padding: 20px;
+	position: absolute;
+	right: 0;
+	bottom: -30px;
+	transform: translateY(100%);
+	transition: all 0.3s ease;
+	width: 300px;
+	visibility: hidden;
+	z-index: 1001;
+}
+
+.znpb-preview-dropdown.zu-cart-counter-items,
+.zu-cart-counter-items.zu-visible {
+	bottom: 0;
+	opacity: 1;
+	visibility: visible;
+}
+
+.zu-hide-cart-btn,
+.zu-hide-popup {
+	display: none;
+}
+
+@media only screen and (max-width: 600px) {
+	.zb-el-zuCartCounter{
+		position: static;
+	}
+	
+	.zu-cart-counter-items {
+		display: flex;
+		flex-direction: column;
+		flex: 0 1 auto;
+		right: auto;
+		left: 10px;
+		max-width: 97vw;
+		width: 93%;
+	}
+}

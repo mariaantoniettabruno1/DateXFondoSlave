@@ -1,0 +1,90 @@
+.zb-el-zuToggleTitle {
+	background-color:#f6f6f6;
+	display:flex;
+	flex-direction:row;
+	-webkit-box-align:center;
+	-ms-flex-align:center;
+	align-items:center;
+	-webkit-box-pack:start;
+	-ms-flex-pack:start;
+	justify-content:flex-start;
+	padding:12px 12px 12px 20px;
+	transition:all 0.2s;z-index:1;
+}
+
+.zb-el-zuToggleTitle:focus,
+.zb-el-zuToggleTitle:active {
+	outline:0;
+}
+
+body:not(.znpb-editor-preview) .zu-toggle-title {
+	cursor:pointer;
+}
+
+.zu-toggle-content {
+	width:100%;
+}
+body:not(.znpb-editor-preview) .zu-toggle-title:not(.zu-toggle--active) + .zu-toggle-content {
+	position:absolute;
+	opacity:0;
+	overflow:hidden;
+	top:auto;
+	height:0;
+	z-index:-1;
+}
+
+body:not(.znpb-editor-preview) .zu-toggle--active + .zu-toggle-content {
+	position:relative;
+	visibility:visible;
+	opacity:1;
+	z-index:0;
+}
+
+.zu-toggle-content--inner {
+	background-color:#fff;
+	padding:25px;
+	margin-bottom:20px;
+	width:100%;
+}
+
+.zu-toggle-content--collapsed {
+	background-color:#fff;
+	padding:12px 25px;
+	width:100%
+}
+
+.zu-toggle-button {
+	display:flex;
+	font-size:14px;
+	align-items:center;
+	justify-content:center;
+	margin-left:8px;
+	z-index:3;
+}
+
+.zu-toggle-button--icon {
+	display:block;
+	line-height:1;
+	padding:12px;
+	-webkit-transition:transform 0.3s linear;
+	-moz-transition:transform 0.3s linear;
+	transition:transform 0.3s linear;
+}
+
+.zu-toggle-title--active .rotate .zu-toggle-button--icon {
+	-webkit-transform:rotate(45deg);
+	transform:rotate(45deg);
+}
+
+.zu-toggle-title--active .flip .zu-toggle-button--icon {
+	-webkit-transform:rotateX(180deg);
+	transform:rotateX(180deg);
+}
+
+.zu-toggle-content .zb-el-tabs-content > div {
+	height: 0;
+}
+
+.zu-toggle-content .zb-el-tabs-content > div.zb-el-tabs-nav--active {
+	height: auto;
+}

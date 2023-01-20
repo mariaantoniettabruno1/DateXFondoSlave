@@ -1,0 +1,71 @@
+.zb-el-zuTabsInAcrd,
+.zb-el-zuTabsInAcrd .wc-tabs-wrapper {
+  clear: both;
+  width: 100%;
+}
+
+.zb-el-zuTabsInAcrd .wc-prd-accordion {
+  margin: 20px 0;
+}
+
+.zb-el-zuTabsInAcrd .wc-prd-accordion-button {
+  background-color: #efefef;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.zb-el-zuTabsInAcrd .wc-prd-accordion-label {
+  flex-grow: 1;
+}
+
+.zb-el-zuTabsInAcrd .wc-prd-accordion-pm {
+  display: flex;
+  font-size: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.zb-el-zuTabsInAcrd .wc-prd-accordion-icon {
+  -webkit-transition: transform 0.3s linear;
+  -moz-transition: transform 0.3s linear;
+  transition: transform 0.3s linear;
+}
+
+.zb-el-zuTabsInAcrd .rotate .wc-prd-accordion-icon {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+.wc-prd-accordion-item-active .rotate .wc-prd-accordion-icon {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.wc-prd-accordion-item-active .flip .wc-prd-accordion-icon {
+  -webkit-transform: rotateX(-180deg);
+  transform: rotateX(-180deg);
+}
+
+.zb-el-zuTabsInAcrd .wc-prd-accordion-content {
+  display: none;
+  margin-bottom: 20px;
+}
+
+.zb-el-zuTabsInAcrd video,
+.zb-el-zuTabsInAcrd iframe {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    line-height: 1;
+    border: none;
+}

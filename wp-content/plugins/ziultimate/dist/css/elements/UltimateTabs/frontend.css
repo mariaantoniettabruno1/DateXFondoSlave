@@ -1,0 +1,195 @@
+.zu-el-tabs-nav {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.zu-el-tabs-nav-title {
+    display: inline-flex;
+    flex-direction: row;
+    padding: 12px 20px;
+    margin: 0;
+    color: #858585;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid #e5e5e5;
+    border-right: none;
+    border-bottom: none;
+    transition: color 0.25s linear;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+.zu-el-tabs-nav-title:last-child {
+    border-right: 1px solid #e5e5e5;
+}
+.zu-el-tabs-nav-title:hover {
+    color: #464646;
+}
+.zu-el-tabs-nav-title:focus-visible {
+    outline: 1px dotted #464646;
+}
+.zu-el-tabs-nav-title.zu-el-tabs-nav--active {
+    position: relative;
+    color: #464646;
+}
+.zu-el-tabs-nav-title.zu-el-tabs-nav--active:after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #fff;
+}
+
+.tabs-sub-title {
+    color: #9a9a9a;
+    display: block;
+    clear: both;
+    width: 100%;
+}
+
+.zu-el-tabs-content {
+    overflow: hidden;
+}
+
+.zu-el-tabs--vertical {
+    display: flex;
+}
+.zu-el-tabs--vertical .zu-el-tabs-nav {
+    width: 30%;
+    max-width: 100%;
+}
+.zu-el-tabs--vertical .zu-el-tabs-nav li {
+    display: block;
+    border-right: none;
+    border-bottom: none;
+    border-left: 1px solid #e5e5e5;
+}
+.zu-el-tabs--vertical .zu-el-tabs-nav li:last-child {
+    border-right: none;
+    border-bottom: 1px solid #e5e5e5;
+}
+.zu-el-tabs--vertical .zu-el-tabs-nav li.zu-el-tabs-nav--active {
+    border-top: 1px solid #e5e5e5;
+    border-right: none;
+}
+.zu-el-tabs--vertical .zu-el-tabs-nav li.zu-el-tabs-nav--active:after {
+    top: 0;
+    right: -1px;
+    bottom: auto;
+    left: auto;
+    width: 1px;
+    height: 100%;
+}
+.zu-el-tabs--vertical .zu-el-tabs-content {
+    border: 1px solid #e5e5e5;
+    width: 70%;
+    max-width: 100%;
+}
+
+.zu-el-tabs--vertical.zu-el-tabs-acrd--active .zu-el-tabs-content {
+    width: 100%;
+}
+
+.zu-el-acrd-toggle--icon {
+    display:flex;
+    font-size:14px;
+    align-items:center;
+    justify-content:center;
+    margin-left:8px;
+    z-index:3;
+}
+
+.zu-el-acrd-toggle--icon:before {
+    -webkit-transition:transform 0.3s linear;
+    -moz-transition:transform 0.3s linear;
+    transition:transform 0.3s linear;
+}
+
+.zu-el-tabs-nav--active > .zu-el-acrd-toggle--icon.rotate:before {
+    -webkit-transform:rotate(45deg);
+    transform:rotate(45deg);
+}
+
+.zu-el-tabs-nav--active > .zu-el-acrd-toggle--icon.flip:before {
+    -webkit-transform:rotateX(180deg);
+    transform:rotateX(180deg);
+}
+
+.zu-el-tabs-nav-title .zu-el-tabs--icon {
+    margin-right: 8px;
+}
+
+.zu-el-tabs-acrd--active .zu-el-acrds-btn-title > .zu-el-tabs--icon {
+    margin-left: 0px!important;
+    margin-right: 10px!important;
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+}
+
+.zu-el-tabs--content {
+    padding: 15px 20px;
+}
+
+.zb-el-zuTabs:not(.zu-el-tabs--vertical) .zu-el-tabs--content {
+    padding: 15px 20px;
+    border: 1px solid #e5e5e5;
+}
+
+.zb-el-zuTabs:not(.zu-el-tabs-acrd--active) .zu-el-tabs-content > div {
+    position: absolute;
+    left: -99999px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.zb-el-zuTabs:not(.zu-el-tabs-acrd--active) .zu-el-acrds-btn-title,
+.zu-el-tabs-acrd--active .zu-el-tabs-nav {
+    display: none;
+}
+
+.zu-el-tabs-acrd--active .zu-el-acrds-btn-title {
+    border-top: 1px solid #e5e5e5;
+    cursor: pointer;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    outline: 0;
+}
+
+.zu-el-tabs-acrd--active .zu-el-acrds-btn-title:first-child {
+    border-top: none;
+}
+
+.zu-el-tabs-acrd--active .title-text {
+    flex-grow: 1;
+}
+
+.zb-el-zuTabs.zu-el-tabs-acrd--active .zu-el-tabs--content {
+    border: none;
+    border-top: 1px solid #e5e5e5;
+}
+
+.zu-el-tabs-acrd--active .zb-el-zuTabsItem:not(.zu-el-tabs-nav--active) {
+    position:absolute;
+    opacity:0;
+    visibility: hidden;
+    overflow:hidden;
+    top:auto;
+    height:0;
+    z-index:-1;
+    left: 0;
+}
+
+.zb-el-zuTabs:not(.zu-el-tabs-acrd--active) .zu-el-tabs-content > div.zu-el-tabs-nav--active,
+.zu-el-tabs-acrd--active .zb-el-zuTabsItem.zu-el-tabs-nav--active {
+    position:relative;
+    visibility:visible;
+    overflow: inherit;
+    opacity:1;
+    z-index:0;
+    left: 0;
+}

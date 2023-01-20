@@ -1,0 +1,15 @@
+.span-bold {
+    font-weight: bold;
+}
+
+.span-higher {
+    font-size: 22px;
+}
+
+.span-bold-higher {
+    font-weight: bold;
+    font-size: 22px;
+}
+.btn-edit-ord, .btn-save, .class-accordion-button, .btn-edit-ord:hover, .btn-save:hover, .class-accordion-button:hover {
+    color: #26282f;
+}

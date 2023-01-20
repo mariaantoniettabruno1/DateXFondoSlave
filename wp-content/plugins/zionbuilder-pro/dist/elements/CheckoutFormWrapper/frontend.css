@@ -1,0 +1,15 @@
+.woocommerce-checkout form .col2-set {
+  width: auto;
+  float: none;
+  padding: 0;
+}
+
+.woocommerce-checkout form #order_review, .woocommerce-checkout form #order_review_heading {
+  width: 100%;
+  padding: 0;
+  float: none;
+}
+
+.zb-woo-checkout-container {
+  display: flex;
+}

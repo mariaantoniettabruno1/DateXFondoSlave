@@ -1,0 +1,50 @@
+.zb-el-zuContinueShopping {
+	display: flex;
+}
+
+.zu-continue-shopping-button {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	line-height: 1;
+	margin: 0;
+}
+
+.zu-continue-shopping-button--icon-left {
+	flex-direction: row;
+}
+.zu-continue-shopping-button--icon-right {
+	flex-direction: row-reverse;
+}
+
+.zu-continue-shopping-button--icon-top {
+	flex-direction: column;
+}
+.zu-continue-shopping-button--icon-bottom {
+	flex-direction: column-reverse;
+}
+
+.zu-continue-shopping-button--icon-top,
+.zu-continue-shopping-button--icon-bottom {
+	align-items: center;
+}
+
+.zu-continue-shopping-button--icon-left .zu-continue-shopping-button__icon {
+	margin-right: 10px;
+}
+
+.zu-continue-shopping-button--icon-right .zu-continue-shopping-button__icon {
+	margin-left: 10px;
+}
+
+.zu-continue-shopping-button--icon-top .zu-continue-shopping-button__icon {
+	margin-bottom: 5px;
+}
+
+.zu-continue-shopping-button--icon-bottom .zu-continue-shopping-button__icon {
+	margin-top: 5px;
+}
+
+body:not(.znpb-editor-preview) .zb-el-zuContinueShopping.hide-when-empty {
+	display: none!important;
+}

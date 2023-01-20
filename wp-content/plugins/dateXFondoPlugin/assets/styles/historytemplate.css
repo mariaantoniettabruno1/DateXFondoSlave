@@ -1,0 +1,26 @@
+.btn-duplicate-template {
+    color: #26282f;
+
+}
+
+.btn-duplicate-template:hover {
+    color: #26282f;
+
+}
+
+.btn-visualize-template {
+    color: #26282f;
+}
+
+.btn-visualize-template:hover {
+    color: #26282f;
+}
+
+#duplicateTemplateButton {
+    border-color: #26282f;
+    background-color: #26282f;
+}
+#duplicateTemplateButton:hover{
+    border-color:#870e12 ;
+    background-color: #870e12;
+}

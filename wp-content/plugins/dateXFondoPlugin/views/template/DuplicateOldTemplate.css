@@ -1,0 +1,14 @@
+.hiddenTd {
+    display: none;
+}
+
+.field_description > span{
+    overflow: hidden;
+    max-height: 200px;
+    height: 100%;
+    display: inline-block;
+}
+
+.field_section > select {
+    width : 40%;
+}

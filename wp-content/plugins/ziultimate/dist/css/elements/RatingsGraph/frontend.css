@@ -1,0 +1,51 @@
+.zuwoo-review-row {
+	padding-bottom: 10px;
+	position: relative;
+	line-height: 1;
+}
+.zuwoo-review-row span {
+	display: block;
+}
+
+.display-bar > span,
+.zuwoo-review-row .rating-bar-wrap,
+.zuwoo-review-row .zuwoo-perc-rating {
+	height: 21px;
+	line-height: 21px;
+}
+.zb-el-zuRatingsGraph .zuwoo-review-row:not(.display-bar) span.zuwoo-rating-bar {
+	height: auto!important;
+	line-height: 1;
+	display: inline-block;
+}
+.zuwoo-stars-value {
+	float: left;
+	min-width: 80px;
+}
+.zuwoo-review-row .zuwoo-num-reviews {
+	float: right;
+	min-width: 50px;
+	padding-left: 10px;
+}
+.zuwoo-review-row .zuwoo-rating-bar {
+	float: none;
+	overflow: hidden;
+}
+.zuwoo-review-row .rating-bar-wrap {
+	background-color:#f4f4f4;
+	clear: both;
+	position: relative;
+}
+.zuwoo-review-row .zuwoo-perc-rating {
+	background-color: #8fb3fb;
+	color: #000000;
+	float: left;
+}
+.zuwoo-review-row .zuwoo-stars-value.vtype-num_icon {
+	display: flex;
+	align-items: center;
+}
+
+.zuwoo-review-row .zu-label-icon {
+	font-size: 16px;
+}

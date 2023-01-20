@@ -1,0 +1,41 @@
+.zb-el-zuBuyNow {
+	display: flex;
+}
+
+.zu-buy-now-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-height: 1;
+	width: 100%;
+}
+
+.zu-buy-now-button--icon-left {
+	flex-direction: row;
+}
+.zu-buy-now-button--icon-right {
+	flex-direction: row-reverse;
+}
+
+.zu-buy-now-button--icon-top {
+	flex-direction: column;
+}
+.zu-buy-now-button--icon-bottom {
+	flex-direction: column-reverse;
+}
+
+.zu-buy-now-button--icon-left .zu-buy-now-button__icon {
+	margin-right: 10px;
+}
+
+.zu-buy-now-button--icon-right .zu-buy-now-button__icon {
+	margin-left: 10px;
+}
+
+.zu-buy-now-button--icon-top .zu-buy-now-button__icon {
+	margin-bottom: 5px;
+}
+
+.zu-buy-now-button--icon-bottom .zu-buy-now-button__icon {
+	margin-top: 5px;
+}

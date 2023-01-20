@@ -1,0 +1,66 @@
+.zb-modal {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.zb-modal--open {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.22);
+  opacity: 1;
+  visibility: visible;
+}
+
+.zb-modalContent {
+  position: relative;
+  flex-direction: column;
+  flex: 0 1 auto;
+  padding: 25px;
+  background: #fff;
+}
+
+.zb-modal--open .zb-modalContent {
+  overflow: auto;
+  width: 1120px;
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+.zb-modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+.zb-modalClose:hover {
+  opacity: 1;
+}
+
+.zb-modalClose:before, .zb-modalClose:after {
+  content: " ";
+  position: absolute;
+  left: 7px;
+  width: 2px;
+  height: 16px;
+  background-color: #333;
+}
+
+.zb-modalClose:before {
+  transform: rotate(45deg);
+}
+
+.zb-modalClose:after {
+  transform: rotate(-45deg);
+}

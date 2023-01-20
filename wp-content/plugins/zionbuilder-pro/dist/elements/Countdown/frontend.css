@@ -1,0 +1,110 @@
+.zb-el-countdown__wrapper {
+  display: inline-flex;
+}
+.zb-el-countdownUnit {
+  position: relative;
+  padding: 20px;
+  margin: 0 10px;
+  text-align: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.zb-el-countdownUnit:first-child {
+  margin-left: 0;
+}
+.zb-el-countdownUnit:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 10px);
+  font-size: 15px;
+  transform: translateY(-50%);
+}
+.zb-el-countdownUnit__value {
+  position: relative;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+}
+.zb-el-countdownUnit__unit {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.zb-el-countdown-type--single .zb-el-countdown__wrapper {
+  margin: 0;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.zb-el-countdown-type--single .zb-el-countdownUnit {
+  margin: 0;
+  border: 0;
+}
+.zb-el-countdown-type--single .zb-el-countdownUnit:not(:last-child)::after {
+  left: 100%;
+}
+.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit {
+  padding: 0;
+  border: 0;
+  border-radius: unset;
+}
+.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit::after {
+  display: none;
+}
+.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit__value {
+  padding: 20px;
+  margin: 0;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit:not(:last-child) .zb-el-countdownUnit__value::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 10px);
+  font-size: 15px;
+  transform: translateY(-50%);
+}
+.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit__unit {
+  margin-top: 8px;
+}
+.zb-el-countdown-type--single.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit__value {
+  border: 0;
+}
+.zb-el-countdown-type--single.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit:not(:last-child) .zb-el-countdownUnit__value::after {
+  left: 100%;
+}
+.zb-el-countdown-type--single.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit__unit {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.zb-el-countdown-separator-type--colon .zb-el-countdownUnit:not(:last-child)::after {
+  content: ":";
+}
+.zb-el-countdown-separator-type--hyphen .zb-el-countdownUnit:not(:last-child)::after {
+  content: "-";
+}
+.zb-el-countdown-separator-type--slash .zb-el-countdownUnit:not(:last-child)::after {
+  content: "/";
+}
+.zb-el-countdown-separator-type--none .zb-el-countdownUnit:not(:last-child)::after {
+  display: none;
+}
+.zb-el-countdown-separator-type--colon.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit:not(:last-child) .zb-el-countdownUnit__value::after {
+  content: ":";
+}
+.zb-el-countdown-separator-type--hyphen.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit:not(:last-child) .zb-el-countdownUnit__value::after {
+  content: "-";
+}
+.zb-el-countdown-separator-type--slash.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit:not(:last-child) .zb-el-countdownUnit__value::after {
+  content: "/";
+}
+.zb-el-countdown-separator-type--none.zb-el-countdown-has-outsideLabel .zb-el-countdownUnit:not(:last-child) .zb-el-countdownUnit__value::after {
+  display: none;
+}
