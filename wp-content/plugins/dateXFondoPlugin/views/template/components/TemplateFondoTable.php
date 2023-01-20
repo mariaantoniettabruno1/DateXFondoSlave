@@ -181,7 +181,6 @@ class TemplateFondoTable
                         error: function (response) {
                             console.error(response);
                             $("#editModal").modal('hide');
-                            $("#editDecModal").modal('hide');
                             $(".alert-edit-wrong").show();
                             $(".alert-edit-wrong").fadeTo(2000, 500).slideUp(500, function () {
                                 $(".alert-edit-wrong").slideUp(500);
