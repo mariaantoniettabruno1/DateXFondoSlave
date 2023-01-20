@@ -3,11 +3,11 @@
 namespace dateXFondoPlugin;
 
 use dateXFondoPlugin\MasterTemplateRepository;
-use MasterJoinTable;
+use FondoCompletoTable;
 
 header('Content-Type: text/javascript');
 
-class MasterTemplateFormulaJoin
+class FondoCompleto
 {
     public static function render()
     {
@@ -85,7 +85,7 @@ class MasterTemplateFormulaJoin
         <div class="container-fluid">
             <div class="row">
                 <?php
-                MasterJoinTable::render();
+                FondoCompletoTable::render();
                 ?>
 
             </div>

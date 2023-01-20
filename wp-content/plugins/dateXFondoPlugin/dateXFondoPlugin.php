@@ -23,8 +23,8 @@ require_once(plugin_dir_path(__FILE__) . 'repositories/RegioniDocumentRepository
 require_once(plugin_dir_path(__FILE__) . 'repositories/SlaveFormulaTable.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/MasterJoinTableRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'views/table/live_edit.php');
-require_once(plugin_dir_path(__FILE__) . 'views/table/MasterTemplateFormulaJoin.php');
-require_once(plugin_dir_path(__FILE__) . 'views/table/components/MasterJoinTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/table/FondoCompleto.php');
+require_once(plugin_dir_path(__FILE__) . 'views/table/components/FondoCompletoTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateFondo.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/AllTemplate.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateToActive.php');
@@ -112,7 +112,7 @@ function shortcodes_init()
 
 function visualize_join_table()
 {
-    \dateXFondoPlugin\MasterTemplateFormulaJoin::render();
+    \dateXFondoPlugin\FondoCompleto::render();
 }
 
 
