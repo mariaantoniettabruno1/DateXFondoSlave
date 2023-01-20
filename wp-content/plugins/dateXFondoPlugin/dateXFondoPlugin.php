@@ -33,7 +33,7 @@ require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateHead
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFondoTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/AllTemplateTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/MasterTemplateHistoryTable.php');
-require_once(plugin_dir_path(__FILE__) . 'views/template/components/MasterTemplateToActiveRow.php');
+require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFondoToActiveRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/ShortCodeDisabledTemplateRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/Formula.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/SlaveShortCodeFormulaTable.php');

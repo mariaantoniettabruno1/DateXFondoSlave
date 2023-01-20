@@ -2,7 +2,7 @@
 
 namespace dateXFondoPlugin;
 
-class MasterTemplateToActiveRow
+class TemplateFondoToActiveRow
 {
     public static function render_scripts()
     {
@@ -19,7 +19,15 @@ class MasterTemplateToActiveRow
 
             function renderDataTable() {
                 $('#dataTemplateTableBody').html('');
+
                 articoli.forEach(art => {
+                    let sottotitolo = art.sottotitolo_articolo ?? '';
+                    let nome = art.nome_articolo ?? '';
+                    let descrizione = art.descrizione_articolo ?? '';
+                    let valore = art.valore ?? '';
+                    let valore_anno_precedente = art.valore_anno_precedente ?? '';
+                    let nota = art.nota ?? '';
+                    let link = art.link ?? '';
 
                     $('#dataTemplateTableBody').append(`
                                  <tr>
@@ -30,11 +38,13 @@ class MasterTemplateToActiveRow
                                        <td>${art.sezione}</td>
                                        <td>${art.sottosezione}</td>
                                        <td>${art.id_articolo}</td>
-                                       <td>${art.nome_articolo}</td>
-                                       <td>${art.sottotitolo_articolo}</td>
-                                       <td>${art.descrizione_articolo}</td>
-                                       <td>${art.nota}</td>
-                                       <td>${art.link}</td>
+                                       <td>${nome}</td>
+                                       <td>${sottotitolo}</td>
+                                       <td>${descrizione}</td>
+                                       <td>${valore}</td>
+                                       <td>${valore_anno_precedente}</td>
+                                       <td>${nota}</td>
+                                       <td>${link}</td>
                                            <td>
                 <button class="btn btn-primary btn-active-row" data-toggle="modal" data-target="#activeModal" data-id='${art.id}'>Attiva</button>
                 </td>
@@ -57,7 +67,6 @@ class MasterTemplateToActiveRow
                 descrizione = articolo[0].descrizione_fondo;
                 version = articolo[0].version;
             }
-
 
 
             $(document).ready(function () {
@@ -84,7 +93,7 @@ class MasterTemplateToActiveRow
                             articoli = articoli.filter(art => art.id !== id)
                             renderDataTable();
                             $(".alert-active-row-success").show();
-                            $(".alert-active-row-success").fadeTo(2000, 500).slideUp(500, function(){
+                            $(".alert-active-row-success").fadeTo(2000, 500).slideUp(500, function () {
                                 $(".alert-active-row-success").slideUp(500);
                             });
 
@@ -93,7 +102,7 @@ class MasterTemplateToActiveRow
                             console.error(response);
                             $("#activeModal").modal('hide');
                             $(".alert-active-row-wrong").show();
-                            $(".alert-active-row-wrong").fadeTo(2000, 500).slideUp(500, function(){
+                            $(".alert-active-row-wrong").fadeTo(2000, 500).slideUp(500, function () {
                                 $(".alert-active-row-wrong").slideUp(500);
                             });
                         }
@@ -119,6 +128,8 @@ class MasterTemplateToActiveRow
                 <th>Nome Articolo</th>
                 <th>Sottotitolo Articolo</th>
                 <th>Descrizione Articolo</th>
+                <th>Valore</th>
+                <th>Valore Anno precedente</th>
                 <th>Nota</th>
                 <th>Link</th>
                 <th>Azioni</th>

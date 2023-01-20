@@ -40,7 +40,7 @@ class MasterTemplateToActive
         <div class="container-fluid">
             <div class="row">
                 <?php
-                MasterTemplateToActiveRow::render();
+                TemplateFondoToActiveRow::render();
                 ?>
             </div>
         </div>
