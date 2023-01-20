@@ -73,7 +73,18 @@ class FondoCompletoTable
                             const [v, f] = vf.split(":");
                             descrizione = "Se " + cond + " allora " + v + " altrimenti " + f
                         } else {
-                            descrizione = art.formula;
+
+                            articoli.forEach(articolo => {
+                                this[articolo.id_articolo] = articolo.valore;
+                             });
+                            try{
+                                console.log(eval(art.formula));
+                            }
+                            catch (e) {
+
+                            }
+
+
                         }
                         id_articolo = art.nome ?? "";
 
@@ -96,8 +107,6 @@ class FondoCompletoTable
                         }
 
                     }
-
-
 
 
                     $('#dataTemplateTableBody' + index).append(`

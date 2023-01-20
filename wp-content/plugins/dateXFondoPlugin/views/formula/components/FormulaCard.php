@@ -172,6 +172,7 @@ class FormulaCard
                 })
 
                 $('#insertFormula').click(function () {
+
                     $("#errorNameFormula").attr('style', 'display:none');
                     let sezione = $('#inputSelectSezioneFormula').val();
                     let sottosezione = $('#inputSelectSottosezioneFormula').val();
