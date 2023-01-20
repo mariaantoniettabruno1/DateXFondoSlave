@@ -27,12 +27,12 @@ require_once(plugin_dir_path(__FILE__) . 'views/table/MasterTemplateFormulaJoin.
 require_once(plugin_dir_path(__FILE__) . 'views/table/components/MasterJoinTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateFondo.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/AllTemplate.php');
-require_once(plugin_dir_path(__FILE__) . 'views/template/MasterTemplateToActive.php');
-require_once(plugin_dir_path(__FILE__) . 'views/template/MasterTemplateHistory.php');
+require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateToActive.php');
+require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateHistory.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateHeader.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFondoTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/AllTemplateTable.php');
-require_once(plugin_dir_path(__FILE__) . 'views/template/components/MasterTemplateHistoryTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateHistoryTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFondoToActiveRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/ShortCodeDisabledTemplateRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/Formula.php');
@@ -131,13 +131,13 @@ function visualize_master_template()
 
 function visualize_history_template()
 {
-    \dateXFondoPlugin\MasterTemplateHistory::render();
+    \dateXFondoPlugin\TemplateHistory::render();
 
 }
 
 function visualize_disabled_template_row()
 {
-    \dateXFondoPlugin\MasterTemplateToActive::render();
+    \dateXFondoPlugin\TemplateToActive::render();
 
 }
 

@@ -1,0 +1,81 @@
+<?php
+
+namespace dateXFondoPlugin;
+
+class TemplateHistoryTable
+{
+    public static function render_scripts()
+    {
+        ?>
+
+        <script>
+            let fondo = '';
+            let anno = 0;
+            let descrizione = '';
+            let template_name = '';
+            let version = 0;
+
+            function renderDataTable() {
+                $('#dataTemplateTableBody').html('');
+
+                articoli.forEach(art => {
+                    $('#dataTemplateTableBody').append(`
+                                 <tr>
+                                       <td >${art.fondo}</td>
+                                       <td >${art.anno}</td>
+                                       <td >${art.descrizione_fondo}</td>
+                                       <td >${art.version}</td>
+                                       <td >${art.template_name}</td>
+                                           <td>
+                <button class="btn btn-link btn-visualize-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-desc ='${art.descrizione_fondo}' data-version='${art.version}' data-template='${art.template_name}' data-toggle="tooltip" title="Visualizza template"><i class="fa-regular fa-eye"></i></button>
+                </td>
+                </tr>
+                             `);
+
+                });
+
+                $('.btn-visualize-template').click(function () {
+                    fondo = $(this).attr('data-fondo');
+                    anno = $(this).attr('data-anno');
+                    descrizione = $(this).attr('data-desc');
+                    version = $(this).attr('data-version');
+                    template_name = $(this).attr('data-template');
+                });
+            }
+
+            $(document).ready(function () {
+
+                renderDataTable();
+
+                $('.btn-visualize-template').click(function () {
+                    location.href = '<?= DateXFondoCommon::get_website_url()?>/visualizza-template-fondo/?fondo=' + fondo + '&anno=' + anno + '&descrizione=' + descrizione + '&version=' + version + '&template_name=' + template_name;
+                });
+            });
+        </script>
+    <?php }
+
+    public static function render()
+    {
+
+        ?>
+        <table class="table" style="table-layout: fixed">
+            <thead>
+            <tr>
+                <th style="width: 200px">Fondo</th>
+                <th style="width: 100px">Anno</th>
+                <th>Descrizione fondo</th>
+                <th style="width: 100px">Versione</th>
+                <th style="width: 100px">Template Name</th>
+                <th style="width: 12.625rem">Azioni</th>
+            </tr>
+
+            </thead>
+            <tbody id="dataTemplateTableBody">
+            </tbody>
+        </table>
+
+        <?php
+        self::render_scripts();
+    }
+
+}

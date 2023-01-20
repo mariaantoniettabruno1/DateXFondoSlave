@@ -24,7 +24,7 @@ class MasterTemplateRepository
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and row_type='special' ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
@@ -35,7 +35,7 @@ class MasterTemplateRepository
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT id,fondo,anno,descrizione_fondo,ordinamento,sezione,sottosezione,id_articolo,nome_articolo,sottotitolo_articolo,descrizione_articolo,nota,link,version,template_name FROM DATE_template_fondo WHERE attivo = 0 ORDER BY ordinamento ASC";
+        $sql = "SELECT * FROM DATE_template_fondo WHERE attivo = 0 and row_type='special' ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
