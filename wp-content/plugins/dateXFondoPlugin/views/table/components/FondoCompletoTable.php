@@ -182,6 +182,7 @@ class FondoCompletoTable
     {
         $data = new MasterJoinTableRepository();
         $results_articoli = $data->getJoinedArticoli($_GET['template_name']);
+        $results_formula = $data->getJoinedFormulas($_GET['template_name']);
 
         $sezioni = [];
         $tot_array = [];
@@ -191,11 +192,22 @@ class FondoCompletoTable
                 $tot_array = array_fill_keys($sezioni, []);
             }
         }
+        foreach ($results_formula as $formula){
+            if (!in_array($formula['sezione'], $sezioni)) {
+                array_push($sezioni, $formula['sezione']);
+                $tot_array = array_fill_keys($sezioni, []);
+            }
+        }
 
         foreach ($tot_array as $key => $value) {
             foreach ($results_articoli as $articolo) {
                 if ($key === $articolo['sezione'] && array_search($articolo['sottosezione'], $tot_array[$key]) === false) {
                     array_push($tot_array[$key], $articolo['sottosezione']);
+                }
+                foreach ($results_formula as $formula) {
+                    if ($key === $formula['sezione'] && array_search($formula['sottosezione'], $tot_array[$key]) === false) {
+                        array_push($tot_array[$key], $formula['sottosezione']);
+                    }
                 }
             }
         }
