@@ -73,17 +73,7 @@ class FondoCompletoTable
                             const [v, f] = vf.split(":");
                             descrizione = "Se " + cond + " allora " + v + " altrimenti " + f
                         } else {
-
-                            articoli.forEach(articolo => {
-                                this[articolo.id_articolo] = articolo.valore;
-                             });
-                            try{
-                                console.log(eval(art.formula));
-                            }
-                            catch (e) {
-
-                            }
-
+                            descrizione = evaluateFormula(art.formula, articoli);
 
                         }
                         id_articolo = art.nome ?? "";
@@ -118,8 +108,8 @@ class FondoCompletoTable
                            <td>${nome_articolo}</td>
                            <td>${sottotitolo}</td>
                             <td>
-                                           <span style='display:none' class="descrizioneFull">${descrizione}</span>
-                                           <span style="display:block" class='descrizioneCut'>${descrizione.substr(0, 50).concat('...')}</span>
+                                          ${descrizione}
+
                                         </td>
                            <td>${nota}</td>
                            <td>${valore}</td>
@@ -146,6 +136,19 @@ class FondoCompletoTable
                 if (subsection !== 'Seleziona Sottosezione') {
                     $('.class-template-sottosezione').val('Seleziona Sottosezione');
                 }
+            }
+
+            function evaluateFormula(formula, articoli) {
+
+                articoli.forEach(articolo => {
+                        this[articolo.id_articolo] = parseInt(articolo.valore);
+                    }
+                );
+
+                console.log(formula);
+
+                return eval(formula);
+
             }
 
             let current_section;
@@ -192,7 +195,7 @@ class FondoCompletoTable
                 $tot_array = array_fill_keys($sezioni, []);
             }
         }
-        foreach ($results_formula as $formula){
+        foreach ($results_formula as $formula) {
             if (!in_array($formula['sezione'], $sezioni)) {
                 array_push($sezioni, $formula['sezione']);
                 $tot_array = array_fill_keys($sezioni, []);
