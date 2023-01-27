@@ -11,7 +11,6 @@
 use dateXFondoPlugin\DateXFondoCommon;
 
 require_once(plugin_dir_path(__FILE__) . 'common.php');
-require_once(plugin_dir_path(__FILE__) . 'repositories/CustomTable.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/Connection.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/MasterTemplateRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/MasterTemplateRowRepository.php');
@@ -20,9 +19,7 @@ require_once(plugin_dir_path(__FILE__) . 'repositories/DocumentRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/DeliberaDocumentRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/FormulaRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/RegioniDocumentRepository.php');
-require_once(plugin_dir_path(__FILE__) . 'repositories/SlaveFormulaTable.php');
-require_once(plugin_dir_path(__FILE__) . 'repositories/MasterJoinTableRepository.php');
-require_once(plugin_dir_path(__FILE__) . 'views/table/live_edit.php');
+require_once(plugin_dir_path(__FILE__) . 'repositories/FondoCompletoTableRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'views/table/FondoCompleto.php');
 require_once(plugin_dir_path(__FILE__) . 'views/table/components/FondoCompletoTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateFondo.php');

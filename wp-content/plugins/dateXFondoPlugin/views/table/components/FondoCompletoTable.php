@@ -1,7 +1,7 @@
 <?php
 
 use dateXFondoPlugin\DateXFondoCommon;
-use dateXFondoPlugin\MasterJoinTableRepository;
+use dateXFondoPlugin\FondoCompletoTableRepository;
 
 class FondoCompletoTable
 {
@@ -73,7 +73,8 @@ class FondoCompletoTable
                             const [v, f] = vf.split(":");
                             descrizione = "Se " + cond + " allora " + v + " altrimenti " + f
                         } else {
-                            descrizione = evaluateFormula(art.formula, articoli);
+
+                            descrizione = evaluateFormula(art.formula);
 
                         }
                         id_articolo = art.nome ?? "";
@@ -138,18 +139,66 @@ class FondoCompletoTable
                 }
             }
 
-            function evaluateFormula(formula, articoli) {
+            function evaluateFormula(formula) {
 
-                articoli.forEach(articolo => {
-                        this[articolo.id_articolo] = parseInt(articolo.valore);
+
+                let articles = extractArticles(formula);
+
+                if (articles.length !== 0) {
+                    for (let a of articles) {
+                        this[a[0]] = parseInt(getArticleValue(a[0]));
+
                     }
-                );
+                }
 
-                console.log(formula);
+                let formulas = extractFormulas(formula);
+                if (formulas.length !== 0) {
+                    for (let f of formulas) {
+                        if (this[f[0]] === undefined) {
+                            let temp_formula = getFormulaString(f[0]);
+                            if (temp_formula !== undefined)
+                                this[f[0]] = evaluateFormula(temp_formula);
+
+                        }
+                    }
+
+                }
 
                 return eval(formula);
-
             }
+
+
+            function extractFormulas(formula) {
+                const regexp = /F\w+/g;
+                return [...formula.matchAll(regexp)];
+            }
+
+            function extractArticles(formula) {
+                const regexp = /R\w+/g;
+                return [...formula.matchAll(regexp)];
+            }
+
+            function getArticleValue(article) {
+                let value = '';
+                articoli.forEach(art => {
+                    if (art.id_articolo === article) {
+                        value = art.valore;
+                    }
+                });
+                return value;
+            }
+
+            function getFormulaString(formula) {
+                let value;
+                formulas.forEach(form => {
+                    if (form.nome === formula) {
+                        value = form.formula;
+                    }
+
+                });
+                return value;
+            }
+
 
             let current_section;
             let current_subsection;
@@ -183,7 +232,7 @@ class FondoCompletoTable
 
     public static function render()
     {
-        $data = new MasterJoinTableRepository();
+        $data = new FondoCompletoTableRepository();
         $results_articoli = $data->getJoinedArticoli($_GET['template_name']);
         $results_formula = $data->getJoinedFormulas($_GET['template_name']);
 

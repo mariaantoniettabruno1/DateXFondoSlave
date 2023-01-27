@@ -11,22 +11,29 @@ class FondoCompleto
 {
     public static function render()
     {
-        $data = new MasterJoinTableRepository();
+        $data = new FondoCompletoTableRepository();
 
         $results_articoli = [];
-        if (isset($_GET['template_name']))
-            $results_articoli = $data->getJoinedArticoli($_GET['template_name']);
         $results_formula = [];
-        if (isset($_GET['template_name']))
-            $results_formula = $data->getJoinedFormulas($_GET['template_name']);
-        $results_joined = $data->getJoinedRecords();
-        foreach ($results_formula as $key => $value) {
-            $results_formula[$key]["formula"] = str_replace('"', '\"', $value["formula"]);
+
+        if (isset($_GET['template_name'])) {
+            $results_articoli = $data->getJoinedArticoli($_GET['template_name']);
         }
+
+        if (isset($_GET['template_name'])) {
+            $results_formula = $data->getJoinedFormulas($_GET['template_name']);
+        }
+
+        $results_joined = $data->getJoinedRecords();
+
+        foreach ($results_formula as $key => $value) {
+            $results_formula[$key]["descrizione"] = str_replace('"', '\"', $value["descrizione"]);
+        }
+
         foreach ($results_articoli as $key => $value) {
             $results_articoli[$key]["sottotitolo_articolo"] = str_replace('"', '\"', $value["sottotitolo_articolo"]);
             $results_articoli[$key]["nome_articolo"] = str_replace('"', '\"', $value["nome_articolo"]);
-            $results_articoli[$key]["descrizione"] = str_replace('"','\"' ,$value["descrizione"]);
+            $results_articoli[$key]["descrizione_articolo"] = str_replace('"', '\"', $value["descrizione_articolo"]);
         }
 
         ?>

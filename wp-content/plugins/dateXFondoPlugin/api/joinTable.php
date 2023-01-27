@@ -11,7 +11,7 @@ function create_endpoint_datefondo_aggiornamento_join_table()
 function esegui_modifica_ordinamento($params)
 {
     if(isset($params["id"]) && $params["id"] > 0 ) {
-        $success = \dateXFondoPlugin\MasterJoinTableRepository::updateJoinedIndex($params["id"], $params["ordinamento"]);
+        $success = \dateXFondoPlugin\FondoCompletoTableRepository::updateJoinedIndex($params["id"], $params["ordinamento"]);
         if($success){
             $data = ['id' => $params["id"], 'updated' => true, "affectedRows" => $success, 'message' => 'Ordinamento aggiornato correttamente'];
             $response = new WP_REST_Response($data);
@@ -25,7 +25,7 @@ function esegui_modifica_ordinamento($params)
         }
 
     } else {
-        $insert_id = \dateXFondoPlugin\MasterJoinTableRepository::insertJoinedIndex($params["external_id"], $params["type"], $params["ordinamento"]);
+        $insert_id = \dateXFondoPlugin\FondoCompletoTableRepository::insertJoinedIndex($params["external_id"], $params["type"], $params["ordinamento"]);
         if($insert_id){
             $data = ['id' => $insert_id, 'message' => 'Ordinamento inserito correttamente'];
             $response = new WP_REST_Response($data);

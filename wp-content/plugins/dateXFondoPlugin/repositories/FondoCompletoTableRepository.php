@@ -2,7 +2,7 @@
 
 namespace dateXFondoPlugin;
 
-class MasterJoinTableRepository
+class FondoCompletoTableRepository
 {
     public static function getJoinedArticoli($template_name)
     {
@@ -22,8 +22,7 @@ class MasterJoinTableRepository
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT id,sezione,sottosezione,nome,descrizione,condizione,formula,text_type 
-                FROM DATE_formula  WHERE attivo =1 AND visibile = 1 AND formula_template_name=?";
+        $sql = "SELECT * FROM DATE_formula  WHERE attivo=1 AND visibile = 1 AND formula_template_name=?";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("s", $template_name);
         $res = $stmt->execute();
@@ -68,26 +67,5 @@ class MasterJoinTableRepository
         mysqli_close($mysqli);
         return $id;
     }
-
-//    public static function updateJoinedArticoli($articoli_ids, $formula_ids)
-//    {
-//        $conn = new Connection();
-//        $mysqli = $conn->connect();
-//        $sql = "INSERT IGNORE INTO DATE_template_formula (external_id,type) VALUES (?, 0)";
-//        $stmt = $mysqli->prepare($sql);
-//        foreach ($articoli_ids[0] as $id) {
-//            $stmt->bind_param("i", $id);
-//            $res = $stmt->execute();
-//        }
-//        $sql = "INSERT IGNORE INTO DATE_template_formula (external_id,type) VALUES (?, 1)";
-//        $stmt = $mysqli->prepare($sql);
-//        foreach ($formula_ids[0] as $id) {
-//            $stmt->bind_param("i", $id);
-//            $res = $stmt->execute();
-//        }
-//        mysqli_close($mysqli);
-//
-//    }
-
 
 }
