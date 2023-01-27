@@ -30,6 +30,7 @@ class MasterModelloRegioniTable
     {
         ?>
         <div class="container pt-3" style="width: 100%">
+
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-link active" id="regioni-costituzione-tab" href="#regionicostituzione" role="tab"
@@ -37,10 +38,9 @@ class MasterModelloRegioniTable
                     <a class="nav-link" id="destinazione-tab" href="#destinazione" role="tab"
                        aria-controls="destinazione"
                        aria-selected="false" data-toggle="pill">Utilizzo</a>
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-outline-primary" onclick="ExportExcel()">genera foglio excel</button>
-                    </div>
+
                 </div>
+
             </nav>
 
             <div class="tab-content" id="nav-tabContent">
@@ -57,7 +57,11 @@ class MasterModelloRegioniTable
                     ?>
                 </div>
             </div>
+            <div class="d-flex justify-content-lg-end pt-2">
+                <button class="btn btn-outline-primary btn-excel-regioni" onclick="ExportExcel()">Genera foglio excel</button>
+            </div>
         </div>
+
 
 
         <?php

@@ -33,11 +33,9 @@ public function __construct()
     {
         $value = isset($this->values[$key]) ? $this->values[$key] : $default;
         ?>
-        <span class="editable-input" data-active="false">
+
             <span class="variable-span-text" style="color:<?= $color ?>"><?= $value ?></span>
-        <input class="variable-input-text" id="input<?= $key ?>" value="<?= $value ?>" style="display: none"
-               data-key="<?= $key ?>">
-        </span>
+
 
         <?php
     }
@@ -47,32 +45,13 @@ public function __construct()
         $value = isset($this->values[$key]) ? $this->values[$key] : $default;
 
         ?>
-        <span class="editable-area" data-active="false">
+
         <span class="variable-span-area" style="color:<?= $color ?>"><?= $value ?></span>
-            <textarea class=" variable-text-area form-control" id="input<?= $key ?>" data-key="<?= $key ?>"
-                      style="display: none" value="<?= $value ?>"><?= $value ?></textarea>
-             </span>
+
         <?php
     }
 
-    private function getSelect($key, $default = '')
-    {
-        $value = isset($this->values[$key]) ? $this->values[$key] : $default;
 
-
-        ?>
-        <select class="editable-select form-control form-control-sm" data-key="<?= $key ?>">
-            <option><?= $default ?></option>
-            <?php
-            foreach ($this->formule as $val) {
-                ?>
-                <option value="<?= $val[0] ?>" <?= $val[0] == $value ? 'selected' : '' ?> ><?= $val[0] ?></option>
-                <?php
-            }
-            ?>
-        </select>
-        <?php
-    }
 
     public function render()
     {
@@ -128,68 +107,7 @@ public function __construct()
                     document.body.removeChild(fileDownload);
                 }
 
-                $(document).ready(function () {
-                    data = JSON.parse((`<?=json_encode($this->infos);?>`));
-                    console.log(data);
-                    const editedInputs = {};
-                    $('.editable-input >span').click(function () {
-                        $(this).next().show();
-                        $(this).hide();
-                    });
-                    $('.editable-input >input').blur(function () {
-                        $(this).prev().html($(this).val());
-                        $(this).prev().show();
-                        $(this).hide();
-                        editedInputs[$(this).attr('data-key')] = $(this).val();
 
-                    });
-                    $('.editable-area >span').click(function () {
-                        $(this).next().show();
-                        $(this).hide();
-                    });
-                    $('.editable-area >textarea').blur(function () {
-                        $(this).prev().html($(this).val());
-                        $(this).prev().show();
-                        $(this).hide();
-                        editedInputs[$(this).attr('data-key')] = $(this).val();
-                    });
-                    $('.editable-select').change(function () {
-                        editedInputs[$(this).attr('data-key')] = $(this).val();
-                    });
-
-                    $('.btn-save-edit').click(function () {
-                        document_name = $('#inputDocumentName').val();
-                        editor_name = $('#inputEditorName').val();
-                        year = $('#inputYear').val();
-
-                        const payload = {
-                            editedInputs,
-                            document_name,
-                            editor_name,
-                            year
-                        }
-                        console.log(payload)
-                        $.ajax({
-                            url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/deliberadocument',
-                            data: payload,
-                            type: "POST",
-                            success: function (response) {
-                                $(".alert-edit-success").show();
-                                $(".alert-edit-success").fadeTo(2000, 500).slideUp(500, function () {
-                                    $(".alert-edit-success").slideUp(500);
-                                });
-                            },
-                            error: function (response) {
-                                console.error(response);
-                                $(".alert-edit-wrong").show();
-                                $(".alert-edit-wrong").fadeTo(2000, 500).slideUp(500, function () {
-                                    $(".alert-edit-wrong").slideUp(500);
-                                });
-                            }
-                        });
-                    })
-
-                });
 
                 window.onbeforeunload = confirmExit;
 
@@ -199,23 +117,10 @@ public function __construct()
             </script>
         </head>
         <body>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-8">
-                    <?php
-                    \DeliberaDocumentHeader::render();
-                    ?>
-                </div>
-                <div class="col">
-                    <button class="btn btn-outline-secondary btn-export" onclick="exportHTML();">Esporta in word
-                    </button>
-                    <button class="btn btn-secondary btn-save-edit "> Salva modifica</button>
-                    <small id="warningSaveEdit" class="form-text text-dark"><i
-                                class="fa-solid fa-triangle-exclamation text-warning"></i> Ricordati di salvare prima di
-                        uscire</small>
-                </div>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-secondary btn-export" onclick="exportHTML();">Esporta in word
+            </button>
 
-            </div>
         </div>
 
         <div id="relazioneIllustrativaDocument">
@@ -3897,35 +3802,13 @@ Dal prospetto relativo alla spesa, a consuntivo, le risorse non risultano utiliz
         </div>
 
         </body>
-        <div class="alert alert-success alert-edit-success" role="alert"
-             style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
-            Modifica andata a buon fine!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="alert alert-danger alert-edit-wrong" role="alert"
-             style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
-            Modifica NON andata a buon fine
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-8">
-                </div>
-                <div class="col">
-                    <button class="btn btn-outline-secondary btn-export" onclick="exportHTML();">Esporta in word
-                    </button>
-                    <button class="btn btn-secondary btn-save-edit "> Salva modifica</button>
-                    <small id="warningSaveEdit" class="form-text text-dark"><i
-                                class="fa-solid fa-triangle-exclamation text-warning"></i> Ricordati di salvare prima di
-                        uscire</small>
-                </div>
 
-            </div>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-secondary btn-export" onclick="exportHTML();">Esporta in word
+            </button>
+
         </div>
+
         </html lang="en">
 
         <?php

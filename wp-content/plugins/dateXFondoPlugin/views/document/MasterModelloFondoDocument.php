@@ -102,35 +102,13 @@ class MasterModelloFondoDocument
         </script>
         <body>
         <div class="container-fluid">
-            <div class="row">
-                <?php
-                \MasterModelloFondoHeader::render();
-                ?>
-            </div>
+
             <div class="row">
                 <?php
                 MasterModelloFondoDocumentTable::render();
                 ?>
             </div>
-            <div class="row d-flex justify-content-between pt-3">
-                <div>
-                    <?php
-                    \MasterModelloStopEditTable::render();
-                    ?>
-                </div>
-                <div>
-                    <?php
-                    \MasterModelloFondoNewCostituzioneRow::render();
-                    ?>
-                    <?php
-                    \MasterModelloFondoNewUtilizzoRow::render();
-                    ?>
-
-                    <?php
-                    \MasterModelloFondoDatiUtiliRow::render();
-                    ?>
-                </div>
-            </div>
+        </div>
 
         </body>
         </html lang="en">

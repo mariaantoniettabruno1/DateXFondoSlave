@@ -67,33 +67,13 @@ public static function render(){
 
     <body>
     <div class="container-fluid">
-        <div class="row pb-2">
-            <?php
-            \MasterModelloRegioniHeader::render();
-            ?>
-        </div>
-
+        
         <div class="row">
             <?php
             \MasterModelloRegioniTable::render();
             ?>
         </div>
-        <div class="d-flex justify-content-between pt-3">
-            <div>
-                <?php
-                \MasterModelloRegioniStopEdit::render();
-                ?>
-            </div>
-            <div>
-                <?php
-                    \MasterModelloRegioniCostituzioneRow::render();
-                ?>
-                <?php
-                \ModelloRegioniDestinazioneRow::render();
-                ?>
-            </div>
 
-        </div>
     </div>
     </body>
     </html lang="en">
