@@ -68,39 +68,35 @@ class FondoCompletoTable
                     valore_precedente = art.valore_anno_precedente ?? "";
 
                     if (art.formula !== undefined) {
-                        if (Number(art.condizione) === 1) {
-                            const [cond, vf] = art.formula.split("?");
-                            const [v, f] = vf.split(":");
-                            descrizione = "Se " + cond + " allora " + v + " altrimenti " + f
-                        } else {
 
-                            descrizione = evaluateFormula(art.formula);
 
-                        }
-                        id_articolo = art.nome ?? "";
+                        descrizione = evaluateFormula(art.formula);
 
-                        if (art.text_type === '10') {
-                            id_articolo = '<span class="span-bold">' + art.nome + '</span>';
-                        } else if (art.text_type === '01') {
-                            id_articolo = '<span class="span-higher">' + art.nome + '</span>';
 
-                        } else if (art.text_type === '11') {
-                            id_articolo = '<span class="span-bold-higher">' + art.nome + '</span>';
+                    id_articolo = art.nome ?? "";
 
-                        } else if (art.text_type === '00') {
-                            id_articolo = '<span>' + art.nome + '</span>';
+                    if (art.text_type === '10') {
+                        id_articolo = '<span class="span-bold">' + art.nome + '</span>';
+                    } else if (art.text_type === '01') {
+                        id_articolo = '<span class="span-higher">' + art.nome + '</span>';
 
-                        } else {
-                            id_articolo = '';
-                        }
-                        if (art.descrizione !== undefined) {
-                            sottotitolo = art.descrizione;
-                        }
+                    } else if (art.text_type === '11') {
+                        id_articolo = '<span class="span-bold-higher">' + art.nome + '</span>';
 
+                    } else if (art.text_type === '00') {
+                        id_articolo = '<span>' + art.nome + '</span>';
+
+                    } else {
+                        id_articolo = '';
+                    }
+                    if (art.descrizione !== undefined) {
+                        sottotitolo = art.descrizione;
                     }
 
+                }
 
-                    $('#dataTemplateTableBody' + index).append(`
+
+                $('#dataTemplateTableBody' + index).append(`
                          <tr>
                            <td>
                             ${ordinamento}
@@ -118,15 +114,18 @@ class FondoCompletoTable
                            <td>${link}</td>
                          </tr>
                              `);
-                });
-                $('.descrizioneCut').click(function () {
-                    $(this).attr("style", "display:none");
-                    $(this).prev().attr("style", "display:block");
-                });
-                $('.descrizioneFull').click(function () {
-                    $(this).attr("style", "display:none");
-                    $(this).next().attr("style", "display:block");
-                });
+            }
+
+            )
+            ;
+            $('.descrizioneCut').click(function () {
+                $(this).attr("style", "display:none");
+                $(this).prev().attr("style", "display:block");
+            });
+            $('.descrizioneFull').click(function () {
+                $(this).attr("style", "display:none");
+                $(this).next().attr("style", "display:block");
+            });
 
 
             }
