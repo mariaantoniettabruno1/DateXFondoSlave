@@ -56,47 +56,47 @@ class FondoCompletoTable
 
 
                 filteredRecord.forEach(art => {
-                    nota = art.nota ?? "";
-                    ordinamento = art.ordinamento ?? "";
-                    id_articolo = art.id_articolo ?? "";
-                    sottotitolo = art.sottotitolo_articolo ?? "";
-                    link = art.link ?? "";
-                    nome_articolo = art.nome_articolo ?? "";
-                    descrizione = art.descrizione_articolo ?? ""
-                    nota = art.nota ?? ""
-                    valore = art.valore ?? ""
-                    valore_precedente = art.valore_anno_precedente ?? "";
+                        nota = art.nota ?? "";
+                        ordinamento = art.ordinamento ?? "";
+                        id_articolo = art.id_articolo ?? "";
+                        sottotitolo = art.sottotitolo_articolo ?? "";
+                        link = art.link ?? "";
+                        nome_articolo = art.nome_articolo ?? "";
+                        descrizione = art.descrizione_articolo ?? ""
+                        nota = art.nota ?? ""
+                        valore = art.valore ?? ""
+                        valore_precedente = art.valore_anno_precedente ?? "";
 
-                    if (art.formula !== undefined) {
-
-
-                        descrizione = evaluateFormula(art.formula);
+                        if (art.formula !== undefined) {
 
 
-                    id_articolo = art.nome ?? "";
-
-                    if (art.text_type === '10') {
-                        id_articolo = '<span class="span-bold">' + art.nome + '</span>';
-                    } else if (art.text_type === '01') {
-                        id_articolo = '<span class="span-higher">' + art.nome + '</span>';
-
-                    } else if (art.text_type === '11') {
-                        id_articolo = '<span class="span-bold-higher">' + art.nome + '</span>';
-
-                    } else if (art.text_type === '00') {
-                        id_articolo = '<span>' + art.nome + '</span>';
-
-                    } else {
-                        id_articolo = '';
-                    }
-                    if (art.descrizione !== undefined) {
-                        sottotitolo = art.descrizione;
-                    }
-
-                }
+                            descrizione = evaluateFormula(art.formula);
 
 
-                $('#dataTemplateTableBody' + index).append(`
+                            id_articolo = art.nome ?? "";
+
+                            if (art.text_type === '10') {
+                                id_articolo = '<span class="span-bold">' + art.nome + '</span>';
+                            } else if (art.text_type === '01') {
+                                id_articolo = '<span class="span-higher">' + art.nome + '</span>';
+
+                            } else if (art.text_type === '11') {
+                                id_articolo = '<span class="span-bold-higher">' + art.nome + '</span>';
+
+                            } else if (art.text_type === '00') {
+                                id_articolo = '<span>' + art.nome + '</span>';
+
+                            } else {
+                                id_articolo = '';
+                            }
+                            if (art.descrizione !== undefined) {
+                                sottotitolo = art.descrizione;
+                            }
+
+                        }
+
+
+                        $('#dataTemplateTableBody' + index).append(`
                          <tr>
                            <td>
                             ${ordinamento}
@@ -114,18 +114,17 @@ class FondoCompletoTable
                            <td>${link}</td>
                          </tr>
                              `);
-            }
-
-            )
-            ;
-            $('.descrizioneCut').click(function () {
-                $(this).attr("style", "display:none");
-                $(this).prev().attr("style", "display:block");
-            });
-            $('.descrizioneFull').click(function () {
-                $(this).attr("style", "display:none");
-                $(this).next().attr("style", "display:block");
-            });
+                    }
+                )
+                ;
+                $('.descrizioneCut').click(function () {
+                    $(this).attr("style", "display:none");
+                    $(this).prev().attr("style", "display:block");
+                });
+                $('.descrizioneFull').click(function () {
+                    $(this).attr("style", "display:none");
+                    $(this).next().attr("style", "display:block");
+                });
 
 
             }
@@ -162,8 +161,13 @@ class FondoCompletoTable
                     }
 
                 }
-
-                return eval(formula);
+                try {
+                    return eval(formula);
+                }
+                catch (e) {
+                    console.log(e);
+                    return " C'è un errore nei valori inseriti, ricontrolla";
+                }
             }
 
 
