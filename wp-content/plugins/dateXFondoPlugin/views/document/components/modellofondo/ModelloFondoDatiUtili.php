@@ -77,10 +77,8 @@ class ModelloFondoDatiUtili
     public static function render()
     {
         $data = new DocumentRepository();
-        $tot_sezioni = $data->getSezioniDatiUtili($_GET['editor_name']);
-        $formulas = $data->getFormulas($_GET['editor_name']);
-        $ids_articolo = $data->getIdsArticoli($_GET['editor_name']);
-        $array = $formulas + $ids_articolo;
+        $tot_sezioni = $data->getSezioniDatiUtili($_GET['editor_name'],$_GET['version']);
+
 
         ?>
         <div class="accordion mt-2 col" id="accordionDatiUtiliDocumentTable">

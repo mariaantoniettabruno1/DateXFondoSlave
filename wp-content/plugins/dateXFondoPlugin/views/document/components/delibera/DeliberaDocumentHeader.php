@@ -79,7 +79,7 @@ class  DeliberaDocumentHeader
     public static function render()
     {
         $data = new DeliberaDocumentRepository();
-        $infos = $data->getAllValues($_GET['document_name'], $_GET['editor_name']);
+        $infos = $data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'],$_GET['version']);
 
         ?>
         <div class="row">

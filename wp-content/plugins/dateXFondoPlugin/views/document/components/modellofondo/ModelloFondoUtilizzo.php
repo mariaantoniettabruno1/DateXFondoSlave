@@ -14,8 +14,7 @@ class ModelloFondoUtilizzo
                 let filteredUtilizzoArticoli = articoli_utilizzo;
                 let preventivo = '';
                 let consuntivo = '';
-                let edit_button = '';
-                let delete_button = '';
+
                 for (let i = 0; i < sezioni_utilizzo.length; i++) {
                     $('#dataUtilizzoDocumentTableBody' + i).html('');
                     filteredUtilizzoArticoli = filteredUtilizzoArticoli.filter(art => art.sezione === sezioni_utilizzo[i])
@@ -83,10 +82,8 @@ class ModelloFondoUtilizzo
     public static function render()
     {
         $data = new DocumentRepository();
-        $tot_sezioni = $data->getSezioniUtilizzo($_GET['editor_name']);
-        $formulas = $data->getFormulas($_GET['editor_name']);
-        $ids_articolo = $data->getIdsArticoli($_GET['editor_name']);
-        $array = $formulas + $ids_articolo;
+        $tot_sezioni = $data->getSezioniUtilizzo($_GET['editor_name'],$_GET['version']);
+
 
         ?>
         <div class="accordion mt-2 col" id="accordionUtilizzoDocumentTable">

@@ -4,19 +4,7 @@ namespace dateXFondoPlugin;
 
 class DeliberaDocumentRepository
 {
-    public static function getAllValues($document_name, $editor_name)
-    {
-        $conn = new Connection();
-        $mysqli = $conn->connect();
-        $sql = "SELECT chiave, valore,document_name, editor_name, anno, editable FROM DATE_documenti_odt WHERE document_name=? AND editor_name=?";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("ss", $document_name, $editor_name);
-        $res = $stmt->execute();
-        $res = $stmt->get_result();
-        $rows = $res->fetch_all(MYSQLI_ASSOC);
-        mysqli_close($mysqli);
-        return $rows;
-    }
+
     public static function getAllHistoryValues($document_name, $editor_name,$version)
     {
         $conn = new Connection();

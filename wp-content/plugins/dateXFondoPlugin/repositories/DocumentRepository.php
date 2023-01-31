@@ -116,13 +116,13 @@ class DocumentRepository
         return $rows;
     }
 
-    public static function getSezioni($editor_name)
+    public static function getSezioni($editor_name,$version)
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo WHERE editor_name=?";
+        $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_storico WHERE editor_name=? and version=?";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $editor_name);
+        $stmt->bind_param("si", $editor_name,$version);
         $res = $stmt->execute();
         $res = $stmt->get_result();
         $rows = $res->fetch_all(MYSQLI_ASSOC);
@@ -130,13 +130,13 @@ class DocumentRepository
         return $rows;
     }
 
-    public static function getSezioniUtilizzo($template_name)
+    public static function getSezioniUtilizzo($template_name,$version)
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_utilizzo WHERE editor_name=?";
+        $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_utilizzo_storico WHERE editor_name=? and version=?";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $template_name);
+        $stmt->bind_param("si", $template_name,$version);
         $res = $stmt->execute();
         $res = $stmt->get_result();
         $rows = $res->fetch_all(MYSQLI_ASSOC);
@@ -144,13 +144,13 @@ class DocumentRepository
         return $rows;
     }
 
-    public static function getSezioniDatiUtili($template_name)
+    public static function getSezioniDatiUtili($template_name,$version)
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_dati_utili WHERE editor_name=?";
+        $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_dati_utili_storico WHERE editor_name=? and version=?";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $template_name);
+        $stmt->bind_param("si", $template_name,$version);
         $res = $stmt->execute();
         $res = $stmt->get_result();
         $rows = $res->fetch_all(MYSQLI_ASSOC);
