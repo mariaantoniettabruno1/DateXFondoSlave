@@ -16,12 +16,9 @@ public function __construct()
     $data = new DocumentRepository();
     $this->formule = $data->getFormulas($_GET['editor_name']) + $data->getIdsArticoli($_GET['editor_name']);
     $delibera_data = new DeliberaDocumentRepository();
-    if (isset($_GET['version'])) {
 
         $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version']);
-    } else {
-        $this->infos = $delibera_data->getAllValues($_GET['document_name'], $_GET['editor_name']);
-    }
+
 
     foreach ($this->infos as $row) {
         $this->values[$row['chiave']] = $row['valore'];

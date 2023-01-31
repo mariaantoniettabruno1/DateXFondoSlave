@@ -67,21 +67,7 @@ class DocumentRepository
         return $rows;
     }
 
-    public static function getArticoliUtilizzo($editor_name)
-    {
-        $conn = new Connection();
-        $mysqli = $conn->connect();
-        $sql = "SELECT * FROM DATE_documento_modello_fondo_utilizzo WHERE  attivo=1 and editor_name=? ORDER BY ordinamento ASC";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $editor_name);
-        $res = $stmt->execute();
-        if ($res = $stmt->get_result()) {
-            $rows = $res->fetch_all(MYSQLI_ASSOC);
-        } else
-            $rows = [];
-        mysqli_close($mysqli);
-        return $rows;
-    }
+
 
     public static function getHistoryArticoliUtilizzo($editor_name,$version)
     {
@@ -98,21 +84,7 @@ class DocumentRepository
         mysqli_close($mysqli);
         return $rows;
     }
-    public static function getArticoliDatiUtili($editor_name)
-    {
-        $conn = new Connection();
-        $mysqli = $conn->connect();
-        $sql = "SELECT * FROM DATE_documento_modello_fondo_dati_utili WHERE  attivo=1 and editor_name=? ORDER BY ordinamento ASC";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $editor_name);
-        $res = $stmt->execute();
-        if ($res = $stmt->get_result()) {
-            $rows = $res->fetch_all(MYSQLI_ASSOC);
-        } else
-            $rows = [];
-        mysqli_close($mysqli);
-        return $rows;
-    }
+
     public static function getHistoryArticoliDatiUtili($editor_name,$version)
     {
         $conn = new Connection();

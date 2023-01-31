@@ -1,6 +1,6 @@
 <?php
 
-class MasterModelloRegioniTable
+class ModelloRegioniTable
 {
     public static function render_scripts()
     {
@@ -47,13 +47,13 @@ class MasterModelloRegioniTable
                 <div class="tab-pane fade show active" id="regionicostituzione" role="tabpanel"
                      aria-labelledby="regioni_costituzione-tab" aria-selected="true">
                     <?php
-                    MasterModelloRegioniCostituzioneTable::render();
+                    ModelloRegioniCostituzioneTable::render();
                     ?>
                 </div>
                 <div class="tab-pane fade" id="destinazione" role="tabpanel" aria-labelledby="destinazione-tab"
                      aria-selected="false">
                     <?php
-                    MasterModelloRegioniDestinazioneTable::render();
+                    ModelloRegioniDestinazioneTable::render();
                     ?>
                 </div>
             </div>

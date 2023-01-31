@@ -4,13 +4,13 @@ namespace dateXFondoPlugin;
 
 class RegioniDocumentRepository
 {
-    public static function getCostituzioneArticoli($template_name)
+    public static function getHistoryCostituzioneArticoli($template_name,$version)
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT * FROM DATE_documento_regioni_autonomie_locali WHERE titolo_tabella='Costituzione fondi per il trattamento accessorio' AND attivo=1 and editor_name=? ORDER BY ordinamento ASC";
+        $sql = "SELECT * FROM DATE_documento_regioni_autonomie_locali_storico WHERE titolo_tabella='Costituzione fondi per il trattamento accessorio' AND attivo=1 and editor_name=? and version=? ORDER BY ordinamento ASC";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $template_name);
+        $stmt->bind_param("si", $template_name,$version);
         $res = $stmt->execute();
         if ($res = $stmt->get_result()) {
             $rows = $res->fetch_all(MYSQLI_ASSOC);
@@ -20,13 +20,13 @@ class RegioniDocumentRepository
         return $rows;
     }
 
-    public static function getDestinazioneArticoli($template_name)
+    public static function getHistoryDestinazioneArticoli($template_name,$version)
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT * FROM DATE_documento_regioni_autonomie_locali WHERE titolo_tabella='Destinazione fondi per il trattamento accessorio'AND attivo=1 and editor_name=? ORDER BY ordinamento ASC";
+        $sql = "SELECT * FROM DATE_documento_regioni_autonomie_locali_storico WHERE titolo_tabella='Destinazione fondi per il trattamento accessorio'AND attivo=1 and editor_name=? and version=? ORDER BY ordinamento ASC";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $template_name);
+        $stmt->bind_param("si", $template_name,$version);
         $res = $stmt->execute();
         if ($res = $stmt->get_result()) {
             $rows = $res->fetch_all(MYSQLI_ASSOC);

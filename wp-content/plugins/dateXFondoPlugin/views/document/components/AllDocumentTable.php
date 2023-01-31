@@ -50,13 +50,8 @@ class AllDocumentTable
                     let editor_name = $(this).attr('data-editor');
                     let page = $(this).attr('data-page');
                     let version = $(this).attr('data-version');
-                    if(current_url.includes('storico')){
                         location.href = '<?= DateXFondoCommon::get_website_url()?>/' + page + '?document_name=' + document_name + '&editor_name=' + editor_name + '&version=' + version;
-                    }
-                    else{
-                        location.href = '<?= DateXFondoCommon::get_website_url()?>/' + page + '?document_name=' + document_name + '&editor_name=' + editor_name;
 
-                    }
                 });
 
             });

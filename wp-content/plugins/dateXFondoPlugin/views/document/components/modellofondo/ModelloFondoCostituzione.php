@@ -2,7 +2,7 @@
 
 use dateXFondoPlugin\DateXFondoCommon;
 use dateXFondoPlugin\MasterTemplateStopEditingButton;
-class MasterModelloFondoCostituzione
+class ModelloFondoCostituzione
 {
     public static function render_scripts()
     {

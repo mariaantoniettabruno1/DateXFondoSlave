@@ -11,14 +11,9 @@ class DeterminaCostituzioneDocument
     public function __construct()
     {
         $delibera_data = new DeliberaDocumentRepository();
-        if(isset($_GET['version'])){
-            $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'],$_GET['version']);
 
-        }
-        else{
-            $this->infos = $delibera_data->getAllValues($_GET['document_name'], $_GET['editor_name']);
+        $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version']);
 
-        }
         foreach ($this->infos as $row) {
             $this->values[$row['chiave']] = $row['valore'];
         }
@@ -942,7 +937,8 @@ class DeterminaCostituzioneDocument
             <br>
             <br>
 
-            1. di costituire il fondo risorse decentrate anno <?php self::getInput('var153', 'anno', 'orange'); ?>, approvando l’allegato schema di costituzione;
+            1. di costituire il fondo risorse decentrate anno <?php self::getInput('var153', 'anno', 'orange'); ?>,
+            approvando l’allegato schema di costituzione;
             <br>
             1. di applicare l'art. 23 del D.Lgs. 75/2017 che prevede il “blocco” rispetto al fondo dell'anno 2016 del
             trattamento accessorio, con l’automatica riduzione delle risorse in caso di superamento rispetto all’anno
@@ -953,7 +949,8 @@ class DeterminaCostituzioneDocument
             del D.Lgs. 75/2017, come definito DM attuativo del 17.3.2020 concordato in sede di Conferenza Unificata
             Stato Regioni del 11.12.2019, e che prevede che, a partire dall’anno 2020, il limite del salario accessorio
             debba essere adeguato in aumento rispetto al valore medio pro-capite del 2018, nel caso risulti un
-            incremento del numero di dipendenti presenti al 31.12.<?php self::getInput('var154', 'anno', 'orange'); ?> rispetto ai presenti al 31.12.2018;
+            incremento del numero di dipendenti presenti al 31.12.<?php self::getInput('var154', 'anno', 'orange'); ?>
+            rispetto ai presenti al 31.12.2018;
             <br>
             3. di costituire il fondo complessivo a seguito della decurtazione di cui all'art. 23 del D.Lgs. 75/2017 per
             un importo pari ad € <?php self::getInput('var155', 'f254', 'orange'); ?>;
@@ -967,7 +964,8 @@ class DeterminaCostituzioneDocument
             per la progressione economica, ecc.) che, ai sensi delle vigenti disposizioni contrattuali, sono già stati
             erogati in corso d’anno per un importo pari ad € <?php self::getInput('var156', 'f93', 'orange'); ?>;
             <br>
-            6. di confermare il Fondo per il Lavoro Straordinario, ai sensi dell'art. 14 CCNL 1.4.1999, per l’anno <?php self::getInput('var157', 'anno', 'orange'); ?>
+            6. di confermare il Fondo per il Lavoro Straordinario, ai sensi dell'art. 14 CCNL 1.4.1999, per
+            l’anno <?php self::getInput('var157', 'anno', 'orange'); ?>
             per un importo pari ad €<?php self::getInput('var158', 'R99', 'orange'); ?> ;
             <br>
             7. che il grado di raggiungimento del Piano delle Performance assegnato nell’anno al Dirigente/Posizioni
@@ -978,7 +976,8 @@ class DeterminaCostituzioneDocument
             contabile attestante la copertura finanziaria ai sensi del comma 4 dell'art. 151 del TUEL, D.Lgs... n.
             267/2000, da parte del servizio finanziario cui si trasmette di competenza.
             <br>
-            9. <p style="color: red">di trasmettere la presente al Revisore dei Conti per la certificazione di competenza.</p>
+            9. <p style="color: red">di trasmettere la presente al Revisore dei Conti per la certificazione di
+                competenza.</p>
             10. di trasmettere la presente alle Organizzazioni Sindacali Territoriali e alle RSU per opportuna
             conoscenza e informazione.
             <br>

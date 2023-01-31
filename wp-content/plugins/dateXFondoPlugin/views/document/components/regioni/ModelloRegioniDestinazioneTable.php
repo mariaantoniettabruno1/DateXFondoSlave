@@ -2,7 +2,7 @@
 
 use dateXFondoPlugin\DateXFondoCommon;
 
-class MasterModelloRegioniDestinazioneTable
+class ModelloRegioniDestinazioneTable
 {
     public static function render_scripts()
     {
@@ -110,7 +110,7 @@ class MasterModelloRegioniDestinazioneTable
     {
         $data = new \dateXFondoPlugin\RegioniDocumentRepository();
         $data_document = new DocumentRepository();
-        $results_articoli = $data->getDestinazioneArticoli($_GET['editor_name']);
+        $results_articoli = $data->getHistoryDestinazioneArticoli($_GET['editor_name'],$_GET['version']);
         $formulas = $data_document->getFormulas($_GET['editor_name']);
         $ids_articolo = $data_document->getIdsArticoli($_GET['editor_name']);
         $array = $formulas + $ids_articolo;

@@ -4,24 +4,18 @@ namespace dateXFondoPlugin;
 
 
 use DocumentRepository;
-use MasterModelloFondoDocumentTable;
+use ModelloFondoDocumentTable;
 
 
-class MasterModelloFondoDocument
+class ModelloFondoDocument
 {
     public static function render()
     {
         $data = new DocumentRepository();
-        if(isset($_GET['version'])){
+    
             $results_articoli = $data->getHistoryArticoli($_GET['editor_name'],$_GET['version']);
             $results_articoli_utilizzo = $data->getHistoryArticoliUtilizzo($_GET['editor_name'],$_GET['version']);
             $results_articoli_dati_utili = $data->getHistoryArticoliDatiUtili($_GET['editor_name'],$_GET['version']);
-        }
-        else{
-            $results_articoli = $data->getArticoli($_GET['editor_name']);
-            $results_articoli_utilizzo = $data->getArticoliUtilizzo($_GET['editor_name']);
-            $results_articoli_dati_utili = $data->getArticoliDatiUtili($_GET['editor_name']);
-        }
 
         ?>
         <!DOCTYPE html>
@@ -105,7 +99,7 @@ class MasterModelloFondoDocument
 
             <div class="row">
                 <?php
-                MasterModelloFondoDocumentTable::render();
+                ModelloFondoDocumentTable::render();
                 ?>
             </div>
         </div>

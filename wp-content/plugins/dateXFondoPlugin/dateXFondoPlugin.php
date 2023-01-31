@@ -37,24 +37,24 @@ require_once(plugin_dir_path(__FILE__) . 'views/formula/SlaveShortCodeFormulaTab
 require_once(plugin_dir_path(__FILE__) . 'views/document/AllDocument.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/DocumentHistory.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/AllDocumentTable.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/MasterModelloRegioniDocument.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/MasterModelloRegioniHeader.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/MasterModelloRegioniTable.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/MasterModelloRegioniCostituzioneTable.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/MasterModelloRegioniDestinazioneTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/ModelloRegioniDocument.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/ModelloRegioniHeader.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/ModelloRegioniTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/ModelloRegioniCostituzioneTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/ModelloRegioniDestinazioneTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/MasterModelloRegioniStopEdit.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/MasterModelloRegioniCostituzioneRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/regioni/ModelloRegioniDestinazioneRow.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/MasterModelloFondoDocument.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoHeader.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/ModelloFondoDocument.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoHeader.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloStopEditTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoNewCostituzioneRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoNewUtilizzoRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoDatiUtiliRow.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoDocumentTable.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoCostituzione.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoDatiUtili.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoUtilizzo.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoDocumentTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoCostituzione.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoDatiUtili.php');
+require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoUtilizzo.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/DeliberaIndirizziDocument.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/DeterminaCostituzioneDocument.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/RelazioneIllustrativaDocument.php');
@@ -151,13 +151,13 @@ function visualize_slave_formula_template()
 
 function document_template()
 {
-    \dateXFondoPlugin\MasterModelloFondoDocument::render();
+    \dateXFondoPlugin\ModelloFondoDocument::render();
 
 }
 
 function regioni_autonomie_locali_template()
 {
-    \dateXFondoPlugin\MasterModelloRegioniDocument::render();
+    \dateXFondoPlugin\ModelloRegioniDocument::render();
 
 }
 
@@ -181,7 +181,7 @@ function relazione_illustrativa_template()
 }
 function document_table_template()
 {
-    $document = new \dateXFondoPlugin\AllDocument();
+    $document = new \dateXFondoPlugin\DocumentHistory();
     $document->render();
 
 }

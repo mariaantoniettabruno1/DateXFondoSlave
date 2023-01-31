@@ -2,7 +2,7 @@
 
 use dateXFondoPlugin\DateXFondoCommon;
 
-class MasterModelloFondoDatiUtili
+class ModelloFondoDatiUtili
 {
     public static function render_scripts()
     {

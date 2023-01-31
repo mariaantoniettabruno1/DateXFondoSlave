@@ -2,7 +2,7 @@
 
 use dateXFondoPlugin\DateXFondoCommon;
 
-class MasterModelloRegioniHeader
+class ModelloRegioniHeader
 {
     public static function render_scripts(){
 ?>

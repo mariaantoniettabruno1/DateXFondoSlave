@@ -1,7 +1,7 @@
 <?php
 
 
-class MasterModelloFondoDocumentTable
+class ModelloFondoDocumentTable
 {
     public static function render_scripts()
     {
@@ -24,17 +24,17 @@ class MasterModelloFondoDocumentTable
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="costituzione" role="tabpanel" aria-labelledby="costituzione-tab" aria-selected="true">
                         <?php
-                        MasterModelloFondoCostituzione::render();
+                        ModelloFondoCostituzione::render();
                         ?>
                     </div>
                     <div class="tab-pane fade" id="utilizzo" role="tabpanel" aria-labelledby="utilizzo-tab" aria-selected="false">
                         <?php
-                        MasterModelloFondoUtilizzo::render();
+                        ModelloFondoUtilizzo::render();
                         ?>
                     </div>
                     <div class="tab-pane fade" id="dati" role="tabpanel" aria-labelledby="dati-tab" aria-selected="false">
                         <?php
-                        MasterModelloFondoDatiUtili::render();
+                        ModelloFondoDatiUtili::render();
                         ?>
                     </div>
                 </div>
