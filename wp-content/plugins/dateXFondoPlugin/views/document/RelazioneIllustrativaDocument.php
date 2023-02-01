@@ -3,38 +3,60 @@
 namespace dateXFondoPlugin;
 
 use dateXFondoPlugin\DeliberaDocumentRepository;
+
 use DocumentRepository;
 
 class RelazioneIllustrativaDocument
 {
-    private $formule = [];
     private $infos = [];
     private $values = array();
 
-public function __construct()
-{
-    $data = new DocumentRepository();
-    $this->formule = $data->getFormulas($_GET['editor_name']) + $data->getIdsArticoli($_GET['editor_name']);
-    $delibera_data = new DeliberaDocumentRepository();
 
+    public function __construct()
+    {
+        $data = new DocumentRepository();
+        $this->formule = $data->getFormulas($_GET['editor_name']);
+        $this->articoli = $data->getIdsArticoli($_GET['editor_name']);
+        $delibera_data = new DeliberaDocumentRepository();
         $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version']);
 
 
-    foreach ($this->infos as $row) {
-        $this->values[$row['chiave']] = $row['valore'];
-    }
-}
+        foreach ($this->infos as $row) {
+            $this->values[$row['chiave']] = $row['valore'];
+        }
+        foreach ($this->formule as $row) {
+            $this->formulas[$row['nome']] = $row['valore'];
 
+        }
+        foreach ($this->articoli as $row) {
+            $this->articles[$row['id_articolo']] = $row['valore'];
+
+        }
+    }
 
     private function getInput($key, $default, $color)
     {
-        $value = isset($this->values[$key]) ? $this->values[$key] : $default;
+        $value = $this->articles[$default] ?? $this->formulas[$default] ?? $this->values[$key] ?? $default;
+
         ?>
 
-            <span class="variable-span-text" style="color:<?= $color ?>"><?= $value ?></span>
+        <span class="variable-span-text" style="color:<?= $color ?>"><?= $value ?></span>
 
 
         <?php
+    }
+
+    private function checkOptionalValues($default)
+    {
+        $bool = false;
+        if (isset($this->articles[$default])) {
+
+            $bool = true;
+        } else if (isset($this->formulas[$default])) {
+
+            $bool = true;
+        }
+        return $bool;
     }
 
     private function getTextArea($key, $default, $color)
@@ -47,7 +69,6 @@ public function __construct()
 
         <?php
     }
-
 
 
     public function render()
@@ -103,7 +124,6 @@ public function __construct()
                     fileDownload.click();
                     document.body.removeChild(fileDownload);
                 }
-
 
 
                 window.onbeforeunload = confirmExit;
@@ -335,1127 +355,1202 @@ public function __construct()
             l’anno:
             <br>
             <br>
-            1. Progressioni economiche orizzontali specificatamente contrattate nel CCDI dell'anno (art. 68 comma 1 CCNL
-            21.5.2018) € <?php self::getInput('var33', 'R55', 'orange'); ?>.
-            <br>
-            <br>
-            Viene ripreso il testo del contratto siglato per l’anno 202x con il quale sono stati definiti i criteri per
-            l’attribuzione delle progressioni:
-            <br>
-            <br>
-            <?php self::getTextArea('area3', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            <?php if (self::checkOptionalValues('R55')): ?>
+                1. Progressioni economiche orizzontali specificatamente contrattate nel CCDI dell'anno (art. 68 comma 1 CCNL
+                21.5.2018) € <?php self::getInput('var33', 'R55', 'orange'); ?>.
+                <br>
+                <br>
+                Viene ripreso il testo del contratto siglato per l’anno 202x con il quale sono stati definiti i criteri per
+                l’attribuzione delle progressioni:
+                <br>
+                <br>
+                <?php self::getTextArea('area3', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br>
-            <br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br>
-            <br>
-            Art. 68 comma 1 CCNL 21.5.2018.
-            <br>
-            <br>
-            Gli enti rendono annualmente disponibili tutte le risorse confluite nel Fondo risorse decentrate, al netto
-            delle risorse necessarie per corrispondere i differenziali di progressione economica, al personale
-            beneficiario delle stesse in anni precedenti.
-            <br>
-            <br>
-            Art. 16 CCNL 21.5.2018.
-            <br>
-            <br>
-            1. All’interno di ciascuna categoria è prevista una progressione economica che si realizza mediante
-            l’acquisizione, in sequenza, dopo il trattamento tabellare iniziale, di successivi incrementi retributivi,
-            corrispondenti ai valori delle diverse posizioni economiche a tal fine espressamente previste.
-            <br>
-            <br>
-            2. La progressione economica di cui al comma 1, nel limite delle risorse effettivamente disponibili, è
-            riconosciuta, in modo selettivo, ad una quota limitata di dipendenti, determinata tenendo conto anche degli
-            effetti applicativi della disciplina del comma 6.
-            <br>
-            <br>
-            3. Le progressioni economiche sono attribuite in relazione alle risultanze della valutazione della
-            performance individuale del triennio che precede l’anno in cui è adottata la decisione di attivazione
-            dell’istituto, tenendo conto eventualmente a tal fine anche dell’esperienza maturata negli ambiti
-            professionali di riferimento, nonché delle competenze acquisite e certificate a seguito di processi
-            formativi.
-            <br>
-            <br>
-            4. Gli oneri relativi al pagamento dei maggiori compensi spettanti al personale che ha beneficiato della
-            disciplina sulle progressioni economiche orizzontali sono interamente a carico della componente stabile del
-            Fondo risorse decentrate di cui all’art. 67.
-            <br>
-            <br>
-            5. Gli oneri di cui al comma 4 sono comprensivi anche della quota della tredicesima mensilità.
-            <br>
-            <br>
-            6. Ai fini della progressione economica orizzontale, il lavoratore deve essere in possesso del requisito di
-            un periodo minimo di permanenza nella posizione economica in godimento pari a ventiquattro mesi.
-            <br>
-            <br>
-            7. L’attribuzione della progressione economica orizzontale non può avere decorrenza anteriore al 1° gennaio
-            dell’anno nel quale viene sottoscritto il contratto integrativo che prevede l’attivazione dell’istituto, con
-            la previsione delle necessarie risorse finanziarie.
-            <br>
-            <br>
-            8. L’esito della procedura selettiva ha una vigenza limitata al solo anno per il quale è stata prevista
-            l’attribuzione della progressione economica.
-            <br>
-            <br>
-            9. Il personale comandato o distaccato presso enti, amministrazioni, aziende ha diritto di partecipare alle
-            selezioni per le progressioni orizzontali previste per il restante personale dell’ente di effettiva
-            appartenenza. A tal fine l’ente di appartenenza concorda le modalità per acquisire dall’ente di
-            utilizzazione le informazioni e le eventuali valutazioni richieste secondo la propria disciplina.
-            <br>
-            <br>
-            Art. 23 D.Lgs. 150/2009 Progressioni economiche.
-            <br>
-            <br>
-            1. Le amministrazioni pubbliche riconoscono selettivamente le progressioni economiche di cui all'articolo
-            52, comma 1-bis, del decreto legislativo 30 marzo 2001, n.165, come introdotto dall'articolo 62 del presente
-            decreto, sulla base di quanto previsto dai contratti collettivi nazionali e integrativi di lavoro e nei
-            limiti delle risorse disponibili.
-            <br>
-            <br>
-            2. Le progressioni economiche sono attribuite in modo selettivo, ad una quota limitata di dipendenti, in
-            relazione allo sviluppo delle competenze professionali ed ai risultati individuali e collettivi rilevati dal
-            sistema di valutazione.
-            <br>
-            <br>
-            Articolo 52 Disciplina delle mansioni D.Lgs. 165/2001.
-            <br>
-            <br>
-            1 bis. Le progressioni all'interno della stessa area avvengono secondo principi di selettività, in funzione
-            delle qualità culturali e professionali, dell'attività svolta e dei risultati conseguiti, attraverso
-            l'attribuzione di fasce di merito. La valutazione positiva conseguita dal dipendente per almeno tre anni
-            costituisce titolo rilevante ai fini della progressione economica.
-            <br>
-            <br>
-            2. Indennità di turno (art. 68 comma 2 lett. d CCNL 21.5.2018)
-            € <?php self::getInput('var34', 'R65', 'orange'); ?>.
-            <br><br>
+                <br>
+                <br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br>
+                <br>
+                Art. 68 comma 1 CCNL 21.5.2018.
+                <br>
+                <br>
+                Gli enti rendono annualmente disponibili tutte le risorse confluite nel Fondo risorse decentrate, al netto
+                delle risorse necessarie per corrispondere i differenziali di progressione economica, al personale
+                beneficiario delle stesse in anni precedenti.
+                <br>
+                <br>
+                Art. 16 CCNL 21.5.2018.
+                <br>
+                <br>
+                1. All’interno di ciascuna categoria è prevista una progressione economica che si realizza mediante
+                l’acquisizione, in sequenza, dopo il trattamento tabellare iniziale, di successivi incrementi retributivi,
+                corrispondenti ai valori delle diverse posizioni economiche a tal fine espressamente previste.
+                <br>
+                <br>
+                2. La progressione economica di cui al comma 1, nel limite delle risorse effettivamente disponibili, è
+                riconosciuta, in modo selettivo, ad una quota limitata di dipendenti, determinata tenendo conto anche degli
+                effetti applicativi della disciplina del comma 6.
+                <br>
+                <br>
+                3. Le progressioni economiche sono attribuite in relazione alle risultanze della valutazione della
+                performance individuale del triennio che precede l’anno in cui è adottata la decisione di attivazione
+                dell’istituto, tenendo conto eventualmente a tal fine anche dell’esperienza maturata negli ambiti
+                professionali di riferimento, nonché delle competenze acquisite e certificate a seguito di processi
+                formativi.
+                <br>
+                <br>
+                4. Gli oneri relativi al pagamento dei maggiori compensi spettanti al personale che ha beneficiato della
+                disciplina sulle progressioni economiche orizzontali sono interamente a carico della componente stabile del
+                Fondo risorse decentrate di cui all’art. 67.
+                <br>
+                <br>
+                5. Gli oneri di cui al comma 4 sono comprensivi anche della quota della tredicesima mensilità.
+                <br>
+                <br>
+                6. Ai fini della progressione economica orizzontale, il lavoratore deve essere in possesso del requisito di
+                un periodo minimo di permanenza nella posizione economica in godimento pari a ventiquattro mesi.
+                <br>
+                <br>
+                7. L’attribuzione della progressione economica orizzontale non può avere decorrenza anteriore al 1° gennaio
+                dell’anno nel quale viene sottoscritto il contratto integrativo che prevede l’attivazione dell’istituto, con
+                la previsione delle necessarie risorse finanziarie.
+                <br>
+                <br>
+                8. L’esito della procedura selettiva ha una vigenza limitata al solo anno per il quale è stata prevista
+                l’attribuzione della progressione economica.
+                <br>
+                <br>
+                9. Il personale comandato o distaccato presso enti, amministrazioni, aziende ha diritto di partecipare alle
+                selezioni per le progressioni orizzontali previste per il restante personale dell’ente di effettiva
+                appartenenza. A tal fine l’ente di appartenenza concorda le modalità per acquisire dall’ente di
+                utilizzazione le informazioni e le eventuali valutazioni richieste secondo la propria disciplina.
+                <br>
+                <br>
+                Art. 23 D.Lgs. 150/2009 Progressioni economiche.
+                <br>
+                <br>
+                1. Le amministrazioni pubbliche riconoscono selettivamente le progressioni economiche di cui all'articolo
+                52, comma 1-bis, del decreto legislativo 30 marzo 2001, n.165, come introdotto dall'articolo 62 del presente
+                decreto, sulla base di quanto previsto dai contratti collettivi nazionali e integrativi di lavoro e nei
+                limiti delle risorse disponibili.
+                <br>
+                <br>
+                2. Le progressioni economiche sono attribuite in modo selettivo, ad una quota limitata di dipendenti, in
+                relazione allo sviluppo delle competenze professionali ed ai risultati individuali e collettivi rilevati dal
+                sistema di valutazione.
+                <br>
+                <br>
+                Articolo 52 Disciplina delle mansioni D.Lgs. 165/2001.
+                <br>
+                <br>
+                1 bis. Le progressioni all'interno della stessa area avvengono secondo principi di selettività, in funzione
+                delle qualità culturali e professionali, dell'attività svolta e dei risultati conseguiti, attraverso
+                l'attribuzione di fasce di merito. La valutazione positiva conseguita dal dipendente per almeno tre anni
+                costituisce titolo rilevante ai fini della progressione economica.
 
-            <?php self::getTextArea('area4', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            <?php endif; ?>
+            <br>
+            <br>
+            <?php if (self::checkOptionalValues('R65')): ?>
+                2. Indennità di turno (art. 68 comma 2 lett. d CCNL 21.5.2018)
+                € <?php self::getInput('var34', 'R65', 'orange'); ?>.
+                <br><br>
+
+                <?php self::getTextArea('area4', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br>
+                Art. 68 comma 2 lett. d CCNL 21.5.2018.
+                <br><br>
+                D) il pagamento delle indennità di turno;
+                <br><br>
+
+                Art. 23 CCNL 22.5.2018.
+                <br><br>
+
+                1. Gli enti, in relazione alle proprie esigenze organizzative o di servizio funzionali, possono istituire
+                turni giornalieri di lavoro. Il turno consiste in un’effettiva rotazione del personale in prestabilite
+                articolazioni giornaliere.
+                <br><br>
+
+                2. Le prestazioni lavorative svolte in turnazione, ai fini della corresponsione della relativa indennità,
+                devono essere distribuite nell’arco di un mese, sulla base della programmazione adottata, in modo da attuare
+                una distribuzione equilibrata ed avvicendata dei turni effettuati in orario antimeridiano, pomeridiano e, se
+                previsto, notturno, in relazione all’articolazione adottata dall’ente.
+                <br><br>
+
+                3. Per l'adozione dell'orario di lavoro su turni devono essere osservati i seguenti criteri:
+                <br><br>
+
+                a) la ripartizione del personale nei vari turni deve avvenire sulla base delle professionalità necessarie in
+                ciascun turno;
+                <br>
+                b) l'adozione dei turni può anche prevedere una parziale e limitata sovrapposizione tra il personale
+                subentrante e quello del turno precedente, con durata limitata alle esigenze dello scambio delle consegne;
+                <br>
+                c) all'interno di ogni periodo di 24 ore deve essere garantito un periodo di riposo di almeno 11 ore
+                consecutive;
+                <br>
+                d) i turni diurni, antimeridiani e pomeridiani, possono essere attuati in strutture operative che prevedano
+                un orario di servizio giornaliero di almeno 10 ore;
+                <br>
+                e) per turno notturno si intende il periodo lavorativo ricompreso dalle ore 22 alle ore 6 del giorno
+                successivo; per turno notturno-festivo si intende quello che cade nel periodo compreso tra le ore 22 del
+                giorno prefestivo e le ore 6 del giorno festivo e dalle ore 22 del giorno festivo alle ore 6 del giorno
+                successivo.
+                <br><br>
+
+                4. Fatte salve eventuali esigenze eccezionali o quelle dovute a eventi o calamità naturali, il numero dei
+                turni notturni effettuabili nell'arco del mese da ciascun dipendente non può essere superiore a 10.
+                <br><br>
+
+                5. Al fine di compensare interamente il disagio derivante dalla particolare articolazione dell’orario di
+                lavoro, al personale turnista è corrisposta una indennità, i cui valori sono stabiliti come segue:
+                <br><br>
+
+                a) turno diurno, antimeridiano e pomeridiano (tra le 6,00 e le 22,00): maggiorazione oraria del 10% della
+                retribuzione di cui all’art. 10, comma 2, lett. c) del CCNL del 9.5.2006;
+                <br>
+                b) turno notturno o festivo: maggiorazione oraria del 30% della retribuzione di cui all’art. 10, comma 2,
+                lett. c) del CCNL del 9.5.2006;
+                <br>
+                c) turno festivo-notturno: maggiorazione oraria del 50% della retribuzione di cui all’art. 10, comma 2,
+                lett. c) del CCNL del 9.5.2006.
+                <br>
+                6. L’indennità di cui al comma 5, è corrisposta per i soli periodi di effettiva prestazione in turno.
+                <br><br>
+                7. Agli oneri derivanti dal presente articolo si fa fronte, in ogni caso, con le risorse previste dall’art.
+                67.
+                <br><br>
+                a) 8. Il personale che si trovi in particolari situazioni personali e familiari, di cui all’art.27, comma 4
+                può, a richiesta, essere escluso dalla effettuazione di turni notturni, anche in relazione a quanto previsto
+                dall’art. 53, comma 2, del D.Lgs. n. 151/2001. Sono comunque escluse le donne dall'inizio dello stato di
+                gravidanza e nel periodo di allattamento fino ad un anno di vita del bambino.
+
+            <?php endif; ?>
             <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
+            <?php if (self::checkOptionalValues('R145')): ?>
+                3. Indennità condizioni di lavoro (Art. 68 comma 2 lett. c CCNL 2018) (Maneggio valori, attività disagiate e
+                esposte a rischi) € <?php self::getInput('var35', 'R145', 'orange'); ?>.
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var36', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri di
+                attribuzione delle seguenti indennità:
+                <br><br>
+                <?php self::getTextArea('area5', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 70 bis CCNL 21.5.2018.
+                <br><br>
+
+                1. Gli enti corrispondono una unica “indennità condizioni di lavoro” destinata a remunerare lo svolgimento
+                di attività: a) disagiate; b) esposte a rischi e, pertanto, pericolose o dannose per la salute; c)
+                implicanti il maneggio di valori.
+                <br><br>
+
+                2. L’indennità di cui al presente articolo è commisurata ai giorni di effettivo svolgimento delle attività
+                di cui al comma 1, entro i seguenti valori minimi e massimi giornalieri: euro 1,00 – euro 10,00.
+                <br><br>
+
+                3. La misura di cui al comma 1 è definita in sede di contrattazione integrativa di cui all’art. 7, comma 4,
+                sulla base dei seguenti criteri: a) valutazione dell’effettiva incidenza di ciascuna delle causali di cui al
+                comma 1 nelle attività svolte dal dipendente; b) caratteristiche istituzionali, dimensionali, sociali e
+                ambientali degli enti interessati e degli specifici settori di attività.
+                <br><br>
+
+                4. Gli oneri per la corresponsione dell’indennità di cui al presente articolo sono a carico del Fondo
+                risorse decentrate di cui all’art. 67.
+                <br><br>
+
+                5. La presente disciplina trova applicazione a far data dal primo contratto integrativo successivo alla
+                stipulazione del presente CCNL.
+            <?php endif; ?>
+            <br><br>
+            <?php if (self::checkOptionalValues('R71')): ?>
+                4. Indennità di reperibilità (art. 68 comma 2 lett. d CCNL 21.5.2018)
+                € <?php self::getInput('var37', 'R71', 'orange'); ?>.
+                <br><br>
+
+                <?php self::getTextArea('area6', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+                Art. 68 comma 2 lett. d CCNL 21.5.2018.
+                <br><br>
+                D) il pagamento delle indennità di reperibilità;
+                <br><br>
+                Art. 24 CCNL 21.5.2018.
+                <br><br>
+                1. Per le aree di pronto intervento individuate dagli enti, può essere istituito il servizio di pronta
+                reperibilità. Esso è remunerato con la somma di € 10,33 per 12 ore al giorno. Ai relativi oneri si fa fronte
+                in ogni caso con le risorse previste dall’art. 67. Tale importo è raddoppiato in caso di reperibilità
+                cadente in giornata festiva, anche infrasettimanale o di riposo settimanale secondo il turno assegnato.
+                <br><br>
+
+                2. In caso di chiamata l’interessato dovrà raggiungere il posto di lavoro assegnato nell’arco di trenta
+                minuti.
+                <br><br>
+                3. Ciascun dipendente non può essere messo in reperibilità per più di 6 volte in un mese; gli enti
+                assicurano la rotazione tra più soggetti anche volontari.
+                <br><br>
+                4. In sede di contrattazione integrativa, secondo quanto previsto dall’art. 7, comma 4, è possibile elevare
+                il limite di cui al comma 3 nonché la misura dell’indennità di cui al comma 1, fino ad un massimo di €
+                13,00.
+                <br><br>
+                5. L’indennità di reperibilità di cui ai commi 1 e 4 non compete durante l’orario di servizio a qualsiasi
+                titolo prestato. Detta indennità è frazionabile in misura non inferiore a quattro ore ed è corrisposta in
+                proporzione alla sua durata oraria maggiorata, in tal caso, del 10%. Qualora la pronta reperibilità cada di
+                domenica o comunque di riposo settimanale secondo il turno assegnato, il dipendente ha diritto ad un giorno
+                di riposo compensativo anche se non è chiamato a rendere alcuna prestazione lavorativa. Nella settimana in
+                cui fruisce del riposo compensativo, il lavoratore è tenuto a rendere completamente l'orario ordinario di
+                lavoro previsto. La fruizione del riposo compensativo non comporta, comunque, alcuna riduzione dell’orario
+                di lavoro settimanale.
+                <br><br>
+                6. In caso di chiamata, le ore di lavoro prestate vengono retribuite come lavoro straordinario o compensate,
+                a richiesta, ai sensi dell’art.38, comma 7, e dell’art.38bis, del CCNL del 14.9.2000 o con equivalente
+                recupero orario; per le stesse ore è esclusa la percezione del compenso di cui ai commi 1 e 4.
+                <br><br>
+                7. La disciplina del comma 6 non trova applicazione nell’ipotesi di chiamata del lavoratore in reperibilità
+                cadente nella giornata del riposo settimanale, secondo il turno assegnato; per tale ipotesi trova
+                applicazione, invece, la disciplina di cui all’art.24, comma 1, del CCNL del 14.9.2000.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R75')): ?>
+                5. Indennità Specifiche Responsabilità (art. 68, c. 2, lett. e. CCNL 21.5.2018 ex art. 17, c. 2, lett. f.
+                CCNL 01/04/99) €<?php self::getInput('var38', 'R75', 'orange'); ?> .
+                <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno 202x con il quale sono stati definiti i criteri di
+                attribuzione dell’indennità di Specifiche responsabilità:
+                <br><br>
+                <?php self::getTextArea('area7', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+                Art. 70-quinquies CCNL 21.5.2018.
+                <br><br>
+                1. Per compensare l’eventuale esercizio di compiti che comportano specifiche responsabilità, al personale
+                delle categorie B, C e D, che non risulti incaricato di posizione organizzativa ai sensi dell’art.13 e
+                seguenti, può essere riconosciuta una indennità di importo non superiore a € 3.000 annui lordi.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R135')): ?>
+
+                6. Indennità di funzione (Art. 68 comma 2 lett. f CCNL 21.5.2018 e art. 56 sexies CCNL 21.5.2018)
+                (Vigilanza) € <?php self::getInput('var39', 'R135', 'orange'); ?>.
+                <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var40', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri di
+                attribuzione dell’indennità di Specifiche responsabilità:
+                <br><br>
+                <?php self::getTextArea('area8', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+                Art. 68 comma 2 lett. f CCNL 21.5.2018.
+                <br><br>
+                f) indennità di funzione di cui all’art. 56-sexies.
+                <br><br>
+                Art. 56 sexies CCNL 21.5.2018.
+                <br><br>
+                1. Gli enti possono erogare al personale inquadrato nelle categorie C e D, che non risulti incaricato di
+                posizione organizzativa, una indennità di funzione per compensare l’esercizio di compiti di responsabilità
+                connessi al grado rivestito.
+                <br><br>
+                2. L’ammontare dell’indennità di cui al comma 1 è determinato, tenendo conto specificamente del grado
+                rivestito e delle connesse responsabilità, nonché delle peculiarità dimensionali, istituzionali, sociali e
+                ambientali degli enti, fino a un massimo di € 3.000 annui lordi, da corrispondere per dodici mensilità.
+                <br><br>
+                3. Il valore dell’indennità di cui al presente articolo, nonché i criteri per la sua erogazione, nel
+                rispetto di quanto previsto al comma 2, sono determinati in sede di contrattazione integrativa di cui
+                all’art. 7.
+                <br><br>
+                4. L’indennità di cui al comma 1 sostituisce per il personale di cui al presente titolo l’indennità di
+                specifiche responsabilità, di cui all’art. 70 quinquies, comma 1.
+                <br><br>
+                5. L’indennità di cui al presente articolo: a) è cumulabile con l’indennità di turno, di cui all’art. 23,
+                comma 5; b) è cumulabile con l’indennità di cui all’art. 37, comma 1, lett. b), del CCNL del 6.7.1995 e
+                successive modificazioni ed integrazioni; c) è cumulabile con l’indennità di cui all’art. 56-quinquies; d) è
+                cumulabile con i compensi correlati alla performance individuale e collettiva; e) non è cumulabile con le
+                indennità di cui all’art. 70-quinquies;
+                <br><br>
+                5. Gli oneri per la corresponsione dell’indennità di cui al presente articolo sono a carico del Fondo
+                risorse decentrate di cui all’art. 67.
+                <br><br>
+                6. La presente disciplina trova applicazione a far data dal primo contratto integrativo successivo alla
+                stipulazione del presente CCNL.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R124')): ?>
+                7. Specifiche responsabilità (art. 68, c. 2, lett. e. CCNL 21.5.2018 ex art. 17, c. 2, lett. i. CCNL
+                01/04/99) € <?php self::getInput('var41', 'R77', 'orange'); ?>.
+                <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var42', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri di
+                attribuzione dell’indennità di Specifiche responsabilità:
+                <br><br>
+                <?php self::getTextArea('area9', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 70-quinquies comma 2 CCNL 21.5.2018.
+                <br><br>
+
+                2. Un’indennità di importo massimo non superiore a € 350 annui lordi, può essere riconosciuta al lavoratore,
+                che non risulti incaricato di posizione organizzativa ai sensi dell’art.13 e seguenti, per compensare: a) le
+                specifiche responsabilità del personale delle categorie B, C e D attribuite con atto formale degli enti,
+                derivanti dalle qualifiche di Ufficiale di stato civile ed anagrafe ed Ufficiale elettorale nonché di
+                responsabile dei tributi stabilite dalle leggi; b) i compiti di responsabilità eventualmente affidati agli
+                archivisti informatici nonché agli addetti agli uffici per le relazioni con il pubblico ed ai formatori
+                professionali; c) le specifiche responsabilità affidate al personale addetto ai servizi di protezione
+                civile; d) le funzioni di ufficiale giudiziario attribuite ai messi notificatori.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R134')): ?>
+                8. Indennità di servizio esterno (Art. 68 comma 2 lett. f. CCNL 21.5.2018 e art. 56 quinquies CCNL
+                21.5.2018) (Vigilanza) € <?php self::getInput('var043', 'R134', 'orange'); ?>.
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var43', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri di
+                attribuzione dell’indennità di Specifiche responsabilità:
+                <br><br>
+
+                <?php self::getTextArea('area10', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 68 comma 2 lett. f CCNL 21.5.2018.
+                <br><br>
+
+                f) indennità di servizio esterno di cui all’art.56-quater;
+                Art. 56 quinquies CCNL 21.5.2018.
+                <br><br>
+
+                1. Al personale che, in via continuativa, rende la prestazione lavorativa ordinaria giornaliera in servizi
+                esterni di vigilanza, compete una indennità giornaliera, il cui importo è determinato entro i seguenti
+                valori minimi e massimi giornalieri: euro 1,00 - euro 10,00.
+                <br><br>
+
+                2. L’indennità di cui al comma 1 è commisurata alle giornate di effettivo svolgimento del servizio esterno e
+                compensa interamente i rischi e disagi connessi all’espletamento dello stesso in ambienti esterni.
+                <br><br>
+
+                3. L’indennità di cui al presenta articolo: a) è cumulabile con l’indennità di turno, di cui all’art. 23,
+                comma 5; b) è cumulabile con le indennità di cui all’art. 37, comma 1, lett. b), del CCNL del 6.7.1995 e
+                successive modificazioni ed integrazioni; c) è cumulabile con i compensi connessi alla performance
+                individuale e collettiva; d) non è cumulabile con l’indennità di cui all’art. 70-bis.
+                <br><br>
+
+                4. Gli oneri per la corresponsione dell’indennità di cui al presente articolo sono a carico del Fondo
+                risorse decentrate di cui all’art. 67.
+                <br><br>
+
+                5. La presente disciplina trova applicazione a far data dal primo contratto integrativo successivo alla
+                stipulazione del presente CCNL.
+            <?php endif; ?>
+            <br><br>
+            <?php if (self::checkOptionalValues('R79')): ?>
+                9. Particolare compenso incentivante personale Unioni dei comuni (art. 68, c. 1 CCNL 21.5.2018)
+                €<?php self::getInput('var44', 'R79', 'orange'); ?> .
+                (Opzionale)
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var45', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                attribuire il compenso incentivante: <br><br>
+                <?php self::getTextArea('area11', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+                Art. 13 c.5 lett. a. CCNL 22.1.2004.
+                <br><br>
+                5. Al fine di favorire l’utilizzazione temporanea anche parziale del personale degli enti da parte
+                dell’unione, la contrattazione decentrata della stessa unione può disciplinare, con oneri a carico delle
+                risorse disponibili ai sensi del comma 3:
+                <br><br>
+
+                a) l’attribuzione di un particolare compenso incentivante, di importo lordo variabile, in base alla
+                categoria di appartenenza e alle mansioni affidate, non superiore a € 25, su base mensile, strettamente
+                correlato alle effettive prestazioni lavorative;
+            <?php endif; ?>
+            <br><br>
+            <?php if (self::checkOptionalValues('R81')): ?>
+                10. Centri estivi asili nido (art. 68, c. 1 CCNL 21.5.2018 e art 31 comma 5 CCNL 14/9/ 2000)
+                € <?php self::getInput('var46', 'R81', 'orange'); ?> .
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var47', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                attribuire l’indennità prevista per il personale del nido estivo:
+                <br><br>
+
+                <?php self::getTextArea('area12', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art 31 comma 5 CCNL 14 -9- 2000.
+                <br><br>
+
+                5. Il calendario scolastico, che non può in ogni caso superare le 42 settimane, prevede l’interruzione per
+                Natale e Pasqua, le cui modalità attuative sono definite in sede di concertazione. In tali periodi e negli
+                altri di chiusura delle scuole il personale è a disposizione per attività di formazione ed aggiornamento
+                programmata dall’ente o per attività lavorative connesse al profilo di inquadramento fermo restando il
+                limite definito nei commi precedenti. Attività ulteriori, rispetto a quelle definite nel calendario
+                scolastico, possono essere previste a livello di ente, in sede di concertazione, per un periodo non
+                superiore a quattro settimane, da utilizzarsi sia per le attività dei nidi che per altre attività
+                d’aggiornamento professionale, di verifica dei risultati e del piano di lavoro, nell’ambito dei progetti di
+                cui all’art.17, co.1, lett. a) del CCNL dell’1.4.1999; gli incentivi economici di tali attività sono
+                definiti in sede di contrattazione integrativa decentrata utilizzando le risorse di cui all’art.15 del
+                citato CCNL.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R83')): ?>
+
+                11. Maggiorazione per il personale che presta attività lavorativa nel giorno destinato al riposo settimanale
+                (Art. 68 comma 2 lett. d CCNL 21.5.2018 e art.24, comma 1 CCNL 14.9.2000)
+                € <?php self::getInput('var48', 'R83', 'orange'); ?>.
+                <br><br>
+
+
+                <?php self::getTextArea('area13', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 68 comma 2 lett. d CCNL 21.5.2018.
+                <br><br>
+
+                D) compensi di cui all’art. 24, comma 1 del CCNL del 14.9.2000;
+                Art. 24 comma 1 CCNL 14.9.2000.
+                <br><br>
+
+                1. Al dipendente che per particolari esigenze di servizio non usufruisce del giorno di riposo settimanale
+                deve essere corrisposta la retribuzione giornaliera di cui all’art.52, comma 2, lett. b) maggiorata del 50%,
+                con diritto al riposo compensativo da fruire di regola entro 15 giorni e comunque non oltre il bimestre
+                successivo.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R85')): ?>
+
+                12. Premi collegati alla performance organizzativa (art. 68, c. 2, lett. a. CCNL 22.5.2018)
+                € <?php self::getInput('var49', 'R85', 'orange'); ?>.
+                (Opzionale)
+                <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var50', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione della performance:
+                <br><br>
+
+                <?php self::getTextArea('area14', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+                Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
+                performance”.
+                <br><br>
+                1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
+                individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
+                nonché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
+                di incentivi sia economici sia di carriera.
+                <br><br>
+                2. E' vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
+                collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
+                valutazione adottati ai sensi del presente decreto.
+                <br><br>
+                Parere Aran 499-18A8.
+                <br><br>
+                Riteniamo che la produttività collettiva possa essere correlata al conseguimento di specifici risultati e/o
+                obiettivi assegnati dall'ente ad un gruppo o a una struttura, con la individuazione anche di uno specifico
+                finanziamento definito in sede di contrattazione decentrata. La contrattazione decentrata deve,
+                naturalmente, stabilire anche i criteri per la valutazione, da parte dei dirigenti, dell'apporto dei singoli
+                lavoratori al conseguimento del risultato complessivo.
+                <br><br>
+                Suggeriamo, in ogni caso, di non attribuire troppo rilievo all'una o all'altra forma di incentivazione;
+                nella sostanza occorre sempre assicurare un corretto percorso di valutazione che ogni ente è tenuto ad
+                adottare, previa concertazione, ai sensi dell'art.6 del CCNL del 31.3.99.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R87')): ?>
+
+                13. Premi collegati alla performance individuale (art. 68, c. 2, lett. b. CCNL 22.5.2018)
+                € <?php self::getInput('var50', 'R87', 'orange'); ?>.
+                <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var51', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per la distribuzione della performance individuale:
+                <br><br>
+                INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+                VOCE
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 68 comma 2 lett. B CCNL 22.5.2018.
+                <br><br>
+
+                B) premi correlati alla performance individuale.
+                <br><br>
+
+                Art. 69 CCNL 21.5.2018.
+                <br><br>
+
+                1. Ai dipendenti che conseguano le valutazioni più elevate, secondo quanto previsto dal sistema di
+                valutazione dell’ente, è attribuita una maggiorazione del premio individuale di cui all’art. 68, comma 2,
+                lett. b.), che si aggiunge alla quota di detto premio attribuita al personale valutato positivamente sulla
+                base dei criteri selettivi.
+                <br><br>
+
+                2. La misura di detta maggiorazione, definita in sede di contrattazione integrativa, non potrà comunque
+                essere inferiore al 30% del valore medio pro-capite dei premi attribuiti al personale valutato positivamente
+                ai sensi del comma 1.
+                <br><br>
+
+                3. La contrattazione integrativa definisce altresì, preventivamente, una limitata quota massima di personale
+                valutato, a cui tale maggiorazione può essere attribuita.
+                <br><br>
+
+                Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
+                performance”
+                <br><br>
+
+                1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
+                individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
+                perché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
+                di incentivi sia economici sia di carriera.
+                <br><br>
+
+                2. È vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
+                collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
+                valutazione adottati ai sensi del presente decreto.
+                <br><br>
+
+                Parere Aran 499-18A8.
+                <br><br>
+
+                La produttività individuale potrebbe essere individuata come momento di verifica e di valutazione di ogni
+                singolo lavoratore, da parte del competente dirigente, con riferimento agli impegni di lavoro specifici
+                derivanti dall'affidamento dei compiti da parte del competente dirigente.
+                <br><br>
+
+                Suggeriamo, in ogni caso, di non attribuire troppo rilievo all'una o all'altra forma di incentivazione;
+                nella sostanza occorre sempre assicurare un corretto percorso di valutazione che ogni ente è tenuto ad
+                adottare, previa concertazione, ai sensi dell'art.6 del CCNL del 31.3.99.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R87')): ?>
+
+                14. Premi collegati alla performance organizzativa - Incentivazione legata al raggiungimento di obiettivi ai
+                sensi dell'art. 67 c.5 lett. b parte variabile (art. 68, c. 2, lett. a. CCNL 21.5.2018)
+                € <?php self::getInput('var52', 'R88', 'orange'); ?>.
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var53', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione di tali risorse:
+                <br><br>
+                <?php self::getTextArea('area15', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 68 comma 2 lett. a CCNL 21.5.2018.
+                <br><br>
+
+                A) premi correlati alla performance organizzativa;
+                <br>
+                Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
+                performance”.
+                <br><br>
+
+                1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
+                individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
+                perché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
+                di incentivi sia economici sia di carriera.
+                <br><br>
+
+                2. È vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
+                collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
+                valutazione adottati ai sensi del presente decreto.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R136')): ?>
+                15. Premi collegati alla performance organizzativa per obiettivi finanziati da risorse art 67 c. 5 lett. b)
+                di potenziamento dei servizi di controllo finalizzati alla sicurezza urbana e stradale art. 56 quater CCNL
+                21.5.2018) € <?php self::getInput('var54', 'R136', 'orange'); ?> .
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var55', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione di tali risorse:
+                <br><br>
+
+                <?php self::getTextArea('area16', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+                Art. 68 comma 2 lett. a CCNL 21.5.2018
+                <br><br>
+                A) premi correlati alla performance organizzativa;
+                <br><br>
+                Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
+                performance”
+                <br><br>
+                1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
+                individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
+                perché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
+                di incentivi sia economici sia di carriera.
+                <br><br>
+                2. È vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
+                collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
+                valutazione adottati ai sensi del presente decreto.
+                <br><br>
+                Art. 56 quater CCNL 21.5.2018.
+                <br><br>
+                1. I proventi delle sanzioni amministrative pecuniarie riscossi dagli enti, nella quota da questi
+                determinata ai sensi dell’art. 208, commi 4 lett. c.), e 5, del D.Lgs.n.285/1992 sono destinati, in coerenza
+                con le previsioni legislative, alle seguenti finalità in favore del personale: a) contributi datoriali al
+                Fondo di previdenza complementare Perseo-Sirio; è fatta salva la volontà del lavoratore di conservare
+                comunque l’adesione eventualmente già intervenuta a diverse forme pensionistiche individuali; b) finalità
+                assistenziali, nell’ambito delle misure di welfare integrativo, secondo la disciplina dell’art. 72; c)
+                erogazione di incentivi monetari collegati a obiettivi di potenziamento dei servizi di controllo finalizzati
+                alla sicurezza urbana e stradale.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('f68')): ?>
+                16. Altre risorse specificatamente contrattate nel CCDI dell'anno (inserire riferimento)
+                € <?php self::getInput('var55', 'f68', 'orange'); ?>.
+                <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var56', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione:
+                <br><br>
+                <?php self::getTextArea('area17', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
+            VOCE.', 'red'); ?>
+            <?php endif; ?>
+
             <br>
-            Art. 68 comma 2 lett. d CCNL 21.5.2018.
-            <br><br>
-            D) il pagamento delle indennità di turno;
-            <br><br>
-
-            Art. 23 CCNL 22.5.2018.
-            <br><br>
-
-            1. Gli enti, in relazione alle proprie esigenze organizzative o di servizio funzionali, possono istituire
-            turni giornalieri di lavoro. Il turno consiste in un’effettiva rotazione del personale in prestabilite
-            articolazioni giornaliere.
-            <br><br>
-
-            2. Le prestazioni lavorative svolte in turnazione, ai fini della corresponsione della relativa indennità,
-            devono essere distribuite nell’arco di un mese, sulla base della programmazione adottata, in modo da attuare
-            una distribuzione equilibrata ed avvicendata dei turni effettuati in orario antimeridiano, pomeridiano e, se
-            previsto, notturno, in relazione all’articolazione adottata dall’ente.
-            <br><br>
-
-            3. Per l'adozione dell'orario di lavoro su turni devono essere osservati i seguenti criteri:
-            <br><br>
-
-            a) la ripartizione del personale nei vari turni deve avvenire sulla base delle professionalità necessarie in
-            ciascun turno;
             <br>
-            b) l'adozione dei turni può anche prevedere una parziale e limitata sovrapposizione tra il personale
-            subentrante e quello del turno precedente, con durata limitata alle esigenze dello scambio delle consegne;
-            <br>
-            c) all'interno di ogni periodo di 24 ore deve essere garantito un periodo di riposo di almeno 11 ore
-            consecutive;
-            <br>
-            d) i turni diurni, antimeridiani e pomeridiani, possono essere attuati in strutture operative che prevedano
-            un orario di servizio giornaliero di almeno 10 ore;
-            <br>
-            e) per turno notturno si intende il periodo lavorativo ricompreso dalle ore 22 alle ore 6 del giorno
-            successivo; per turno notturno-festivo si intende quello che cade nel periodo compreso tra le ore 22 del
-            giorno prefestivo e le ore 6 del giorno festivo e dalle ore 22 del giorno festivo alle ore 6 del giorno
-            successivo.
-            <br><br>
+            <?php if (self::checkOptionalValues('R92')): ?>
+                17. Incentivazione funzioni tecniche (art. 68, c. 2, lett. g CCNL 21.5.2018)
+                € <?php self::getInput('var56', 'R92', 'orange'); ?>.
+                <br><br>
 
-            4. Fatte salve eventuali esigenze eccezionali o quelle dovute a eventi o calamità naturali, il numero dei
-            turni notturni effettuabili nell'arco del mese da ciascun dipendente non può essere superiore a 10.
-            <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var58', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
 
-            5. Al fine di compensare interamente il disagio derivante dalla particolare articolazione dell’orario di
-            lavoro, al personale turnista è corrisposta una indennità, i cui valori sono stabiliti come segue:
-            <br><br>
-
-            a) turno diurno, antimeridiano e pomeridiano (tra le 6,00 e le 22,00): maggiorazione oraria del 10% della
-            retribuzione di cui all’art. 10, comma 2, lett. c) del CCNL del 9.5.2006;
-            <br>
-            b) turno notturno o festivo: maggiorazione oraria del 30% della retribuzione di cui all’art. 10, comma 2,
-            lett. c) del CCNL del 9.5.2006;
-            <br>
-            c) turno festivo-notturno: maggiorazione oraria del 50% della retribuzione di cui all’art. 10, comma 2,
-            lett. c) del CCNL del 9.5.2006.
-            <br>
-            6. L’indennità di cui al comma 5, è corrisposta per i soli periodi di effettiva prestazione in turno.
-            <br><br>
-            7. Agli oneri derivanti dal presente articolo si fa fronte, in ogni caso, con le risorse previste dall’art.
-            67.
-            <br><br>
-            a) 8. Il personale che si trovi in particolari situazioni personali e familiari, di cui all’art.27, comma 4
-            può, a richiesta, essere escluso dalla effettuazione di turni notturni, anche in relazione a quanto previsto
-            dall’art. 53, comma 2, del D.Lgs. n. 151/2001. Sono comunque escluse le donne dall'inizio dello stato di
-            gravidanza e nel periodo di allattamento fino ad un anno di vita del bambino.
-            <br><br>
-
-            3. Indennità condizioni di lavoro (Art. 68 comma 2 lett. c CCNL 2018) (Maneggio valori, attività disagiate e
-            esposte a rischi) € <?php self::getInput('var35', 'R145', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var36', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri di
-            attribuzione delle seguenti indennità:
-            <br><br>
-            <?php self::getTextArea('area5', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                <?php self::getTextArea('area18', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
 
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
+                Art. 68 comma 2 lett. g CCNL 21.5.2018.
+                <br><br>
 
-            Art. 70 bis CCNL 21.5.2018.
+                G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
+                all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
+                <br><br>
+                Art. 67 comma 3 lett. c.
+                <br><br>
+                C) delle risorse derivanti da disposizioni di legge che prevedano specifici trattamenti economici in favore
+                del personale, da utilizzarsi secondo quanto previsto dalle medesime disposizioni di legge.
+                Art. 113 comma 2 e 3 D.LGS. 18 APRILE 2016, N. 50.
+                <br><br>
+                2. A valere sugli stanziamenti di cui al comma 1, le amministrazioni aggiudicatrici destinano ad un apposito
+                fondo risorse finanziarie in misura non superiore al 2 per cento modulate sull'importo dei lavori, servizi e
+                forniture, posti a base di gara per le funzioni tecniche svolte dai dipendenti delle stesse esclusivamente
+                per le attività di programmazione della spesa per investimenti, di valutazione preventiva dei progetti, di
+                predisposizione e di controllo delle procedure di gara e di esecuzione dei contratti pubblici, di RUP, di
+                direzione dei lavori ovvero direzione dell'esecuzione e di collaudo tecnico amministrativo ovvero di
+                verifica di conformità, di collaudatore statico ove necessario per consentire l'esecuzione del contratto nel
+                rispetto dei documenti a base di gara, del progetto, dei tempi e costi prestabiliti. Tale fondo non è
+                previsto da parte di quelle amministrazioni aggiudicatrici per le quali sono in essere contratti o
+                convenzioni che prevedono modalità diverse per la retribuzione delle funzioni tecniche svolte dai propri
+                dipendenti. Gli enti che costituiscono o si avvalgono di una centrale di committenza possono destinare il
+                fondo o parte di esso ai dipendenti di tale centrale. La disposizione di cui al presente comma si applica
+                agli appalti relativi a servizi o forniture nel caso in cui è nominato il direttore dell'esecuzione. 3.
+                L'ottanta per cento delle risorse finanziarie del fondo costituito ai sensi del comma 2 è ripartito, per
+                ciascuna opera o lavoro, servizio, fornitura con le modalità e i criteri previsti in sede di contrattazione
+                decentrata integrativa del personale, sulla base di apposito regolamento adottato dalle amministrazioni
+                secondo i rispettivi ordinamenti, tra il responsabile unico del procedimento e i soggetti che svolgono le
+                funzioni tecniche indicate al comma 2 nonché' tra i loro collaboratori. Gli importi sono comprensivi anche
+                degli oneri previdenziali e assistenziali a carico dell'amministrazione. L'amministrazione aggiudicatrice o
+                l'ente aggiudicatore stabilisce i criteri e le modalità per la riduzione delle risorse finanziarie connesse
+                alla singola opera o lavoro a fronte di eventuali incrementi dei tempi o dei costi non conformi alle norme
+                del presente decreto. La corresponsione dell'incentivo è disposta dal dirigente o dal responsabile di
+                servizio preposto alla struttura competente, previo accertamento delle specifiche attività svolte dai
+                predetti dipendenti. Gli incentivi complessivamente corrisposti nel corso dell'anno al singolo dipendente,
+                anche da diverse amministrazioni, non possono superare l'importo del 50 per cento del trattamento economico
+                complessivo annuo lordo. Le quote parti dell'incentivo corrispondenti a prestazioni non svolte dai medesimi
+                dipendenti, in quanto affidate a personale esterno all'organico dell'amministrazione medesima, ovvero prive
+                del predetto accertamento, incrementano la quota del fondo di cui al comma 2. Il presente comma non si
+                applica al personale con qualifica dirigenziale.
+            <?php endif; ?>
             <br><br>
-
-            1. Gli enti corrispondono una unica “indennità condizioni di lavoro” destinata a remunerare lo svolgimento
-            di attività: a) disagiate; b) esposte a rischi e, pertanto, pericolose o dannose per la salute; c)
-            implicanti il maneggio di valori.
-            <br><br>
-
-            2. L’indennità di cui al presente articolo è commisurata ai giorni di effettivo svolgimento delle attività
-            di cui al comma 1, entro i seguenti valori minimi e massimi giornalieri: euro 1,00 – euro 10,00.
-            <br><br>
-
-            3. La misura di cui al comma 1 è definita in sede di contrattazione integrativa di cui all’art. 7, comma 4,
-            sulla base dei seguenti criteri: a) valutazione dell’effettiva incidenza di ciascuna delle causali di cui al
-            comma 1 nelle attività svolte dal dipendente; b) caratteristiche istituzionali, dimensionali, sociali e
-            ambientali degli enti interessati e degli specifici settori di attività.
-            <br><br>
-
-            4. Gli oneri per la corresponsione dell’indennità di cui al presente articolo sono a carico del Fondo
-            risorse decentrate di cui all’art. 67.
-            <br><br>
-
-            5. La presente disciplina trova applicazione a far data dal primo contratto integrativo successivo alla
-            stipulazione del presente CCNL.
-            <br><br>
-
-            4. Indennità di reperibilità (art. 68 comma 2 lett. d CCNL 21.5.2018)
-            € <?php self::getInput('var37', 'R71', 'orange'); ?>.
-            <br><br>
-
-            <?php self::getTextArea('area6', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            <?php if (self::checkOptionalValues('R96')): ?>
+                18. Incentivazione specifiche attività - AVVOCATURA (art. 68, c. 2, lett. g CCNL 21.5.2018)
+                € <?php self::getInput('var59', 'R96', 'orange'); ?>.
+                <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var60', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
+                <?php self::getTextArea('area19', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
+                <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+                Art. 68 comma 2 lett. g CCNL 21.5.2018.
+                <br><br>
+                G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
+                all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
+                Art. 67 comma 3 lett. c.
+                <br><br>
+                C) delle risorse derivanti da disposizioni di legge che prevedano specifici trattamenti economici in favore
+                del personale, da utilizzarsi secondo quanto previsto dalle medesime disposizioni di legge.
+                Art. 27 CCNL 14.9.2000.
+                <br><br>
 
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-            Art. 68 comma 2 lett. d CCNL 21.5.2018.
-            <br><br>
-            D) il pagamento delle indennità di reperibilità;
-            <br><br>
-            Art. 24 CCNL 21.5.2018.
-            <br><br>
-            1. Per le aree di pronto intervento individuate dagli enti, può essere istituito il servizio di pronta
-            reperibilità. Esso è remunerato con la somma di € 10,33 per 12 ore al giorno. Ai relativi oneri si fa fronte
-            in ogni caso con le risorse previste dall’art. 67. Tale importo è raddoppiato in caso di reperibilità
-            cadente in giornata festiva, anche infrasettimanale o di riposo settimanale secondo il turno assegnato. <br><br>
+                1. Gli enti provvisti di Avvocatura costituita secondo i rispettivi ordinamenti disciplinano la
+                corresponsione dei compensi professionali, dovuti a seguito di sentenza favorevole all’ente, secondo i
+                principi di cui al regio decreto-legge 27.11.1933 n. 1578 e disciplinano, altresì, in sede di contrattazione
+                decentrata integrativa la correlazione tra tali compensi professionali e la retribuzione di risultato di cui
+                all’art. 10 del CCNL del 31.3.1999. Sono fatti salvi gli effetti degli atti con i quali gli stessi enti
+                abbiano applicato la disciplina vigente per l’Avvocatura dello Stato anche prima della stipulazione del
+                presente CCNL.
+            <?php endif; ?>
 
-            2. In caso di chiamata l’interessato dovrà raggiungere il posto di lavoro assegnato nell’arco di trenta
-            minuti.
             <br><br>
-            3. Ciascun dipendente non può essere messo in reperibilità per più di 6 volte in un mese; gli enti
-            assicurano la rotazione tra più soggetti anche volontari.
-            <br><br>
-            4. In sede di contrattazione integrativa, secondo quanto previsto dall’art. 7, comma 4, è possibile elevare
-            il limite di cui al comma 3 nonché la misura dell’indennità di cui al comma 1, fino ad un massimo di €
-            13,00.
-            <br><br>
-            5. L’indennità di reperibilità di cui ai commi 1 e 4 non compete durante l’orario di servizio a qualsiasi
-            titolo prestato. Detta indennità è frazionabile in misura non inferiore a quattro ore ed è corrisposta in
-            proporzione alla sua durata oraria maggiorata, in tal caso, del 10%. Qualora la pronta reperibilità cada di
-            domenica o comunque di riposo settimanale secondo il turno assegnato, il dipendente ha diritto ad un giorno
-            di riposo compensativo anche se non è chiamato a rendere alcuna prestazione lavorativa. Nella settimana in
-            cui fruisce del riposo compensativo, il lavoratore è tenuto a rendere completamente l'orario ordinario di
-            lavoro previsto. La fruizione del riposo compensativo non comporta, comunque, alcuna riduzione dell’orario
-            di lavoro settimanale.
-            <br><br>
-            6. In caso di chiamata, le ore di lavoro prestate vengono retribuite come lavoro straordinario o compensate,
-            a richiesta, ai sensi dell’art.38, comma 7, e dell’art.38bis, del CCNL del 14.9.2000 o con equivalente
-            recupero orario; per le stesse ore è esclusa la percezione del compenso di cui ai commi 1 e 4.
-            <br><br>
-            7. La disciplina del comma 6 non trova applicazione nell’ipotesi di chiamata del lavoratore in reperibilità
-            cadente nella giornata del riposo settimanale, secondo il turno assegnato; per tale ipotesi trova
-            applicazione, invece, la disciplina di cui all’art.24, comma 1, del CCNL del 14.9.2000.
-            <br><br>
-            5. Indennità Specifiche Responsabilità (art. 68, c. 2, lett. e. CCNL 21.5.2018 ex art. 17, c. 2, lett. f.
-            CCNL 01/04/99) €<?php self::getInput('var38', 'R75', 'orange'); ?> .
-            <br><br>
-            Viene ripreso il testo del contratto siglato per l’anno 202x con il quale sono stati definiti i criteri di
-            attribuzione dell’indennità di Specifiche responsabilità:
-            <br><br>
-            <?php self::getTextArea('area7', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            <?php if (self::checkOptionalValues('R124')): ?>
+                19. Incentivazione specifiche attività - ISTAT (art. 68, c. 2, lett. g CCNL 21.5.2018)
+                € <?php self::getInput('var61', 'R94', 'orange'); ?> .
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var62', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
+
+                <?php self::getTextArea('area20', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-            Art. 70-quinquies CCNL 21.5.2018.
-            <br><br>
-            1. Per compensare l’eventuale esercizio di compiti che comportano specifiche responsabilità, al personale
-            delle categorie B, C e D, che non risulti incaricato di posizione organizzativa ai sensi dell’art.13 e
-            seguenti, può essere riconosciuta una indennità di importo non superiore a € 3.000 annui lordi.
-            <br><br>
-            6. Indennità di funzione (Art. 68 comma 2 lett. f CCNL 21.5.2018 e art. 56 sexies CCNL 21.5.2018)
-            (Vigilanza) € <?php self::getInput('var39', 'R135', 'orange'); ?>.
-            <br><br>
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var40', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri di
-            attribuzione dell’indennità di Specifiche responsabilità:
-            <br><br>
-            <?php self::getTextArea('area8', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                <br><br>
+
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 68 comma 2 lett. g CCNL 21.5.2018.
+                <br><br>
+
+                G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
+                all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
+                <br><br>
+
+                Art. 70 ter CCNL 21.5.2018.
+                <br><br>
+
+                1. Gli enti possono corrispondere specifici compensi al personale per remunerare prestazioni connesse a
+                indagini statistiche periodiche e censimenti permanenti, rese al di fuori dell’ordinario orario di lavoro.
+                <br><br>
+
+                2. Gli oneri concernenti l’erogazione dei compensi di cui al presente articolo trovano copertura
+                esclusivamente nella quota parte del contributo onnicomprensivo e forfetario riconosciuto dall’Istat e dagli
+                Enti e Organismi pubblici autorizzati per legge, confluita nel Fondo Risorse decentrate, ai sensi dell’art.
+                67, comma 3, lett. c).
+                <br><br>
+
+                20. Incentivazione specifiche attività - ICI (art. 68, c. 2, lett. g CCNL 21.5.2018)
+                € <?php self::getInput('var63', 'R95', 'orange'); ?>.
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var64', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
+
+                <?php self::getTextArea('area21', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
+                <br><br>
+
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 68 comma 2 lett. g CCNL 21.5.2018.
+                <br><br>
+
+                G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
+                all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
+                <br><br>
+
+                Art. 4 CCNL del 5/10/2001 comma 3 Integrazione risorse dell'art. 15 del CCNL dell'1/4/1999.
+                <br><br>
+
+                La disciplina dell'art. 15, comma 1, lett. k) del CCNL dell'1.4.1999, ricomprende sia le risorse derivanti
+                dalla applicazione dell'art. 3, comma 57 della legge n. 662 del 1996 e dall'art. 59, comma 1, lett. p) del
+                D. Lgs.n.446 del 1997 (recupero evasione ICI), sia le ulteriori risorse correlate agli effetti applicativi
+                dell'art. 12, comma 1, lett. del D.L. n. 437 del 1996, convertito nella legge n. 556 del 1996.
+                <br><br>
+
+                Art. 3, comma 57 della legge n. 662 del 1996.
+                <br><br>
+
+                57. Una percentuale del gettito dell'imposta comunale sugli immobili può essere destinata al potenziamento
+                degli uffici tributari del comune. I dati fiscali a disposizione del comune sono ordinati secondo procedure
+                informatiche, stabilite con decreto del Ministro delle finanze, allo scopo di effettuare controlli
+                incrociati coordinati con le strutture dell'amministrazione finanziaria.
+                <br><br>
+
+                Art. 59, comma 1, lett. p) del D. Lgs.n.446 del 1997.
+                <br><br>
+
+                p) prevedere che ai fini del potenziamento degli uffici tributari del comune, ai sensi dell'articolo 3,
+                comma 57, della legge 23 dicembre 1996, n. 662, possono essere attribuiti compensi incentivanti al personale
+                addetto.
+            <?php endif; ?>
+
             <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-            Art. 68 comma 2 lett. f CCNL 21.5.2018.
-            <br><br>
-            f) indennità di funzione di cui all’art. 56-sexies.
-            <br><br>
-            Art. 56 sexies CCNL 21.5.2018.
-            <br><br>
-            1. Gli enti possono erogare al personale inquadrato nelle categorie C e D, che non risulti incaricato di
-            posizione organizzativa, una indennità di funzione per compensare l’esercizio di compiti di responsabilità
-            connessi al grado rivestito.
-            <br><br>
-            2. L’ammontare dell’indennità di cui al comma 1 è determinato, tenendo conto specificamente del grado
-            rivestito e delle connesse responsabilità, nonché delle peculiarità dimensionali, istituzionali, sociali e
-            ambientali degli enti, fino a un massimo di € 3.000 annui lordi, da corrispondere per dodici mensilità.
-            <br><br>
-            3. Il valore dell’indennità di cui al presente articolo, nonché i criteri per la sua erogazione, nel
-            rispetto di quanto previsto al comma 2, sono determinati in sede di contrattazione integrativa di cui
-            all’art. 7.
-            <br><br>
-            4. L’indennità di cui al comma 1 sostituisce per il personale di cui al presente titolo l’indennità di
-            specifiche responsabilità, di cui all’art. 70 quinquies, comma 1.
-            <br><br>
-            5. L’indennità di cui al presente articolo: a) è cumulabile con l’indennità di turno, di cui all’art. 23,
-            comma 5; b) è cumulabile con l’indennità di cui all’art. 37, comma 1, lett. b), del CCNL del 6.7.1995 e
-            successive modificazioni ed integrazioni; c) è cumulabile con l’indennità di cui all’art. 56-quinquies; d) è
-            cumulabile con i compensi correlati alla performance individuale e collettiva; e) non è cumulabile con le
-            indennità di cui all’art. 70-quinquies;
-            <br><br>
-            5. Gli oneri per la corresponsione dell’indennità di cui al presente articolo sono a carico del Fondo
-            risorse decentrate di cui all’art. 67.
-            <br><br>
-            6. La presente disciplina trova applicazione a far data dal primo contratto integrativo successivo alla
-            stipulazione del presente CCNL.
-            <br><br>
-            7. Specifiche responsabilità (art. 68, c. 2, lett. e. CCNL 21.5.2018 ex art. 17, c. 2, lett. i. CCNL
-            01/04/99) € <?php self::getInput('var41', 'R77', 'orange'); ?>.
-            <br><br>
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var42', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri di
-            attribuzione dell’indennità di Specifiche responsabilità:
-            <br><br>
-            <?php self::getTextArea('area9', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+            <?php if (self::checkOptionalValues('R149')): ?>
+                21. Incentivazione specifiche attività - Compensi IMU e TARI (art. 68 c. 2, lett. g CCNL 21.5.2018)
+                €<?php self::getInput('var65', 'R149', 'orange'); ?> .
+
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var66', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
+
+                <?php self::getTextArea('area22', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 68 comma 2 lett. g CCNL 21.5.2018.
+                <br><br>
+
+                G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
+                all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
+                <br><br>
+
+                Art. 1 comma 1091 della L. 145 del 31.12.2018 - Legge di Bilancio 2019 091. Ferme restando le facoltà di
+                regolamentazione del tributo di cui all'articolo 52 del decreto legislativo 15 dicembre 1997, n. 446, i
+                comuni che hanno approvato il bilancio di previsione ed il rendiconto entro i termini stabiliti dal testo
+                unico di cui al decreto legislativo 18 agosto 2000, n. 267, possono, con proprio regolamento, prevedere che
+                il maggiore gettito accertato e riscosso, relativo agli accertamenti dell'imposta municipale propria e della
+                TARI, nell'esercizio fiscale precedente a quello di riferimento risultante dal conto consuntivo approvato,
+                nella misura massima del 5 per cento, sia destinato, limitatamente all'anno di riferimento, al potenziamento
+                delle risorse strumentali degli uffici comunali preposti alla gestione delle entrate e al trattamento
+                accessorio del personale dipendente, anche di qualifica dirigenziale, in deroga al limite di cui
+                all'articolo 23, comma 2, del decreto legislativo 25 maggio 2017, n. 75. La quota destinata al trattamento
+                economico accessorio, al lordo degli oneri riflessi e dell'IRAP a carico dell'amministrazione, è attribuita,
+                mediante contrattazione integrativa, al personale impiegato nel raggiungimento degli obiettivi del settore
+                entrate, anche con riferimento alle attività connesse alla partecipazione del comune all'accertamento dei
+                tributi erariali e dei contributi sociali non corrisposti, in applicazione dell'articolo 1 del decreto-legge
+                30 settembre 2005, n. 203, convertito, con modificazioni, dalla legge 2 dicembre 2005, n. 248. Il beneficio
+                attribuito non può superare il 15 per cento del trattamento tabellare annuo lordo individuale. La presente
+                disposizione non si applica qualora il servizio di accertamento sia affidato in concessione.
+            <?php endif; ?>
+
             <br><br>
 
-            Art. 70-quinquies comma 2 CCNL 21.5.2018.
-            <br><br>
 
-            2. Un’indennità di importo massimo non superiore a € 350 annui lordi, può essere riconosciuta al lavoratore,
-            che non risulti incaricato di posizione organizzativa ai sensi dell’art.13 e seguenti, per compensare: a) le
-            specifiche responsabilità del personale delle categorie B, C e D attribuite con atto formale degli enti,
-            derivanti dalle qualifiche di Ufficiale di stato civile ed anagrafe ed Ufficiale elettorale nonché di
-            responsabile dei tributi stabilite dalle leggi; b) i compiti di responsabilità eventualmente affidati agli
-            archivisti informatici nonché agli addetti agli uffici per le relazioni con il pubblico ed ai formatori
-            professionali; c) le specifiche responsabilità affidate al personale addetto ai servizi di protezione
-            civile; d) le funzioni di ufficiale giudiziario attribuite ai messi notificatori.
-            <br><br>
+            <?php if (self::checkOptionalValues('R93')): ?>
 
-            8. Indennità di servizio esterno (Art. 68 comma 2 lett. f. CCNL 21.5.2018 e art. 56 quinquies CCNL
-            21.5.2018) (Vigilanza) € R134. (Opzionale)
-            <br><br>
+                22. Incentivazione specifiche attività – Messi Notificatori (art. 68 comma 2 lett. h CCNL 21.5.2018)
+                € <?php self::getInput('var67', 'R93', 'orange'); ?> .
+                <br><br>
 
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var43', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri di
-            attribuzione dell’indennità di Specifiche responsabilità:
-            <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var68', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
 
-            <?php self::getTextArea('area10', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                <?php self::getTextArea('area23', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
+                <br><br>
 
-            Art. 68 comma 2 lett. f CCNL 21.5.2018.
-            <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
 
-            f) indennità di servizio esterno di cui all’art.56-quater;
-            Art. 56 quinquies CCNL 21.5.2018.
-            <br><br>
+                Art. 54 CCNL del 14/9/2000.
+                <br><br>
 
-            1. Al personale che, in via continuativa, rende la prestazione lavorativa ordinaria giornaliera in servizi
-            esterni di vigilanza, compete una indennità giornaliera, il cui importo è determinato entro i seguenti
-            valori minimi e massimi giornalieri: euro 1,00 - euro 10,00.
-            <br><br>
+                Gli enti possono verificare, in sede di concertazione, se esistano le condizioni finanziarie per destinare
+                una quota parte del rimborso spese per ogni notificazione di atti dell'amministrazione finanziaria al fondo
+                di cui all'art.15 del CCNL dell'1.4.1999 per essere finalizzata all'erogazione di incentivi di produttività
+                a favore dei messi notificatori stessi.
+                <br><br>
 
-            2. L’indennità di cui al comma 1 è commisurata alle giornate di effettivo svolgimento del servizio esterno e
-            compensa interamente i rischi e disagi connessi all’espletamento dello stesso in ambienti esterni.
-            <br><br>
+                Art. 68 comma 2 lett. H CCNL 21.5.2018
+                <br><br>
 
-            3. L’indennità di cui al presenta articolo: a) è cumulabile con l’indennità di turno, di cui all’art. 23,
-            comma 5; b) è cumulabile con le indennità di cui all’art. 37, comma 1, lett. b), del CCNL del 6.7.1995 e
-            successive modificazioni ed integrazioni; c) è cumulabile con i compensi connessi alla performance
-            individuale e collettiva; d) non è cumulabile con l’indennità di cui all’art. 70-bis.
+                h) compensi ai messi notificatori, riconosciuti esclusivamente a valere sulle risorse di all’art. 67, comma
+                3, lett. f), secondo la disciplina di cui all’art. 54 del CCNL del 14.9.2000;
+            <?php endif; ?>
             <br><br>
+            <?php if (self::checkOptionalValues('R108')): ?>
 
-            4. Gli oneri per la corresponsione dell’indennità di cui al presente articolo sono a carico del Fondo
-            risorse decentrate di cui all’art. 67.
-            <br><br>
+                23. Incentivazione specifiche attività - Diritto soggiorno Unione Europea D.Lgs. 30/2007 (art. 68 comma 2
+                lett. h CCNL 21.5.2018) € <?php self::getInput('var69', 'R108', 'orange'); ?>.
+                <br><br>
 
-            5. La presente disciplina trova applicazione a far data dal primo contratto integrativo successivo alla
-            stipulazione del presente CCNL.
-            <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var70', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
 
-            9. Particolare compenso incentivante personale Unioni dei comuni (art. 68, c. 1 CCNL 21.5.2018)
-            €<?php self::getInput('var44', 'R79', 'orange'); ?> .
-            (Opzionale)
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var45', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            attribuire il compenso incentivante: <br><br>
-            <?php self::getTextArea('area11', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                <?php self::getTextArea('area23', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-            Art. 13 c.5 lett. a. CCNL 22.1.2004.
-            <br><br>
-            5. Al fine di favorire l’utilizzazione temporanea anche parziale del personale degli enti da parte
-            dell’unione, la contrattazione decentrata della stessa unione può disciplinare, con oneri a carico delle
-            risorse disponibili ai sensi del comma 3:
-            <br><br>
+                <br><br>
 
-            a) l’attribuzione di un particolare compenso incentivante, di importo lordo variabile, in base alla
-            categoria di appartenenza e alle mansioni affidate, non superiore a € 25, su base mensile, strettamente
-            correlato alle effettive prestazioni lavorative;
-            <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
 
-            10. Centri estivi asili nido (art. 68, c. 1 CCNL 21.5.2018 e art 31 comma 5 CCNL 14/9/ 2000)
-            € <?php self::getInput('var46', 'R81', 'orange'); ?> .
-            <br><br>
+                Art. 68 comma 2 lett. h CCNL 21.5.2018.
+                <br><br>
 
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var47', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            attribuire l’indennità prevista per il personale del nido estivo:
-            <br><br>
+                G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
+                all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
+                <br><br>
 
-            <?php self::getTextArea('area12', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                LEGGE 24 dicembre 2007, n. 244 art. 2 comma 11.
+                <br><br>
+
+                11. Per ciascuno degli anni 2008 e 2009, a valere sul fondo ordinario di cui all'articolo 34, comma 1,
+                lettera a), del decreto legislativo 30 dicembre 1992, n. 504, è disposto un intervento fino a un importo di
+                10 milioni di euro per la concessione di un contributo a favore dei comuni per l'attuazione della direttiva
+                2004/38/CE del Parlamento europeo e del Consiglio, del 29 aprile 2004, relativa al diritto dei cittadini
+                dell'Unione e dei loro familiari di circolare e di soggiornare liberamente nel territorio degli Stati
+                membri, di cui al decreto legislativo 6 febbraio 2007, n. 30. Con decreto del Ministro dell'interno sono
+                determinate le modalità' di riparto ed erogazione dei contributi.
+            <?php endif; ?>
+            <?php if (self::checkOptionalValues('R93')): ?>
+
+
+                <br><br>
+
+                24. Incentivazione specifiche attività – (art. 68 comma 2 lett. h CCNL 21.5.2018) Legge Regionale specifica
+                <?php self::getInput('var71', 'xxxx', 'orange'); ?> xxxx (inserire riferimento)
+                € <?php self::getInput('var72', 'R109', 'orange'); ?>.
+                <br><br>
+
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var73', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
+                <?php self::getTextArea('area24', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
+            <?php endif; ?>
+
             <br><br>
+            <?php if (self::checkOptionalValues('f69')): ?>
 
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
+                25. Incentivazione specifiche attività – (art. 68 comma 2 lett. h CCNL 21.5.2018) (inserire riferimento) €
+                <?php self::getInput('var74', 'f69', 'orange'); ?>.
+                <br><br>
 
-            Art 31 comma 5 CCNL 14 -9- 2000.
-            <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var75', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
 
-            5. Il calendario scolastico, che non può in ogni caso superare le 42 settimane, prevede l’interruzione per
-            Natale e Pasqua, le cui modalità attuative sono definite in sede di concertazione. In tali periodi e negli
-            altri di chiusura delle scuole il personale è a disposizione per attività di formazione ed aggiornamento
-            programmata dall’ente o per attività lavorative connesse al profilo di inquadramento fermo restando il
-            limite definito nei commi precedenti. Attività ulteriori, rispetto a quelle definite nel calendario
-            scolastico, possono essere previste a livello di ente, in sede di concertazione, per un periodo non
-            superiore a quattro settimane, da utilizzarsi sia per le attività dei nidi che per altre attività
-            d’aggiornamento professionale, di verifica dei risultati e del piano di lavoro, nell’ambito dei progetti di
-            cui all’art.17, co.1, lett. a) del CCNL dell’1.4.1999; gli incentivi economici di tali attività sono
-            definiti in sede di contrattazione integrativa decentrata utilizzando le risorse di cui all’art.15 del
-            citato CCNL.
-            <br><br>
-
-            11. Maggiorazione per il personale che presta attività lavorativa nel giorno destinato al riposo settimanale
-            (Art. 68 comma 2 lett. d CCNL 21.5.2018 e art.24, comma 1 CCNL 14.9.2000)
-            € <?php self::getInput('var48', 'R83', 'orange'); ?>.
-            <br><br>
-
-
-            <?php self::getTextArea('area13', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                <?php self::getTextArea('area25', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
+            <?php endif; ?>
 
-            Art. 68 comma 2 lett. d CCNL 21.5.2018.
             <br><br>
+            <?php if (self::checkOptionalValues('f69')): ?>
 
-            D) compensi di cui all’art. 24, comma 1 del CCNL del 14.9.2000;
-            Art. 24 comma 1 CCNL 14.9.2000.
-            <br><br>
+                26. Premi collegati alla performance organizzativa – Compensi per Sponsorizzazioni, convenzioni e servizi
+                conto terzi (art. 67 comma 3 lett. a CCNL 21.5.2018) € <?php self::getInput('var76', 'R91', 'orange'); ?> .
+                <br><br>
 
-            1. Al dipendente che per particolari esigenze di servizio non usufruisce del giorno di riposo settimanale
-            deve essere corrisposta la retribuzione giornaliera di cui all’art.52, comma 2, lett. b) maggiorata del 50%,
-            con diritto al riposo compensativo da fruire di regola entro 15 giorni e comunque non oltre il bimestre
-            successivo.
-            <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var77', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
 
-            12. Premi collegati alla performance organizzativa (art. 68, c. 2, lett. a. CCNL 22.5.2018)
-            € <?php self::getInput('var49', 'R85', 'orange'); ?>.
-            (Opzionale)
-            <br><br>
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var50', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione della performance:
-            <br><br>
-
-            <?php self::getTextArea('area14', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                <?php self::getTextArea('area26', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-            Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
-            performance”.
-            <br><br>
-            1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
-            individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
-            nonché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
-            di incentivi sia economici sia di carriera.
-            <br><br>
-            2. E' vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
-            collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
-            valutazione adottati ai sensi del presente decreto.
-            <br><br>
-            Parere Aran 499-18A8.
-            <br><br>
-            Riteniamo che la produttività collettiva possa essere correlata al conseguimento di specifici risultati e/o
-            obiettivi assegnati dall'ente ad un gruppo o a una struttura, con la individuazione anche di uno specifico
-            finanziamento definito in sede di contrattazione decentrata. La contrattazione decentrata deve,
-            naturalmente, stabilire anche i criteri per la valutazione, da parte dei dirigenti, dell'apporto dei singoli
-            lavoratori al conseguimento del risultato complessivo.
-            <br><br>
-            Suggeriamo, in ogni caso, di non attribuire troppo rilievo all'una o all'altra forma di incentivazione;
-            nella sostanza occorre sempre assicurare un corretto percorso di valutazione che ogni ente è tenuto ad
-            adottare, previa concertazione, ai sensi dell'art.6 del CCNL del 31.3.99.
-            <br><br>
-            13. Premi collegati alla performance individuale (art. 68, c. 2, lett. b. CCNL 22.5.2018)
-            € <?php self::getInput('var50', 'R87', 'orange'); ?>.
-            <br><br>
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var51', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per la distribuzione della performance individuale:
-            <br><br>
-            INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
+                <br><br>
 
-            Art. 68 comma 2 lett. B CCNL 22.5.2018.
-            <br><br>
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
 
-            B) premi correlati alla performance individuale.
-            <br><br>
+                Art. 4 CCNL del 5/10/2001 comma 4 Integrazione risorse dell'art. 15 del CCNL dell'1/4/1999.
+                "d) La quota delle risorse che possono essere destinate al trattamento economico accessorio del personale
+                nell'ambito degli introiti derivanti dalla applicazione dell'art.43 della legge n.449/1997 con particolare
+                riferimento alle seguenti iniziative:
+                <br><br>
 
-            Art. 69 CCNL 21.5.2018.
-            <br><br>
+                a. contratti di sponsorizzazione ed accordi di collaborazione con soggetti privati ed associazioni senza
+                fini di lucro, per realizzare o acquisire a titolo gratuito interventi, servizi, prestazioni, beni o
+                attività inseriti nei programmi di spesa ordinari con il conseguimento dei corrispondenti risparmi;
+                <br><br>
 
-            1. Ai dipendenti che conseguano le valutazioni più elevate, secondo quanto previsto dal sistema di
-            valutazione dell’ente, è attribuita una maggiorazione del premio individuale di cui all’art. 68, comma 2,
-            lett. b.), che si aggiunge alla quota di detto premio attribuita al personale valutato positivamente sulla
-            base dei criteri selettivi.
-            <br><br>
+                b. convenzioni con soggetti pubblici e privati diretti a fornire ai medesimi soggetti, a titolo oneroso,
+                consulenze e servizi aggiuntivi rispetto a quelli ordinari;
+                <br><br>
 
-            2. La misura di detta maggiorazione, definita in sede di contrattazione integrativa, non potrà comunque
-            essere inferiore al 30% del valore medio pro-capite dei premi attribuiti al personale valutato positivamente
-            ai sensi del comma 1.
-            <br><br>
+                c. contributi dell'utenza per servizi pubblici non essenziali o, comunque, per prestazioni, verso terzi
+                paganti, non connesse a garanzia di diritti fondamentali.
+            <?php endif; ?>
 
-            3. La contrattazione integrativa definisce altresì, preventivamente, una limitata quota massima di personale
-            valutato, a cui tale maggiorazione può essere attribuita.
             <br><br>
+            <?php if (self::checkOptionalValues('R110')): ?>
 
-            Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
-            performance”
-            <br><br>
+                27. Piani di razionalizzazione (Art. 67 comma 3 lett. b CCNL 21.5.2018ART. 16 C. 5 L. 111/2011 e s.m.i.) €
+                <?php self::getInput('var78', 'R110', 'orange'); ?>.
+                <br><br>
 
-            1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
-            individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
-            perché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
-            di incentivi sia economici sia di carriera.
-            <br><br>
+                Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var79', '202x', 'orange'); ?>
+                con il quale sono stati definiti i criteri per
+                la distribuzione dello specifico incentivo:
+                <br><br>
 
-            2. È vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
-            collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
-            valutazione adottati ai sensi del presente decreto.
-            <br><br>
-
-            Parere Aran 499-18A8.
-            <br><br>
-
-            La produttività individuale potrebbe essere individuata come momento di verifica e di valutazione di ogni
-            singolo lavoratore, da parte del competente dirigente, con riferimento agli impegni di lavoro specifici
-            derivanti dall'affidamento dei compiti da parte del competente dirigente.
-            <br><br>
-
-            Suggeriamo, in ogni caso, di non attribuire troppo rilievo all'una o all'altra forma di incentivazione;
-            nella sostanza occorre sempre assicurare un corretto percorso di valutazione che ogni ente è tenuto ad
-            adottare, previa concertazione, ai sensi dell'art.6 del CCNL del 31.3.99.
-            <br><br>
-
-            14. Premi collegati alla performance organizzativa - Incentivazione legata al raggiungimento di obiettivi ai
-            sensi dell'art. 67 c.5 lett. b parte variabile (art. 68, c. 2, lett. a. CCNL 21.5.2018)
-            € <?php self::getInput('var52', 'R88', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var53', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione di tali risorse:
-            <br><br>
-            <?php self::getTextArea('area15', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
+                <?php self::getTextArea('area27', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
             INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
             VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 68 comma 2 lett. a CCNL 21.5.2018.
-            <br><br>
-
-            A) premi correlati alla performance organizzativa;
-            <br>
-            Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
-            performance”.
-            <br><br>
-
-            1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
-            individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
-            perché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
-            di incentivi sia economici sia di carriera.
-            <br><br>
-
-            2. È vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
-            collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
-            valutazione adottati ai sensi del presente decreto.
-            <br><br>
-
-            15. Premi collegati alla performance organizzativa per obiettivi finanziati da risorse art 67 c. 5 lett. b)
-            di potenziamento dei servizi di controllo finalizzati alla sicurezza urbana e stradale art. 56 quater CCNL
-            21.5.2018) € <?php self::getInput('var54', 'R136', 'orange'); ?> .
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var55', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione di tali risorse:
-            <br><br>
-
-            <?php self::getTextArea('area16', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-            Art. 68 comma 2 lett. a CCNL 21.5.2018
-            <br><br>
-            A) premi correlati alla performance organizzativa;
-            <br><br>
-            Art.18 D.Lgs. 150/2009 “Criteri e modalità per la valorizzazione del merito ed incentivazione della
-            performance”
-            <br><br>
-            1. Le amministrazioni pubbliche promuovono il merito e il miglioramento della performance organizzativa e
-            individuale, anche attraverso l'utilizzo di sistemi premianti selettivi, secondo logiche meritocratiche,
-            perché valorizzano i dipendenti che conseguono le migliori performance attraverso l'attribuzione selettiva
-            di incentivi sia economici sia di carriera.
-            <br><br>
-            2. È vietata la distribuzione in maniera indifferenziata o sulla base di automatismi di incentivi e premi
-            collegati alla performance in assenza delle verifiche e attestazioni sui sistemi di misurazione e
-            valutazione adottati ai sensi del presente decreto.
-            <br><br>
-            Art. 56 quater CCNL 21.5.2018.
-            <br><br>
-            1. I proventi delle sanzioni amministrative pecuniarie riscossi dagli enti, nella quota da questi
-            determinata ai sensi dell’art. 208, commi 4 lett. c.), e 5, del D.Lgs.n.285/1992 sono destinati, in coerenza
-            con le previsioni legislative, alle seguenti finalità in favore del personale: a) contributi datoriali al
-            Fondo di previdenza complementare Perseo-Sirio; è fatta salva la volontà del lavoratore di conservare
-            comunque l’adesione eventualmente già intervenuta a diverse forme pensionistiche individuali; b) finalità
-            assistenziali, nell’ambito delle misure di welfare integrativo, secondo la disciplina dell’art. 72; c)
-            erogazione di incentivi monetari collegati a obiettivi di potenziamento dei servizi di controllo finalizzati
-            alla sicurezza urbana e stradale.
-            <br><br>
-            16. Altre risorse specificatamente contrattate nel CCDI dell'anno (inserire riferimento)
-            € <?php self::getInput('var55', 'f68', 'orange'); ?>.
-            <br><br>
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var56', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione:
-            <br><br>
-            <?php self::getTextArea('area17', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br>var57
-            17. Incentivazione funzioni tecniche (art. 68, c. 2, lett. g CCNL 21.5.2018)
-            € <?php self::getInput('var56', 'R92', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var58', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area18', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 68 comma 2 lett. g CCNL 21.5.2018.
-            <br><br>
-
-            G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
-            all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
-            <br><br>
-            Art. 67 comma 3 lett. c.
-            <br><br>
-            C) delle risorse derivanti da disposizioni di legge che prevedano specifici trattamenti economici in favore
-            del personale, da utilizzarsi secondo quanto previsto dalle medesime disposizioni di legge.
-            Art. 113 comma 2 e 3 D.LGS. 18 APRILE 2016, N. 50.
-            <br><br>
-            2. A valere sugli stanziamenti di cui al comma 1, le amministrazioni aggiudicatrici destinano ad un apposito
-            fondo risorse finanziarie in misura non superiore al 2 per cento modulate sull'importo dei lavori, servizi e
-            forniture, posti a base di gara per le funzioni tecniche svolte dai dipendenti delle stesse esclusivamente
-            per le attività di programmazione della spesa per investimenti, di valutazione preventiva dei progetti, di
-            predisposizione e di controllo delle procedure di gara e di esecuzione dei contratti pubblici, di RUP, di
-            direzione dei lavori ovvero direzione dell'esecuzione e di collaudo tecnico amministrativo ovvero di
-            verifica di conformità, di collaudatore statico ove necessario per consentire l'esecuzione del contratto nel
-            rispetto dei documenti a base di gara, del progetto, dei tempi e costi prestabiliti. Tale fondo non è
-            previsto da parte di quelle amministrazioni aggiudicatrici per le quali sono in essere contratti o
-            convenzioni che prevedono modalità diverse per la retribuzione delle funzioni tecniche svolte dai propri
-            dipendenti. Gli enti che costituiscono o si avvalgono di una centrale di committenza possono destinare il
-            fondo o parte di esso ai dipendenti di tale centrale. La disposizione di cui al presente comma si applica
-            agli appalti relativi a servizi o forniture nel caso in cui è nominato il direttore dell'esecuzione. 3.
-            L'ottanta per cento delle risorse finanziarie del fondo costituito ai sensi del comma 2 è ripartito, per
-            ciascuna opera o lavoro, servizio, fornitura con le modalità e i criteri previsti in sede di contrattazione
-            decentrata integrativa del personale, sulla base di apposito regolamento adottato dalle amministrazioni
-            secondo i rispettivi ordinamenti, tra il responsabile unico del procedimento e i soggetti che svolgono le
-            funzioni tecniche indicate al comma 2 nonché' tra i loro collaboratori. Gli importi sono comprensivi anche
-            degli oneri previdenziali e assistenziali a carico dell'amministrazione. L'amministrazione aggiudicatrice o
-            l'ente aggiudicatore stabilisce i criteri e le modalità per la riduzione delle risorse finanziarie connesse
-            alla singola opera o lavoro a fronte di eventuali incrementi dei tempi o dei costi non conformi alle norme
-            del presente decreto. La corresponsione dell'incentivo è disposta dal dirigente o dal responsabile di
-            servizio preposto alla struttura competente, previo accertamento delle specifiche attività svolte dai
-            predetti dipendenti. Gli incentivi complessivamente corrisposti nel corso dell'anno al singolo dipendente,
-            anche da diverse amministrazioni, non possono superare l'importo del 50 per cento del trattamento economico
-            complessivo annuo lordo. Le quote parti dell'incentivo corrispondenti a prestazioni non svolte dai medesimi
-            dipendenti, in quanto affidate a personale esterno all'organico dell'amministrazione medesima, ovvero prive
-            del predetto accertamento, incrementano la quota del fondo di cui al comma 2. Il presente comma non si
-            applica al personale con qualifica dirigenziale.
-            <br><br>
-            18. Incentivazione specifiche attività - AVVOCATURA (art. 68, c. 2, lett. g CCNL 21.5.2018)
-            € <?php self::getInput('var59', '', 'orange'); ?>.
-            <br><br>
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var60', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-            <?php self::getTextArea('area19', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-            Art. 68 comma 2 lett. g CCNL 21.5.2018.
-            <br><br>
-            G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
-            all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
-            Art. 67 comma 3 lett. c.
-            <br><br>
-            C) delle risorse derivanti da disposizioni di legge che prevedano specifici trattamenti economici in favore
-            del personale, da utilizzarsi secondo quanto previsto dalle medesime disposizioni di legge.
-            Art. 27 CCNL 14.9.2000.
-            <br><br>
-
-            1. Gli enti provvisti di Avvocatura costituita secondo i rispettivi ordinamenti disciplinano la
-            corresponsione dei compensi professionali, dovuti a seguito di sentenza favorevole all’ente, secondo i
-            principi di cui al regio decreto-legge 27.11.1933 n. 1578 e disciplinano, altresì, in sede di contrattazione
-            decentrata integrativa la correlazione tra tali compensi professionali e la retribuzione di risultato di cui
-            all’art. 10 del CCNL del 31.3.1999. Sono fatti salvi gli effetti degli atti con i quali gli stessi enti
-            abbiano applicato la disciplina vigente per l’Avvocatura dello Stato anche prima della stipulazione del
-            presente CCNL.
-            <br><br>
-
-            19. Incentivazione specifiche attività - ISTAT (art. 68, c. 2, lett. g CCNL 21.5.2018)
-            € <?php self::getInput('var61', 'R94', 'orange'); ?> .
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var62', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area20', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 68 comma 2 lett. g CCNL 21.5.2018.
-            <br><br>
-
-            G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
-            all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
-            <br><br>
-
-            Art. 70 ter CCNL 21.5.2018.
-            <br><br>
-
-            1. Gli enti possono corrispondere specifici compensi al personale per remunerare prestazioni connesse a
-            indagini statistiche periodiche e censimenti permanenti, rese al di fuori dell’ordinario orario di lavoro.
-            <br><br>
-
-            2. Gli oneri concernenti l’erogazione dei compensi di cui al presente articolo trovano copertura
-            esclusivamente nella quota parte del contributo onnicomprensivo e forfetario riconosciuto dall’Istat e dagli
-            Enti e Organismi pubblici autorizzati per legge, confluita nel Fondo Risorse decentrate, ai sensi dell’art.
-            67, comma 3, lett. c).
-            <br><br>
-
-            20. Incentivazione specifiche attività - ICI (art. 68, c. 2, lett. g CCNL 21.5.2018)
-            € <?php self::getInput('var63', 'R95', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var64', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area21', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 68 comma 2 lett. g CCNL 21.5.2018.
-            <br><br>
-
-            G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
-            all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
-            <br><br>
-
-            Art. 4 CCNL del 5/10/2001 comma 3 Integrazione risorse dell'art. 15 del CCNL dell'1/4/1999.
-            <br><br>
-
-            La disciplina dell'art. 15, comma 1, lett. k) del CCNL dell'1.4.1999, ricomprende sia le risorse derivanti
-            dalla applicazione dell'art. 3, comma 57 della legge n. 662 del 1996 e dall'art. 59, comma 1, lett. p) del
-            D. Lgs.n.446 del 1997 (recupero evasione ICI), sia le ulteriori risorse correlate agli effetti applicativi
-            dell'art. 12, comma 1, lett. del D.L. n. 437 del 1996, convertito nella legge n. 556 del 1996.
-            <br><br>
-
-            Art. 3, comma 57 della legge n. 662 del 1996.
-            <br><br>
-
-            57. Una percentuale del gettito dell'imposta comunale sugli immobili può essere destinata al potenziamento
-            degli uffici tributari del comune. I dati fiscali a disposizione del comune sono ordinati secondo procedure
-            informatiche, stabilite con decreto del Ministro delle finanze, allo scopo di effettuare controlli
-            incrociati coordinati con le strutture dell'amministrazione finanziaria.
-            <br><br>
-
-            Art. 59, comma 1, lett. p) del D. Lgs.n.446 del 1997.
-            <br><br>
-
-            p) prevedere che ai fini del potenziamento degli uffici tributari del comune, ai sensi dell'articolo 3,
-            comma 57, della legge 23 dicembre 1996, n. 662, possono essere attribuiti compensi incentivanti al personale
-            addetto.
-            <br><br>
-
-            21. Incentivazione specifiche attività - Compensi IMU e TARI (art. 68 c. 2, lett. g CCNL 21.5.2018)
-            €<?php self::getInput('var65', 'R149', 'orange'); ?> .
-
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var66', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area22', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 68 comma 2 lett. g CCNL 21.5.2018.
-            <br><br>
-
-            G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
-            all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
-            <br><br>
-
-            Art. 1 comma 1091 della L. 145 del 31.12.2018 - Legge di Bilancio 2019 091. Ferme restando le facoltà di
-            regolamentazione del tributo di cui all'articolo 52 del decreto legislativo 15 dicembre 1997, n. 446, i
-            comuni che hanno approvato il bilancio di previsione ed il rendiconto entro i termini stabiliti dal testo
-            unico di cui al decreto legislativo 18 agosto 2000, n. 267, possono, con proprio regolamento, prevedere che
-            il maggiore gettito accertato e riscosso, relativo agli accertamenti dell'imposta municipale propria e della
-            TARI, nell'esercizio fiscale precedente a quello di riferimento risultante dal conto consuntivo approvato,
-            nella misura massima del 5 per cento, sia destinato, limitatamente all'anno di riferimento, al potenziamento
-            delle risorse strumentali degli uffici comunali preposti alla gestione delle entrate e al trattamento
-            accessorio del personale dipendente, anche di qualifica dirigenziale, in deroga al limite di cui
-            all'articolo 23, comma 2, del decreto legislativo 25 maggio 2017, n. 75. La quota destinata al trattamento
-            economico accessorio, al lordo degli oneri riflessi e dell'IRAP a carico dell'amministrazione, è attribuita,
-            mediante contrattazione integrativa, al personale impiegato nel raggiungimento degli obiettivi del settore
-            entrate, anche con riferimento alle attività connesse alla partecipazione del comune all'accertamento dei
-            tributi erariali e dei contributi sociali non corrisposti, in applicazione dell'articolo 1 del decreto-legge
-            30 settembre 2005, n. 203, convertito, con modificazioni, dalla legge 2 dicembre 2005, n. 248. Il beneficio
-            attribuito non può superare il 15 per cento del trattamento tabellare annuo lordo individuale. La presente
-            disposizione non si applica qualora il servizio di accertamento sia affidato in concessione.
-            <br><br>
-
-            22. Incentivazione specifiche attività – Messi Notificatori (art. 68 comma 2 lett. h CCNL 21.5.2018)
-            € <?php self::getInput('var67', 'R93', 'orange'); ?> .
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var68', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area23', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 54 CCNL del 14/9/2000.
-            <br><br>
-
-            Gli enti possono verificare, in sede di concertazione, se esistano le condizioni finanziarie per destinare
-            una quota parte del rimborso spese per ogni notificazione di atti dell'amministrazione finanziaria al fondo
-            di cui all'art.15 del CCNL dell'1.4.1999 per essere finalizzata all'erogazione di incentivi di produttività
-            a favore dei messi notificatori stessi.
-            <br><br>
-
-            Art. 68 comma 2 lett. H CCNL 21.5.2018
-            <br><br>
-
-            h) compensi ai messi notificatori, riconosciuti esclusivamente a valere sulle risorse di all’art. 67, comma
-            3, lett. f), secondo la disciplina di cui all’art. 54 del CCNL del 14.9.2000;
-            <br><br>
-
-            23. Incentivazione specifiche attività - Diritto soggiorno Unione Europea D.Lgs. 30/2007 (art. 68 comma 2
-            lett. h CCNL 21.5.2018) € <?php self::getInput('var69', 'R108', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var70', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area23', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 68 comma 2 lett. h CCNL 21.5.2018.
-            <br><br>
-
-            G) compensi previsti da disposizioni di legge, riconosciuti esclusivamente a valere sulle risorse di cui
-            all’art. 67, comma 3, lett. c), ivi compresi i compensi di cui all’art.70-ter;
-            <br><br>
-
-            LEGGE 24 dicembre 2007, n. 244 art. 2 comma 11.
-            <br><br>
-
-            11. Per ciascuno degli anni 2008 e 2009, a valere sul fondo ordinario di cui all'articolo 34, comma 1,
-            lettera a), del decreto legislativo 30 dicembre 1992, n. 504, è disposto un intervento fino a un importo di
-            10 milioni di euro per la concessione di un contributo a favore dei comuni per l'attuazione della direttiva
-            2004/38/CE del Parlamento europeo e del Consiglio, del 29 aprile 2004, relativa al diritto dei cittadini
-            dell'Unione e dei loro familiari di circolare e di soggiornare liberamente nel territorio degli Stati
-            membri, di cui al decreto legislativo 6 febbraio 2007, n. 30. Con decreto del Ministro dell'interno sono
-            determinate le modalità' di riparto ed erogazione dei contributi.
-            <br><br>
-
-            24. Incentivazione specifiche attività – (art. 68 comma 2 lett. h CCNL 21.5.2018) Legge Regionale specifica
-            <?php self::getInput('var71', 'xxxx', 'orange'); ?> xxxx (inserire riferimento)
-            € <?php self::getInput('var72', 'R109', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var73', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-            <?php self::getTextArea('area24', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            25. Incentivazione specifiche attività – (art. 68 comma 2 lett. h CCNL 21.5.2018) (inserire riferimento) €
-            <?php self::getInput('var74', 'f69', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var75', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area25', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            26. Premi collegati alla performance organizzativa – Compensi per Sponsorizzazioni, convenzioni e servizi
-            conto terzi (art. 67 comma 3 lett. a CCNL 21.5.2018) € <?php self::getInput('var76', 'R91', 'orange'); ?> .
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var77', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area26', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 4 CCNL del 5/10/2001 comma 4 Integrazione risorse dell'art. 15 del CCNL dell'1/4/1999.
-            "d) La quota delle risorse che possono essere destinate al trattamento economico accessorio del personale
-            nell'ambito degli introiti derivanti dalla applicazione dell'art.43 della legge n.449/1997 con particolare
-            riferimento alle seguenti iniziative:
-            <br><br>
-
-            a. contratti di sponsorizzazione ed accordi di collaborazione con soggetti privati ed associazioni senza
-            fini di lucro, per realizzare o acquisire a titolo gratuito interventi, servizi, prestazioni, beni o
-            attività inseriti nei programmi di spesa ordinari con il conseguimento dei corrispondenti risparmi;
-            <br><br>
-
-            b. convenzioni con soggetti pubblici e privati diretti a fornire ai medesimi soggetti, a titolo oneroso,
-            consulenze e servizi aggiuntivi rispetto a quelli ordinari;
-            <br><br>
-
-            c. contributi dell'utenza per servizi pubblici non essenziali o, comunque, per prestazioni, verso terzi
-            paganti, non connesse a garanzia di diritti fondamentali.
-            <br><br>
-
-            27. Piani di razionalizzazione (Art. 67 comma 3 lett. b CCNL 21.5.2018ART. 16 C. 5 L. 111/2011 e s.m.i.) €
-            <?php self::getInput('var78', 'R110', 'orange'); ?>.
-            <br><br>
-
-            Viene ripreso il testo del contratto siglato per l’anno <?php self::getInput('var79', '202x', 'orange'); ?>
-            con il quale sono stati definiti i criteri per
-            la distribuzione dello specifico incentivo:
-            <br><br>
-
-            <?php self::getTextArea('area27', '  INSERIRE IL TESTO DEL CONTRATTO 202x CON IL QUALE SI È DECISA LA MODALITA’ DI DISTRIBUZIONE DELLE RISORSE E
-            INSERIRE IL TESTO DELL’ACCORDO ANNUALE CON IL QUALE SONO STATE DEFINITE LE RISORSE DA DISTRIBUIRE PER QUESTA
-            VOCE.', 'red'); ?>
-            <br><br>
-
-            RIFERIMENTI NORMATIVI/CONTRATTUALI:
-            <br><br>
-
-            Art. 16, commi 4, 5 e 6 del D.L. n. 98 del 6 luglio 2011, convertito, con modificazioni, nella legge n. 111
-            del 15 luglio 2011
-            <br><br>
-
-            4. Fermo restando quanto previsto dall'articolo 11, le amministrazioni di cui all'articolo 1, comma 2, del
-            decreto legislativo 30 marzo 2001, n. 165, possono adottare entro il 31 marzo di ogni anno piani triennali
-            di razionalizzazione e riqualificazione della spesa, di riordino e ristrutturazione amministrativa, di
-            semplificazione e digitalizzazione, di riduzione dei costi della politica e di funzionamento, ivi compresi
-            gli appalti di servizio, gli affidamenti alle partecipate e il ricorso alle consulenze attraverso persone
-            giuridiche. Detti piani indicano la spesa sostenuta a legislazione vigente per ciascuna delle voci di spesa
-            interessate e i correlati obiettivi in termini fisici e finanziari.
-            <br><br>
-
-            5. In relazione ai processi di cui al comma 4, le eventuali economie aggiuntive effettivamente realizzate
-            rispetto a quelle già previste dalla normativa vigente, dall'articolo 12 e dal presente articolo ai fini del
-            miglioramento dei saldi di finanza pubblica, possono essere utilizzate annualmente, nell'importo massimo del
-            50 per cento, per la contrattazione integrativa, di cui il 50 per cento destinato alla erogazione dei premi
-            previsti dall'articolo 19 del decreto legislativo 27 ottobre 2009, n. 150. La restante quota è versata
-            annualmente dagli enti e dalle amministrazioni dotati di autonomia finanziaria ad apposito capitolo
-            dell'entrata del bilancio dello Stato. La disposizione di cui al precedente periodo non si applica agli enti
-            territoriali e agli enti, di competenza regionale o delle provincie autonome di Trento e di Bolzano, del
-            SSN. Le risorse di cui al primo periodo sono utilizzabili solo se a consuntivo è accertato, con riferimento
-            a ciascun esercizio, dalle amministrazioni interessate, il raggiungimento degli obiettivi fissati per
-            ciascuna delle singole voci di spesa previste nei piani di cui al comma 4 e i conseguenti risparmi. I
-            risparmi sono certificati, ai sensi della normativa vigente, dai competenti organi di controllo. Per la
-            Presidenza del Consiglio dei Ministri e i Ministeri la verifica viene effettuata dal Ministero dell'economia
-            e delle finanze - Dipartimento della Ragioneria generale dello Stato per il tramite, rispettivamente,
-            dell'UBRRAC e degli uffici centrali di bilancio e dalla Presidenza del Consiglio - Dipartimento della
-            funzione pubblica.
-            <br><br>
-
-            28. Quota recupero somme (Art. 4 DL 16/2014 Salva Roma Ter)
-            € <?php self::getInput('var80', 'R119', 'orange'); ?>.
-            Quota annuale delle risorse decentrate finalizzata a compensare le somme indebitamente erogate negli anni
-            precedenti.
-            <br><br>
-
-            RIFERIMENTI NORMATIVI
-            <br><br>
-
-            Art. 4 DL 16/2914 – Decreto Salva Roma ter
-            <br><br>
+                <br><br>
+
+                RIFERIMENTI NORMATIVI/CONTRATTUALI:
+                <br><br>
+
+                Art. 16, commi 4, 5 e 6 del D.L. n. 98 del 6 luglio 2011, convertito, con modificazioni, nella legge n. 111
+                del 15 luglio 2011
+                <br><br>
+
+                4. Fermo restando quanto previsto dall'articolo 11, le amministrazioni di cui all'articolo 1, comma 2, del
+                decreto legislativo 30 marzo 2001, n. 165, possono adottare entro il 31 marzo di ogni anno piani triennali
+                di razionalizzazione e riqualificazione della spesa, di riordino e ristrutturazione amministrativa, di
+                semplificazione e digitalizzazione, di riduzione dei costi della politica e di funzionamento, ivi compresi
+                gli appalti di servizio, gli affidamenti alle partecipate e il ricorso alle consulenze attraverso persone
+                giuridiche. Detti piani indicano la spesa sostenuta a legislazione vigente per ciascuna delle voci di spesa
+                interessate e i correlati obiettivi in termini fisici e finanziari.
+                <br><br>
+
+                5. In relazione ai processi di cui al comma 4, le eventuali economie aggiuntive effettivamente realizzate
+                rispetto a quelle già previste dalla normativa vigente, dall'articolo 12 e dal presente articolo ai fini del
+                miglioramento dei saldi di finanza pubblica, possono essere utilizzate annualmente, nell'importo massimo del
+                50 per cento, per la contrattazione integrativa, di cui il 50 per cento destinato alla erogazione dei premi
+                previsti dall'articolo 19 del decreto legislativo 27 ottobre 2009, n. 150. La restante quota è versata
+                annualmente dagli enti e dalle amministrazioni dotati di autonomia finanziaria ad apposito capitolo
+                dell'entrata del bilancio dello Stato. La disposizione di cui al precedente periodo non si applica agli enti
+                territoriali e agli enti, di competenza regionale o delle provincie autonome di Trento e di Bolzano, del
+                SSN. Le risorse di cui al primo periodo sono utilizzabili solo se a consuntivo è accertato, con riferimento
+                a ciascun esercizio, dalle amministrazioni interessate, il raggiungimento degli obiettivi fissati per
+                ciascuna delle singole voci di spesa previste nei piani di cui al comma 4 e i conseguenti risparmi. I
+                risparmi sono certificati, ai sensi della normativa vigente, dai competenti organi di controllo. Per la
+                Presidenza del Consiglio dei Ministri e i Ministeri la verifica viene effettuata dal Ministero dell'economia
+                e delle finanze - Dipartimento della Ragioneria generale dello Stato per il tramite, rispettivamente,
+                dell'UBRRAC e degli uffici centrali di bilancio e dalla Presidenza del Consiglio - Dipartimento della
+                funzione pubblica.
+            <?php endif; ?>
+
+            <br><br>
+            <?php if (self::checkOptionalValues('R119')): ?>
+
+                28. Quota recupero somme (Art. 4 DL 16/2014 Salva Roma Ter)
+                € <?php self::getInput('var80', 'R119', 'orange'); ?>.
+                Quota annuale delle risorse decentrate finalizzata a compensare le somme indebitamente erogate negli anni
+                precedenti.
+                <br><br>
+
+                RIFERIMENTI NORMATIVI
+                <br><br>
+
+                Art. 4 DL 16/2914 – Decreto Salva Roma ter
+                <br><br>
+
+                Le regioni e gli enti locali che non hanno rispettato i vincoli finanziari posti alla contrattazione
+                collettiva integrativa sono obbligati a recuperare integralmente, a valere sulle risorse finanziarie a
+                questa destinate, rispettivamente al personale dirigenziale e non dirigenziale, le somme indebitamente
+                erogate mediante il graduale riassorbimento delle stesse, con quote annuali e per un numero massimo di
+                annualità corrispondente a quelle in cui si è verificato il superamento di tali vincoli. Nei predetti casi,
+                le regioni ((adottano)) misure di contenimento della spesa per il personale, ulteriori rispetto a quelle già
+                previste dalla vigente normativa, mediante l'attuazione di piani di riorganizzazione finalizzati alla
+                razionalizzazione e allo snellimento delle strutture burocratico-amministrative, anche attraverso
+                accorpamenti di uffici con la contestuale riduzione delle dotazioni organiche del personale dirigenziale in
+                misura non inferiore al 20 per cento e della spesa complessiva del personale non dirigenziale In misura non
+                inferiore al 10 per cento. Gli enti locali adottano le misure di razionalizzazione organizzativa garantendo
+                in ogni caso la riduzione delle dotazioni organiche entro i parametri definiti dal decreto di cui
+                all'articolo 263, comma 2, del decreto legislativo 18 agosto 2000, n. 267. Al fine di conseguire l'effettivo
+                contenimento della spesa, alle unità di personale eventualmente risultanti in soprannumero all'esito dei
+                predetti piani obbligatori di riorganizzazione si applicano le disposizioni previste dall'articolo 2, commi
+                11 e 12, del decreto-legge 6 luglio 2012, n. 95, convertito, con modificazioni, dalla legge 7 agosto 2012,
+                n. 135, nei limiti temporali della vigenza della predetta norma. Le cessazioni dal servizio conseguenti alle
+                misure di cui al precedente periodo non possono essere calcolate come risparmio utile per definire
+                l'ammontare delle disponibilità finanziarie da destinare alle assunzioni o il numero dell’unità sostituibili
+                in relazione alle limitazioni del turn over. Le Regioni e gli enti locali trasmettono entro il 31 maggio di
+                ciascun anno alla Presidenza del Consiglio dei Ministri - Dipartimento della funzione pubblica, al Ministero
+                dell'economia e delle finanze - Dipartimento della Ragioneria generale dello Stato e al Ministero
+                dell'interno - Dipartimento per gli affari interni e territoriali, ai fini del relativo monitoraggio, una
+                relazione illustrativa ed una relazione tecnico-finanziaria che, con riferimento al mancato rispetto dei
+                vincoli finanziari, dia conto dell'adozione dei piani obbligatori di riorganizzazione e delle specifiche
+                misure previste dai medesimi per il contenimento della spesa per il personale ovvero delle misure di cui al
+                terzo periodo.
+            <?php endif; ?>
 
-            Le regioni e gli enti locali che non hanno rispettato i vincoli finanziari posti alla contrattazione
-            collettiva integrativa sono obbligati a recuperare integralmente, a valere sulle risorse finanziarie a
-            questa destinate, rispettivamente al personale dirigenziale e non dirigenziale, le somme indebitamente
-            erogate mediante il graduale riassorbimento delle stesse, con quote annuali e per un numero massimo di
-            annualità corrispondente a quelle in cui si è verificato il superamento di tali vincoli. Nei predetti casi,
-            le regioni ((adottano)) misure di contenimento della spesa per il personale, ulteriori rispetto a quelle già
-            previste dalla vigente normativa, mediante l'attuazione di piani di riorganizzazione finalizzati alla
-            razionalizzazione e allo snellimento delle strutture burocratico-amministrative, anche attraverso
-            accorpamenti di uffici con la contestuale riduzione delle dotazioni organiche del personale dirigenziale in
-            misura non inferiore al 20 per cento e della spesa complessiva del personale non dirigenziale In misura non
-            inferiore al 10 per cento. Gli enti locali adottano le misure di razionalizzazione organizzativa garantendo
-            in ogni caso la riduzione delle dotazioni organiche entro i parametri definiti dal decreto di cui
-            all'articolo 263, comma 2, del decreto legislativo 18 agosto 2000, n. 267. Al fine di conseguire l'effettivo
-            contenimento della spesa, alle unità di personale eventualmente risultanti in soprannumero all'esito dei
-            predetti piani obbligatori di riorganizzazione si applicano le disposizioni previste dall'articolo 2, commi
-            11 e 12, del decreto-legge 6 luglio 2012, n. 95, convertito, con modificazioni, dalla legge 7 agosto 2012,
-            n. 135, nei limiti temporali della vigenza della predetta norma. Le cessazioni dal servizio conseguenti alle
-            misure di cui al precedente periodo non possono essere calcolate come risparmio utile per definire
-            l'ammontare delle disponibilità finanziarie da destinare alle assunzioni o il numero dell’unità sostituibili
-            in relazione alle limitazioni del turn over. Le Regioni e gli enti locali trasmettono entro il 31 maggio di
-            ciascun anno alla Presidenza del Consiglio dei Ministri - Dipartimento della funzione pubblica, al Ministero
-            dell'economia e delle finanze - Dipartimento della Ragioneria generale dello Stato e al Ministero
-            dell'interno - Dipartimento per gli affari interni e territoriali, ai fini del relativo monitoraggio, una
-            relazione illustrativa ed una relazione tecnico-finanziaria che, con riferimento al mancato rispetto dei
-            vincoli finanziari, dia conto dell'adozione dei piani obbligatori di riorganizzazione e delle specifiche
-            misure previste dai medesimi per il contenimento della spesa per il personale ovvero delle misure di cui al
-            terzo periodo.
             <br>
             <br>
             b) Quadro di sintesi delle modalità di utilizzo da parte della contrattazione integrativa delle risorse del
@@ -1754,87 +1849,107 @@ public function __construct()
             n. <?php self::getInput('var143', '202x', 'orange'); ?>.
             <br>
             <br>
-            ai sensi dell’art. 67 comma 4 CCNL 21.5.2018 è stata autorizzata l’iscrizione, fra le risorse variabili,
-            della quota fino ad un massimo dell'1,2% del monte salari (esclusa la quota riferita alla dirigenza)
-            stabilito per l'anno 1997, nel rispetto del limite dell’anno 2016
-            e<?php self::getInput('var144', '(viene proposto un esempio)', 'red'); ?> finalizzato
-            al raggiungimento di specifici obiettivi di produttività e qualità espressamente definiti dall’Ente nel
-            Piano esecutivo di Gestione <?php self::getInput('var145', 'anno', 'orange'); ?> unitamente al Piano della
-            Performance approvato con Delibera della/del
-            <?php self::getInput('var146', 'nome_soggetto_deliberante', 'orange'); ?>
-            n. <?php self::getInput('var147', 'numero_delibera_approvazione_PEG', 'orange'); ?>
-            del <?php self::getInput('var148', 'data_delibera_approvazione_PEG', 'orange'); ?> in merito a
+            <?php if (self::checkOptionalValues('R33')): ?>
 
-            <?php self::getTextArea('area28', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO).', 'red'); ?>
+                ai sensi dell’art. 67 comma 4 CCNL 21.5.2018 è stata autorizzata l’iscrizione, fra le risorse variabili,
+                della quota fino ad un massimo dell'1,2% del monte salari (esclusa la quota riferita alla dirigenza)
+                stabilito per l'anno 1997, nel rispetto del limite dell’anno 2016
+                e<?php self::getInput('var144', '(viene proposto un esempio)', 'red'); ?> finalizzato
+                al raggiungimento di specifici obiettivi di produttività e qualità espressamente definiti dall’Ente nel
+                Piano esecutivo di Gestione <?php self::getInput('var145', 'anno', 'orange'); ?> unitamente al Piano della
+                Performance approvato con Delibera della/del
+                <?php self::getInput('var146', 'nome_soggetto_deliberante', 'orange'); ?>
+                n. <?php self::getInput('var147', 'numero_delibera_approvazione_PEG', 'orange'); ?>
+                del <?php self::getInput('var148', 'data_delibera_approvazione_PEG', 'orange'); ?> in merito a
+
+                <?php self::getTextArea('area28', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO).', 'red'); ?>
+                <br>
+                <br>
+                L’importo previsto è pari a € <?php self::getInput('var149', 'R33', 'orange'); ?> che verrà erogato solo
+                successivamente alla verifica dell’effettivo
+                conseguimento dei risultati attesi.
+                <br>
+                <br>
+                Si precisa che gli importi, qualora non dovessero essere interamente distribuiti, non daranno luogo ad
+                economie del fondo ma ritorneranno nella disponibilità del bilancio dell’Ente.
+            <?php endif ?>
+
             <br>
             <br>
-            L’importo previsto è pari a € <?php self::getInput('var149', 'R33', 'orange'); ?> che verrà erogato solo
-            successivamente alla verifica dell’effettivo
-            conseguimento dei risultati attesi.
+            <?php if (self::checkOptionalValues('R34')): ?>
+
+                ai sensi dell’art. 67, comma 5 lett. b) del CCNL 21.5.2018 è stata autorizzata l’iscrizione, fra le risorse
+                variabili, delle somme necessarie per il conseguimento di obiettivi dell’ente, anche di mantenimento, nonché
+                obiettivi di potenziamento dei servizi di controllo finalizzati alla sicurezza urbana e stradale Art. 56
+                quater CCNL 2018, per un importo pari a € <?php self::getInput('var150', 'R34', 'orange'); ?>. In
+                particolare, tali obiettivi sono contenuti nel Piano
+                esecutivo di Gestione anno unitamente al Piano della Performance approvato con
+                Delibera <?php self::getInput('var151', 'della/del', 'orange'); ?>
+                <?php self::getInput('var152', 'nome_soggetto_deliberante', 'orange'); ?>
+                n. <?php self::getInput('var153', 'numero_delibera_approvazione_PEG', 'orange'); ?>
+                del <?php self::getInput('var154', 'data_delibera_approvazione_PEG', 'orange'); ?> e ne
+                vengono qui di seguito elencati i titoli:
+                <br>
+                <br>
+                – <?php self::getInput('var155', '>xxxxx, (specificare almeno gli importi previsti per ogni obiettivo)', 'orange'); ?>
+                ;
+                <br>
+                - <?php self::getInput('var156', '>xxxxx', 'orange'); ?>
+                <br>
+                <?php self::getTextArea('area29', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO).', 'red'); ?>
+                <br>
+                (Consiglio: copiare quanto scritto nella Delibera di indirizzi su questo punto)
+                <br>
+                Si precisa che gli importi qualora non dovessero essere interamente distribuiti, non daranno luogo ad
+                economie del fondo ma ritorneranno nella disponibilità del bilancio dell’Ente.
+            <?php endif ?>
+
             <br>
             <br>
-            Si precisa che gli importi, qualora non dovessero essere interamente distribuiti, non daranno luogo ad
-            economie del fondo ma ritorneranno nella disponibilità del bilancio dell’Ente.
+            <?php if (self::checkOptionalValues('R152')): ?>
+
+                ai sensi dell’art. 67 comma 5 lett. b) del CCNL 21.5.2018 è stata autorizzata l'iscrizione della sola quota
+                di maggior incasso rispetto all’anno precedente a seguito di obiettivi di potenziamento dei servizi di
+                controllo finalizzati alla sicurezza urbana e stradale Art. 56 quater CCNL 2018, come risorsa NON soggetta
+                al limite secondo dalla Corte dei Conti Sezione delle Autonomie con delibera n. 5 del 2019, per un importo
+                pari a € <?php self::getInput('var157', 'R152', 'orange'); ?>;
+                <br>
+                <br>
+                ai sensi dell’art. 67 comma 3 lett. a del CCNL 21.5.2018 è stata autorizzata l’iscrizione fra le risorse
+                variabili delle somme derivanti da contratti di sponsorizzazione, accordi di collaborazione, convenzioni con
+                soggetti pubblici o privati e contributi dell'utenza per servizi pubblici non essenziali, secondo la
+                disciplina dettata dall'art. 43 della Legge 449/1997 per
+                € <?php self::getInput('var158', 'F222', 'orange'); ?>, rispettivamente per
+                <?php self::getTextArea('area30', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO).', 'red'); ?>
+            <?php endif ?>
+
             <br>
             <br>
-            ai sensi dell’art. 67, comma 5 lett. b) del CCNL 21.5.2018 è stata autorizzata l’iscrizione, fra le risorse
-            variabili, delle somme necessarie per il conseguimento di obiettivi dell’ente, anche di mantenimento, nonché
-            obiettivi di potenziamento dei servizi di controllo finalizzati alla sicurezza urbana e stradale Art. 56
-            quater CCNL 2018, per un importo pari a € <?php self::getInput('var150', 'R34', 'orange'); ?>. In
-            particolare, tali obiettivi sono contenuti nel Piano
-            esecutivo di Gestione anno unitamente al Piano della Performance approvato con
-            Delibera <?php self::getInput('var151', 'della/del', 'orange'); ?>
-            <?php self::getInput('var152', 'nome_soggetto_deliberante', 'orange'); ?>
-            n. <?php self::getInput('var153', 'numero_delibera_approvazione_PEG', 'orange'); ?>
-            del <?php self::getInput('var154', 'data_delibera_approvazione_PEG', 'orange'); ?> e ne
-            vengono qui di seguito elencati i titoli:
+            <?php if (self::checkOptionalValues('R37')): ?>
+
+                ai sensi della Legge 111/2011 e dell’art. 67 comma 3 lett. B del CCNL 21.5.2018, vista la
+                Delibera <?php self::getInput('var159', 'della/del', 'orange'); ?>
+                <?php self::getInput('var160', 'nome_soggetto_deliberante', 'orange'); ?>
+                n. <?php self::getInput('var161', 'numero_delibera_approvazione_piano', 'orange'); ?>
+                del <?php self::getInput('var162', 'data_delibera_approvazione_piano', 'orange'); ?> di
+                approvazione del Piano di razionalizzazione <?php self::getInput('VAR163', 'are', 'orange'); ?> è stata
+                autorizzata l’iscrizione tra le risorse variabili
+                dell’importo pari a € <?php self::getInput('var164', 'R37', 'orange'); ?> , che dovrà essere distribuito nel
+                rigoroso rispetto dei principi introdotti dalla
+                norma vigente e solo in presenza, a consuntivo, del parere favorevole espresso dal Revisore dei Conti /
+                Collegio dei Revisori;
+            <?php endif ?>
+
             <br>
             <br>
-            – <?php self::getInput('var155', '>xxxxx, (specificare almeno gli importi previsti per ogni obiettivo)', 'orange'); ?>
-            ;
-            <br>
-            - <?php self::getInput('var156', '>xxxxx', 'orange'); ?>
-            <br>
-            <?php self::getTextArea('area29', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO).', 'red'); ?>
-            <br>
-            (Consiglio: copiare quanto scritto nella Delibera di indirizzi su questo punto)
-            <br>
-            Si precisa che gli importi qualora non dovessero essere interamente distribuiti, non daranno luogo ad
-            economie del fondo ma ritorneranno nella disponibilità del bilancio dell’Ente. (Opzionale)
-            <br>
-            <br>
-            ai sensi dell’art. 67 comma 5 lett. b) del CCNL 21.5.2018 è stata autorizzata l'iscrizione della sola quota
-            di maggior incasso rispetto all’anno precedente a seguito di obiettivi di potenziamento dei servizi di
-            controllo finalizzati alla sicurezza urbana e stradale Art. 56 quater CCNL 2018, come risorsa NON soggetta
-            al limite secondo dalla Corte dei Conti Sezione delle Autonomie con delibera n. 5 del 2019, per un importo
-            pari a € <?php self::getInput('var157', 'R152', 'orange'); ?>;
-            <br>
-            <br>
-            ai sensi dell’art. 67 comma 3 lett. a del CCNL 21.5.2018 è stata autorizzata l’iscrizione fra le risorse
-            variabili delle somme derivanti da contratti di sponsorizzazione, accordi di collaborazione, convenzioni con
-            soggetti pubblici o privati e contributi dell'utenza per servizi pubblici non essenziali, secondo la
-            disciplina dettata dall'art. 43 della Legge 449/1997 per
-            € <?php self::getInput('var158', 'F222', 'orange'); ?>, rispettivamente per
-            <?php self::getTextArea('area30', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO).', 'red'); ?>
-            <br>
-            <br>
-            ai sensi della Legge 111/2011 e dell’art. 67 comma 3 lett. B del CCNL 21.5.2018, vista la
-            Delibera <?php self::getInput('var159', 'della/del', 'orange'); ?>
-            <?php self::getInput('var160', 'nome_soggetto_deliberante', 'orange'); ?>
-            n. <?php self::getInput('var161', 'numero_delibera_approvazione_piano', 'orange'); ?>
-            del <?php self::getInput('var162', 'data_delibera_approvazione_piano', 'orange'); ?> di
-            approvazione del Piano di razionalizzazione <?php self::getInput('VAR163', 'are', 'orange'); ?> è stata
-            autorizzata l’iscrizione tra le risorse variabili
-            dell’importo pari a € <?php self::getInput('var164', 'R37', 'orange'); ?> , che dovrà essere distribuito nel
-            rigoroso rispetto dei principi introdotti dalla
-            norma vigente e solo in presenza, a consuntivo, del parere favorevole espresso dal Revisore dei Conti /
-            Collegio dei Revisori;
-            <br>
-            <br>
-            ai sensi dell’art. 67 c.7 e Art.15 c.7 CCNL 2018 è stata autorizzata all'iscrizione fra le risorse variabili
-            la quota di incremento del Fondo trattamento accessorio per riduzione delle risorse destinate alla
-            retribuzione di posizione e di risultato delle PO rispetto al tetto complessivo del salario accessorio art.
-            23 c. 2 D.Lgs. 75/2017, per un importo pari a € <?php self::getInput('var165', 'R155', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('R37')): ?>
+
+                ai sensi dell’art. 67 c.7 e Art.15 c.7 CCNL 2018 è stata autorizzata all'iscrizione fra le risorse variabili
+                la quota di incremento del Fondo trattamento accessorio per riduzione delle risorse destinate alla
+                retribuzione di posizione e di risultato delle PO rispetto al tetto complessivo del salario accessorio art.
+                23 c. 2 D.Lgs. 75/2017, per un importo pari a € <?php self::getInput('var165', 'R155', 'orange'); ?>;
+            <?php endif ?>
+
             <br>
             <br>
             <b>g) altre informazioni eventualmente ritenute utili per la migliore comprensione degli istituti regolati
