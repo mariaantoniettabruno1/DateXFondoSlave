@@ -104,12 +104,12 @@ class DocumentRepository
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT id_articolo FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=?";
+        $sql = "SELECT id_articolo,valore FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=?";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("s", $editor_name);
         $res = $stmt->execute();
         if ($res = $stmt->get_result()) {
-            $rows = $res->fetch_all();
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
         } else
             $rows = [];
         mysqli_close($mysqli);
@@ -162,12 +162,12 @@ class DocumentRepository
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT nome FROM DATE_formula WHERE formula_template_name=?";
+        $sql = "SELECT nome,valore FROM DATE_formula WHERE formula_template_name=?";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("s", $document_name);
         $res = $stmt->execute();
         $res = $stmt->get_result();
-        $rows = $res->fetch_all();
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
         return $rows;
     }

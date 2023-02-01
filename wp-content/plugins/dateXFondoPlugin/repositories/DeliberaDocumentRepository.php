@@ -9,7 +9,7 @@ class DeliberaDocumentRepository
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT chiave, valore,document_name, editor_name, anno, editable FROM DATE_documenti_odt_storico WHERE document_name=? AND editor_name=? AND version=?";
+        $sql = "SELECT chiave, valore, document_name, editor_name, anno, editable FROM DATE_documenti_odt_storico WHERE document_name=? AND editor_name=? AND version=?";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("ssi", $document_name, $editor_name,$version);
         $res = $stmt->execute();
