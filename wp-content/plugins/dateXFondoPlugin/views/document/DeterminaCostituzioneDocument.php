@@ -2,6 +2,8 @@
 
 namespace dateXFondoPlugin;
 
+use DocumentRepository;
+
 class DeterminaCostituzioneDocument
 {
     private $infos = [];
