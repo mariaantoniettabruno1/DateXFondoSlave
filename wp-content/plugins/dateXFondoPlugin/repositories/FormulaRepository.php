@@ -69,6 +69,19 @@ class FormulaRepository
         mysqli_close($mysqli);
         return $stmt->affected_rows;
     }
+    public static function valorize_formula($request)
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+        $sql = "UPDATE DATE_formula SET valore = ? WHERE nome = ?;";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("is",
+            $request['valore'],
+            $request['nome']);
+        $stmt->execute();
+        mysqli_close($mysqli);
+        return $stmt->affected_rows;
+    }
     public static function delete_formula($request){
         $conn = new Connection();
         $mysqli = $conn->connect();
