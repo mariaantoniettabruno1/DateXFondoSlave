@@ -12,10 +12,16 @@ class UserSettingsForm
         ?>
 
         <style>
-            form {
+            .card {
                 width: 300px;
                 margin: 0 auto;
             }
+            #saveSettings, #saveSettings:hover {
+                border-color: #26282f;
+                color: white;
+                background-color: #26282f;
+            }
+
 
         </style>
         <script>
@@ -35,7 +41,7 @@ class UserSettingsForm
                     let responsabile_documento = $('#responsabileDocumento').val();
                     let firma = $('#firma').val();
                     let riduzione_spesa = $('input:radio[name=typeRiduzione]:checked').val();
-                    
+
 
                     const payload = {
                         titolo_ente,
@@ -77,29 +83,37 @@ class UserSettingsForm
     public static function render()
     {
         ?>
-        <div class="container-fluid">
-            <div class="row">
+        <div class="card" style="width: 400px">
+            <div class="card-header">
+                <b>Impostazioni Utente</b>
+            </div>
+            <div class="card-body">
                 <form>
+
+
                     <div class="form-group">
-                        <label for="titoloEnte">Titolo Ente</label>
-                        <input type="text" class="form-control" id="titoloEnte" placeholder="Inserisci il titolo ente">
+                        <label for="titoloEnte"><b>Titolo ente</b></label>
+                        <input type="text" class="form-control" id="titoloEnte"
+                               placeholder="Inserisci il titolo ente">
                     </div>
                     <div class="form-group">
-                        <label for="soggettoDeliberante">Nome Soggetto Deliberante</label>
+                        <label for="soggettoDeliberante"><b>Nome soggetto deliberante</b></label>
                         <input type="text" class="form-control" id="soggettoDeliberante"
                                placeholder="Inserisci il nome">
                     </div>
                     <div class="form-group">
-                        <label for="responsabileDocumento">Responsabile Documento</label>
+                        <label for="responsabileDocumento"><b>Responsabile documento</b></label>
                         <input type="text" class="form-control" id="responsabileDocumento"
                                placeholder="Inserisci il nome">
                     </div>
 
                     <div class="form-group">
-                        <label for="firma">Documento a firma di:</label>
+                        <label for="firma"><b>Documento a firma di</b></label>
                         <input type="text" class="form-control" id="firma" placeholder="Inserisci il nome">
                     </div>
-                    <label for="inputRiduzioneSpesa"><b>Riduzione Spesa</b> </label>
+
+                    <label for="inputRiduzioneSpesa">
+                        <b>Riduzione spesa</b> </label>
                     <div class="form-check user-checked">
                         <input class="form-check-input" type="radio" name="typeRiduzione" id="duemilaotto"
                                value="2008">
@@ -107,19 +121,17 @@ class UserSettingsForm
                             2008
                         </label>
                     </div>
-                    <div class="form-check">
+                    <div class="form-check pb-4">
                         <input class="form-check-input" type="radio" name="typeRiduzione" id="mediaTriennio"
                                value="Media Triennio 2011/2013">
                         <label class="form-check-label" for="mediaTriennio">
                             Media Triennio 2011/2013
                         </label>
                     </div>
+
                 </form>
-            </div>
-            <div class="row">
                 <button class="btn btn-primary" id="saveSettings">Salva Modifiche</button>
             </div>
-
         </div>
 
 

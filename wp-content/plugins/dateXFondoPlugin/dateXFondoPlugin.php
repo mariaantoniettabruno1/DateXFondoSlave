@@ -192,8 +192,9 @@ function slave_user_settings(){
     $document->render();
 }
 
-//Hook after login
-//function do_anything() {
-//    //do stuff
-//}
-//add_action('wp_login', 'do_anything');
+
+function admin_default_page() {
+    return DateXFondoCommon::get_website_url().'/impostazioni-utente/';
+}
+
+add_filter('login_redirect', 'admin_default_page');

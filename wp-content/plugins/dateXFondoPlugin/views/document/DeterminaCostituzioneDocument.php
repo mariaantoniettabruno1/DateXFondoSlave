@@ -7,6 +7,7 @@ use DocumentRepository;
 class DeterminaCostituzioneDocument
 {
     private $infos = [];
+    private $user_infos = [];
     private $values = array();
 
 
@@ -17,6 +18,8 @@ class DeterminaCostituzioneDocument
         $this->articoli = $data->getIdsArticoli($_GET['editor_name']);
         $delibera_data = new DeliberaDocumentRepository();
         $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version']);
+        $user_data = new UserRepository();
+        $this->user_infos = $user_data->getUserInfos();
 
 
         foreach ($this->infos as $row) {
@@ -35,6 +38,21 @@ class DeterminaCostituzioneDocument
     private function getInput($key, $default, $color)
     {
         $value = $this->articles[$default] ?? $this->formulas[$default] ?? $this->values[$key] ?? $default;
+        if($value == 'titolo_ente'){
+            $value = $this->user_infos['titolo_ente'];
+        }
+        else if($value == 'nome_soggetto_deliberante'){
+            $value = $this->user_infos['nome_soggetto_deliberante'];
+        }
+        else if($value == 'responsabile_documento'){
+            $value = $this->user_infos['responsabile'];
+        }
+        else if($value == 'documento_a_firma_di'){
+            $value = $this->user_infos['firma'];
+        }
+        else if($value == 'riduzione_spesa'){
+            $value = $this->user_infos['riduzione_spesa'];
+        }
 
         ?>
 
