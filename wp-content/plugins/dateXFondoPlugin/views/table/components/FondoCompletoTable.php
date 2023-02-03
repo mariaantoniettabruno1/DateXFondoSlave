@@ -25,9 +25,10 @@ class FondoCompletoTable
                         array.push(element);
                     }
                 });
+                const payload = {array};
                 $.ajax({
-                    url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/valuesformula',
-                    data: array,
+                    url: '<?= DateXFondoCommon::get_website_url() ?>///wp-json/datexfondoplugin/v1/valuesformula',
+                    data: payload,
                     type: "POST",
                     success: function (response) {
                         console.log(response);
