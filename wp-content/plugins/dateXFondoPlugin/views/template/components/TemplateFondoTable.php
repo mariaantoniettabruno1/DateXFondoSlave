@@ -71,7 +71,13 @@ class TemplateFondoTable
                                        <td>${nota}</td>
                                        <td>${valore}</td>
                                        <td>${valore_precedente}</td>
-                                       <td>${link}</td>
+                                       <td>
+                                       <div class="row pr-3">
+                                       <div class="col-8">${link}</div>
+                                       <div class="col-2">
+<button class="btn btn-link btn-art-link" data-link='${art.link}'><i class="fa-solid fa-arrow-up-right-from-square"></i></button></div>
+</div>
+</td>
                                        <td><div class="row pr-3">
                 <div class="col-3"> <button class="btn btn-link btn-edit-row" data-id='${art.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button></div>
                 <div class="col-3">${delete_button}</div>
@@ -99,6 +105,10 @@ class TemplateFondoTable
                     id = $(this).attr('data-id');
                     console.log(id)
 
+                });
+                $('.btn-art-link').click(function () {
+                    var url =  '<?= DateXFondoCommon::get_website_url() ?>/date-doc/articoli/' + $(this).attr('data-link');
+                    window.open(url, '_blank');
                 });
                 $('.btn-edit-row').click(function () {
                     id = $(this).attr('data-id');
@@ -299,7 +309,7 @@ class TemplateFondoTable
                                     <th>Nota</th>
                                     <th>Valore</th>
                                     <th>Valore Anno Precedente</th>
-                                    <th>Link</th>
+                                    <th style="width: 170px">Link</th>
                                     <th>Azioni</th>
                                 </tr>
 
