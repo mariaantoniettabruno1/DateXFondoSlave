@@ -7,7 +7,7 @@ class AllTemplateTable
     public static function render_scripts()
     {
         ?>
-            <?php //capire perchè non legge il file css ?>
+
         <style>
             .btn-vis-templ, .btn-vis-templ:hover {
                 color: #26282f;

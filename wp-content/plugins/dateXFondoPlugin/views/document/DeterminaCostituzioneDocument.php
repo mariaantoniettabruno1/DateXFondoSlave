@@ -2,32 +2,77 @@
 
 namespace dateXFondoPlugin;
 
+use DocumentRepository;
+
 class DeterminaCostituzioneDocument
 {
     private $infos = [];
+    private $user_infos = [];
     private $values = array();
 
 
     public function __construct()
     {
+        $data = new DocumentRepository();
+        $this->formule = $data->getFormulas($_GET['editor_name']);
+        $this->articoli = $data->getIdsArticoli($_GET['editor_name']);
         $delibera_data = new DeliberaDocumentRepository();
-
         $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version']);
+        $user_data = new UserRepository();
+        $this->user_infos = $user_data->getUserInfos();
+
 
         foreach ($this->infos as $row) {
             $this->values[$row['chiave']] = $row['valore'];
+        }
+        foreach ($this->formule as $row) {
+            $this->formulas[$row['nome']] = $row['valore'];
+
+        }
+        foreach ($this->articoli as $row) {
+            $this->articles[$row['id_articolo']] = $row['valore'];
+
         }
     }
 
     private function getInput($key, $default, $color)
     {
-        $value = isset($this->values[$key]) ? $this->values[$key] : $default;
+        $value = $this->articles[$default] ?? $this->formulas[$default] ?? $this->values[$key] ?? $default;
+        if($value == 'titolo_ente'){
+            $value = $this->user_infos['titolo_ente'];
+        }
+        else if($value == 'nome_soggetto_deliberante'){
+            $value = $this->user_infos['nome_soggetto_deliberante'];
+        }
+        else if($value == 'responsabile_documento'){
+            $value = $this->user_infos['responsabile'];
+        }
+        else if($value == 'documento_a_firma_di'){
+            $value = $this->user_infos['firma'];
+        }
+        else if($value == 'riduzione_spesa'){
+            $value = $this->user_infos['riduzione_spesa'];
+        }
+
         ?>
 
         <span class="variable-span-text" style="color:<?= $color ?>"><?= $value ?></span>
 
 
         <?php
+    }
+
+    private function checkOptionalValues($default)
+    {
+        $bool = false;
+        if (isset($this->articles[$default])) {
+
+            $bool = true;
+        } else if (isset($this->formulas[$default])) {
+
+            $bool = true;
+        }
+        return $bool;
     }
 
     private function getTextArea($key, $default, $color)
@@ -40,7 +85,6 @@ class DeterminaCostituzioneDocument
 
         <?php
     }
-
 
     public function render()
     {
@@ -243,25 +287,32 @@ class DeterminaCostituzioneDocument
             per un importo pari ad € <?php self::getInput('var25', 'S1_1', 'orange'); ?>;
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R124')): ?>
             • ai sensi dell’art. 67 comma 2 lett. c) CCNL 22.5.2018 che prevede che “le risorse di cui al comma 1, sono
             integrate dall’importo annuo della retribuzione individuale di anzianità e degli assegni ad personam,
             compresa la quota di tredicesima, in godimento da parte del personale cessato dal servizio nell’anno
             precedente”, è prevista una integrazione pari a € <?php self::getInput('var26', 'R124', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R128')): ?>
             • ai sensi dell’art. 67 comma 5 lett. a) CCNL 22.5.2018 che prevede “in caso di incremento delle dotazioni
             organiche, al fine di sostenere gli oneri dei maggiori trattamenti economici del personale” si inserisce
             l'importo di € <?php self::getInput('var27', 'R128', 'orange'); ?>;, in quanto l’Ente
             nell’anno <?php self::getInput('var28', 'xxxxxx', 'orange'); ?>; ha incrementato la dotazione organica e ha
             effettuato
             le conseguenti assunzioni;
+             <?php endif; ?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R127')): ?>
             • ai sensi dell’art. 67 comma 2 lett. g) del CCNL 22.5.2018 si inseriscono le somme per la riduzione stabile
             del fondo dello straordinario, ad invarianza complessiva di risorse stanziate, per
             € <?php self::getInput('var29', 'R127', 'orange'); ?>;
+             <?php endif; ?>
             <br>
             <br>
+              <?php if (self::checkOptionalValues('R126')): ?>
             • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 si inseriscono gli importi necessari a
             sostenere
             a regime gli oneri del trattamento economico di personale trasferito, anche nell’ambito di processi
@@ -271,11 +322,14 @@ class DeterminaCostituzioneDocument
             disposizioni di legge, a seguito di trasferimento di personale, come ad esempio l’art. 1, commi da 793 a
             799, della legge n. 205/2017; le Unioni di comuni tengono anche conto della speciale disciplina di cui
             all’art. 70-sexies, per € <?php self::getInput('var30', 'R126', 'orange'); ?>;
+              <?php endif; ?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R125')): ?>
             • ai sensi dell’art. 67 comma 2 lettera d) del CCNL 22.5.2018 si inseriscono risorse riassorbite ai sensi
             dell’art. 2, comma 3, del D.Lgs. 30 marzo 2001, n. 165, per un importo di
             € <?php self::getInput('var31', 'R125', 'orange'); ?>;
+             <?php endif; ?>
             <br>
             <br>
             • ai sensi dell’art.<?php self::getInput('var32', 'xx comma x del CCNL xx.xx.xxxx', 'orange'); ?> si
@@ -283,6 +337,7 @@ class DeterminaCostituzioneDocument
             LIBERO SE SONO STATE AGGIUNTE ALTRE RISORSE NELLA PARTE STABILE)', 'orange'); ?> ;
             <br>
             <br>
+               <?php if (self::checkOptionalValues('R112')): ?>
             • ai sensi dell’art. 67 comma 2 lettera b) del CCNL 22.5.2018 si inseriscono le somme di un importo pari
             alle
             differenze tra gli incrementi a regime di cui all’art. 64 CCNL 2018 riconosciuti alle posizioni economiche
@@ -293,8 +348,10 @@ class DeterminaCostituzioneDocument
             5 del CCNL 2018, non sono assoggettate ai limiti di crescita dei Fondi previsti dalle norme vigenti ed in
             particolare all’art. 23 del D.Lgs... 75/2017, così come confermato definitivamente dalla Delibera della
             Corte dei Conti Sezione delle Autonomie n. 19/2018;
+               <?php endif; ?>
             <br>
             <br>
+              <?php if (self::checkOptionalValues('R146')): ?>
             • ai sensi dell’art. 67 comma 2 lettera a) del CCNL 22.5.2018 si inseriscono le somme di un importo su base
             annua, pari a euro 83,20 per le unità di personale destinatarie del presente CCNL in servizio alla data del
             31.12.2015, a decorrere dal 31.12.2018 e a valere dall’anno 2019, per
@@ -302,8 +359,10 @@ class DeterminaCostituzioneDocument
             dichiarazione congiunta n. 5 del CCNL 2018, non sono assoggettate ai limiti di crescita dei Fondi previsti
             dalle norme vigenti ed in particolare all’art. 23 del D.Lgs... 75/2017, così come confermato definitivamente
             dalla Delibera della Corte dei Conti Sezione delle Autonomie n. 19/2018;
+              <?php endif; ?>
             <br>
             <br>
+            <?php if (self::checkOptionalValues('R154')): ?>
             • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 e art 1 c 800 L. 205/2017 relativo
             all’armonizzazione retribuzione accessoria del personale delle Città Metropolitane e Province transitato ad
             altre Amministrazioni, si inseriscono gli importi necessari a sostenere a regime gli oneri del trattamento
@@ -312,20 +371,26 @@ class DeterminaCostituzioneDocument
             18.12.2018 di riscontro alla Regione Lombardia) sono considerate non assoggettate ai limiti di crescita dei
             Fondi previsti dalle norme vigenti ed in particolare all’art. 23 del D.Lgs... 75/2017, per un importo pari a
             € <?php self::getInput('var36', 'R154', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R148')): ?>
             • ai sensi dell'art 11 D.L. 135/2018 c. 1 lett. b) si inseriscono le somme per un importo di
             € <?php self::getInput('var37', 'R148', 'orange'); ?> a
             copertura degli oneri del trattamento economico accessorio per le assunzioni effettuate, in deroga alle
             facoltà assunzionali vigenti, successivamente all'entrata in vigore dell'articolo 23 del D.Lgs. 75/2017;
+             <?php endif; ?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R25')): ?>
             • per effetto del trasferimento dell’ex personale ATA da questo Ente presso il Comparto Scuola, già a far
             data
             dall’anno 2000, sono state decurtate dal fondo risorse pari ad
             € <?php self::getInput('var37', 'R25', 'orange'); ?>;
+             <?php endif; ?>
             <br>
             <br>
+            <?php if (self::checkOptionalValues('R26')): ?>
             • già a partire dall’anno xxxx, a seguito dell'affidamento delle posizioni organizzative e della relativa
             retribuzione di posizione, per gli Enti senza dirigenza, il fondo di cui all'art. 15 del CCNL dell’1.4.1999
             è stato decurtato della quota delle risorse prima destinate al pagamento dei compensi per il salario
@@ -334,13 +399,16 @@ class DeterminaCostituzioneDocument
             della quota delle risorse prima destinate al pagamento dei compensi per il salario accessorio della
             Posizione organizzativa)', 'orange'); ?>, per un valore pari ad
             € <?php self::getInput('var39', 'R26', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
+            <?php if (self::checkOptionalValues('R27')): ?>
             • già a partire dall’anno 1999, a seguito del primo inquadramento di alcune categorie di lavoratori in
             applicazione del CCNL del 31.3.1999 (area di vigilanza e personale della prima e seconda qualifica
             funzionale) il fondo è stato decurtato della quota delle risorse destinate al pagamento degli oneri
             derivanti dalla riclassificazione del personale per un valore pari ad
             € <?php self::getInput('var40', 'R27', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
             • il fondo viene decurtato per
@@ -399,36 +467,50 @@ class DeterminaCostituzioneDocument
             sottoposte al limite dell’anno 2016, di cui all’art. 23 del D.Lgs. 75/2017 e pertanto vengono stanziate:
             <br>
             <br>
+            <?php if (self::checkOptionalValues('R33')): ?>
             • ai sensi dell’art. 67 comma 4 CCNL 21.5.2018, le risorse economiche derivanti dal calcolo fino ad un
             massimo
             dell'1,2% del monte salari anno 1997 (esclusa la quota riferita alla dirigenza), per un importo pari ad
             € <?php self::getInput('var50', 'R33', 'orange'); ?>
             ;
+
             <br>
             L’utilizzo è conseguente alla verifica dell’effettivo conseguimento dei risultati attesi.
+            <?php endif;?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R29')): ?>
             • ai sensi dell’art. 67 comma 3 lett. a) CCNL 21.5.2018 le somme derivanti da contratti di sponsorizzazione,
             accordi di collaborazione, convenzioni con soggetti pubblici o privati e contributi dell'utenza per servizi
             pubblici non essenziali, secondo la disciplina dettata dall'art. 43 della Legge 449/1997 per
             € <?php self::getInput('var51', 'R29', 'orange'); ?> ,
             rispettivamente
             per <?php self::getTextArea('area4', '(INSERIRE IL TITOLO o allegare i file TESTO LIBERO)', 'red'); ?> ;
+             <?php endif;?>
             <br>
+            <br>
+             <?php if (self::checkOptionalValues('R30')): ?>
             • ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, le somme destinate alle attività di recupero ICI
             per
             € <?php self::getInput('var52', 'R30', 'orange'); ?>;
+             <?php endif;?>
             <br>
             <br>
+              <?php if (self::checkOptionalValues('R31')): ?>
             • ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, le somme destinate al finanziamento delle attività
             per l’attuazione della Legge Regionale specifica (INSERIRE IL TITOLO TESTO LIBERO es. L.R. SARDEGNA n. 19
             del 1997) per €<?php self::getInput('var53', 'R31', 'orange'); ?> ;
+              <?php endif;?>
+
             <br>
             <br>
+              <?php if (self::checkOptionalValues('R32')): ?>
             • ai sensi dell’art. 67 comma 3 lett. f) CCNL 21.5.2018 una quota parte del rimborso spese per ogni
             notificazione di atti per €<?php self::getInput('var54', 'R32', 'orange'); ?> ;
+              <?php endif;?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R34')): ?>
             • ai sensi dell’art. 67 comma 5 lett. b) CCNL 21.5.2018, le somme per il conseguimento di obiettivi
             dell’ente,
             anche di mantenimento, nonché obiettivi di potenziamento dei servizi di controllo finalizzati alla sicurezza
@@ -448,36 +530,45 @@ class DeterminaCostituzioneDocument
             <br>
             Si precisa che gli importi, qualora non interamente distribuiti, non daranno luogo ad economie di fondo ma
             ritorneranno nella disponibilità del bilancio dell’Ente;
+             <?php endif;?>
             <br>
             • ai sensi dell’art. xx comma x del CCNL <?php self::getInput('var58', 'xx.xx.xxxx', 'orange'); ?>, le somme
             per € <?php self::getTextArea('area6', '(INSERIRE IL TITOLO TESTO LIBERO SE SONO
             STATE AGGIUNTE ALTRE RISORSE NELLA PARTE VARIABILE)', 'red'); ?>;
             <br>
             <br>
+            <?php if (self::checkOptionalValues('R129')): ?>
             • ai sensi dell’art. 67 comma 3 lett. d) CCNL 21.5.2018, le somme una tantum corrispondenti alla frazione di
             RIA, calcolati in misura pari alle mensilità residue dopo la cessazione, computandosi a tal fine, oltre ai
             ratei di tredicesima mensilità, le frazioni di mese superiori a quindici giorni; l’importo confluisce nel
             Fondo dell’anno successivo alla cessazione dal servizio, per un importo pari ad
             € <?php self::getInput('var59', 'R129', 'orange'); ?>;
+            <?php endif;?>
             <br>
             <br>
+            <?php if (self::checkOptionalValues('R130')): ?>
             • ai sensi dell’art. 67 comma 3 lett. g CCNL 21.5.2018, le somme per gli importi delle risorse destinate ai
             trattamenti economici accessori del personale delle case da gioco secondo le previsioni della legislazione
             vigente e dei relativi decreti ministeriali attuativi, per
             € <?php self::getInput('var59', 'R130', 'orange'); ?>;
+            <?php endif;?>
             <br>
             <br>
+            <?php if (self::checkOptionalValues('R131')): ?>
             • ai sensi dell’art. 67 comma 3 lett. k CCNL 21.5.2018, le somme per gli importi a seguito dei trasferimenti
             di personale di cui al comma 2 lett. e) ed a fronte della corrispondente riduzione ivi prevista della
             componente variabile dei fondi - limitatamente all’anno in cui avviene il trasferimento, per
             €<?php self::getInput('var60', 'R131', 'orange'); ?> ;
+            <?php endif;?>
 
             <br>
             <br>
+             <?php if (self::checkOptionalValues('R131')): ?>
             • ai sensi dell’art. 67 c. 7 e Art.15 c. 7 CCNL 2018 le somme pari alla quota di incremento del Fondo
             trattamento accessorio per riduzione delle risorse destinate alla retribuzione di posizione e di risultato
             delle PO rispetto al tetto complessivo del salario accessorio art. 23 c. 2 D.Lgs... 75/2017, per un importo
-            pari a €<?php self::getInput('var60', 'R155', 'orange'); ?> ;
+            pari a €<?php self::getInput('var60', 'R131', 'orange'); ?> ;
+             <?php endif;?>
             <br>
             <br>
             Ritenuto:

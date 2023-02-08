@@ -12,8 +12,35 @@ class FondoCompletoTable
 
             let id = 0;
             let filteredRecord = joined_record;
+            let descrizione = '';
+            let array = [];
+
+            function getFormulaValues() {
+                filteredRecord.forEach(art => {
+                    if (art.formula !== undefined) {
+                        descrizione = evaluateFormula(art.formula);
+                        let element = {};
+                        element.formula = art.nome;
+                        element.valore = descrizione;
+                        array.push(element);
+                    }
+                });
+                const payload = {array};
+                $.ajax({
+                    url: '<?= DateXFondoCommon::get_website_url() ?>///wp-json/datexfondoplugin/v1/valuesformula',
+                    data: payload,
+                    type: "POST",
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+            }
 
             function renderDataTable(section, subsection) {
+
                 let index = Object.keys(sezioni).indexOf(section);
                 $('#dataTemplateTableBody' + index).html('');
                 filteredRecord = joined_record;
@@ -22,11 +49,9 @@ class FondoCompletoTable
                     filteredRecord = filteredRecord.filter(art => art.sottosezione === subsection)
                 }
 
-
                 let ordinamento = '';
                 let nota = '';
                 let id_articolo = '';
-                let descrizione = '';
                 let sottotitolo = '';
                 let link = '';
                 let valore = '';
@@ -68,10 +93,6 @@ class FondoCompletoTable
                         valore_precedente = art.valore_anno_precedente ?? "";
 
                         if (art.formula !== undefined) {
-
-
-                            descrizione = evaluateFormula(art.formula);
-
 
                             id_articolo = art.nome ?? "";
 
@@ -125,8 +146,6 @@ class FondoCompletoTable
                     $(this).attr("style", "display:none");
                     $(this).next().attr("style", "display:block");
                 });
-
-
             }
 
 
@@ -163,8 +182,7 @@ class FondoCompletoTable
                 }
                 try {
                     return eval(formula);
-                }
-                catch (e) {
+                } catch (e) {
                     console.log(e);
                     return " C'è un errore nei valori inseriti, ricontrolla";
                 }
@@ -207,9 +225,10 @@ class FondoCompletoTable
             let current_subsection;
 
             $(document).ready(function () {
-
+                getFormulaValues();
                 renderDataTable();
                 resetSubsection();
+
 
                 $('.class-accordion-button').click(function () {
                     let section = $(this).attr('data-section');

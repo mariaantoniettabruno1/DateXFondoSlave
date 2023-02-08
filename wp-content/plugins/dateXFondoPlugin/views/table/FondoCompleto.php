@@ -73,7 +73,7 @@ class FondoCompleto
                         joinedIndexes["F" + r.external_id] = r
                     }
                 })
-                console.log(joined_record, joinedIndexes)
+
 
                 const sezioni = {}
                 articoli.forEach(a => {
@@ -84,7 +84,7 @@ class FondoCompleto
                         sezioni[a.sezione].push(a.sottosezione);
                     }
                 });
-                console.log(joined_record);
+
             </script>
         </head>
 

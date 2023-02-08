@@ -20,6 +20,7 @@ require_once(plugin_dir_path(__FILE__) . 'repositories/DeliberaDocumentRepositor
 require_once(plugin_dir_path(__FILE__) . 'repositories/FormulaRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/RegioniDocumentRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/FondoCompletoTableRepository.php');
+require_once(plugin_dir_path(__FILE__) . 'repositories/UserRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'views/table/FondoCompleto.php');
 require_once(plugin_dir_path(__FILE__) . 'views/table/components/FondoCompletoTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateFondo.php');
@@ -62,12 +63,15 @@ require_once(plugin_dir_path(__FILE__) . 'views/document/components/delibera/Del
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/FormulaCard.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/FormulaSidebar.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/PreviewArticolo.php');
+require_once(plugin_dir_path(__FILE__) . 'views/settings/UserSettings.php');
+require_once(plugin_dir_path(__FILE__) . 'views/settings/components/UserSettingsForm.php');
 require_once(plugin_dir_path(__FILE__) . 'api/formula.php');
 require_once(plugin_dir_path(__FILE__) . 'api/document.php');
 require_once(plugin_dir_path(__FILE__) . 'api/regionidocument.php');
 require_once(plugin_dir_path(__FILE__) . 'api/deliberadocument.php');
 require_once(plugin_dir_path(__FILE__) . 'api/template.php');
 require_once(plugin_dir_path(__FILE__) . 'api/newrow.php');
+require_once(plugin_dir_path(__FILE__) . 'api/user.php');
 require_once(plugin_dir_path(__FILE__) . 'api/joinTable.php');
 
 
@@ -103,6 +107,7 @@ function shortcodes_init()
     add_shortcode('post_delibera_template', 'delibera_template');
     add_shortcode('post_determina_costituzione_template', 'determina_costituzione_template');
     add_shortcode('post_relazione_illustrativa_template', 'relazione_illustrativa_template');
+    add_shortcode('post_user_settings', 'slave_user_settings');
 }
 
 
@@ -143,11 +148,7 @@ function visualize_formula_template()
     \dateXFondoPlugin\Formula::render();
 }
 
-function visualize_slave_formula_template()
-{
-    \dateXFondoPlugin\SlaveShortCodeFormulaTable::visualize_slave_formula_template();
 
-}
 
 function document_template()
 {
@@ -186,109 +187,14 @@ function document_table_template()
 
 }
 
-
-//route ed endpoint per far funzionare la modifica campi della table contenente i dati dell'anno corrente per il master
-//function create_endpoint_datefondo()
-//{
-//
-//    register_rest_route('datexfondoplugin/v1', 'table/edit', array(
-//        'methods' => 'POST',
-//        'callback' => 'esegui_modifica_campi'
-//    ));
-//
-//
-//}
-//
-//function esegui_modifica_campi($params)
-//{
-//    \dateXFondoPlugin\modifica_campi($params);
-//    $data = ['params' => $params, 'message' => 'Endpoint di edit'];
-//    $response = new WP_REST_Response($data);
-//    $response->set_status(200);
-//    return $response;
-//}
-//
-//add_action('rest_api_init', 'create_endpoint_datefondo');
-//
-////route ed endpoint per far funzionare la modifica campi della table contenente i dati dell'anno corrente per lo svale
-//function create_endpoint_datefondo_slave()
-//{
-//
-//    register_rest_route('datexfondoplugin/v1', 'table/editslave', array(
-//        'methods' => 'POST',
-//        'callback' => 'esegui_modifica_campi_slave'
-//    ));
-//
-//
-//}
-//
-//function esegui_modifica_campi_slave($params)
-//{
-//    \dateXFondoPlugin\modifica_campi_slave($params);
-//    $data = ['params' => $params, 'message' => 'Endpoint di edit per lo slave'];
-//    $response = new WP_REST_Response($data);
-//    $response->set_status(200);
-//    return $response;
-//}
-//
-//add_action('rest_api_init', 'create_endpoint_datefondo_slave');
-//
-////route ed endpoint per far funzionare la modifica campi del table template che viene duplicato in fase di creazione di un nuovo fondo
-//function create_endpoint_datefondo_nuovo()
-//{
-//
-//    register_rest_route('datexfondoplugin/v1', 'table/editnewfondo', array(
-//        'methods' => 'POST',
-//        'callback' => 'esegui_modifica_campi_nuovo_template'
-//    ));
-//
-//
-//}
-//
-//function esegui_modifica_campi_nuovo_template($params)
-//{
-//    return \dateXFondoPlugin\modifica_campi_nuovo_template($params);
-//}
-//
-//add_action('rest_api_init', 'create_endpoint_datefondo_nuovo');
-//
-//
-//function create_endpoint_datefondo_attiva_riga()
-//{
-//
-//    register_rest_route('datexfondoplugin/v1', 'table/enablerow', array(
-//        'methods' => 'POST',
-//        'callback' => 'esegui_abilitazione_riga'
-//    ));
-//
-//
-//}
-//
-//function esegui_abilitazione_riga($params)
-//{
-//    return \dateXFondoPlugin\abilita_riga($params);
-//}
-//
-//add_action('rest_api_init', 'create_endpoint_datefondo_attiva_riga');
-//
-//function create_endpoint_datefondo_ereditarieta_nota_valore()
-//{
-//
-//    register_rest_route('datexfondoplugin/v1', 'table/heredity', array(
-//        'methods' => 'POST',
-//        'callback' => 'esegui_eredita_nota_valore'
-//    ));
-//
-//
-//}
-//
-//function esegui_eredita_nota_valore($params)
-//{
-//    return \dateXFondoPlugin\eredita_nome_valore($params);
-//}
-//
-//add_action('rest_api_init', 'create_endpoint_datefondo_ereditarieta_nota_valore');
+function slave_user_settings(){
+    $document = new \dateXFondoPlugin\UserSettings();
+    $document->render();
+}
 
 
+function admin_default_page() {
+    return DateXFondoCommon::get_website_url().'/impostazioni-utente/';
+}
 
-
+add_filter('login_redirect', 'admin_default_page');

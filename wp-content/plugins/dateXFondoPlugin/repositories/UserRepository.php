@@ -1,0 +1,32 @@
+<?php
+
+namespace dateXFondoPlugin;
+
+class UserRepository
+{
+public static function getUserInfos(){
+    $conn = new Connection();
+    $mysqli = $conn->connect();
+    $sql = "SELECT * FROM DATE_user_form";
+    $result = $mysqli->query($sql);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    mysqli_close($mysqli);
+    return $rows;
+}
+function update_user_settings($request){
+    $conn = new Connection();
+    $mysqli = $conn->connect();
+    $sql = "UPDATE DATE_user_form SET titolo_ente=?, nome_soggetto_deliberante=?,responsabile=?,firma=?,riduzione_spesa=?";
+    $stmt = $mysqli->prepare($sql);
+    $stmt->bind_param("sssss",
+        $request['titolo_ente'],
+        $request['soggetto_deliberante'],
+        $request['responsabile_documento'],
+        $request['firma'],
+        $request['riduzione_spesa']);
+    $res = $stmt->execute();
+    $mysqli->close();
+    return $res;
+}
+
+}
