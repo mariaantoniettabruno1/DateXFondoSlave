@@ -38,19 +38,15 @@ class DeterminaCostituzioneDocument
     private function getInput($key, $default, $color)
     {
         $value = $this->articles[$default] ?? $this->formulas[$default] ?? $this->values[$key] ?? $default;
-        if($value == 'titolo_ente'){
+        if ($value == 'titolo_ente') {
             $value = $this->user_infos['titolo_ente'];
-        }
-        else if($value == 'nome_soggetto_deliberante'){
+        } else if ($value == 'nome_soggetto_deliberante') {
             $value = $this->user_infos['nome_soggetto_deliberante'];
-        }
-        else if($value == 'responsabile_documento'){
+        } else if ($value == 'responsabile_documento') {
             $value = $this->user_infos['responsabile'];
-        }
-        else if($value == 'documento_a_firma_di'){
+        } else if ($value == 'documento_a_firma_di') {
             $value = $this->user_infos['firma'];
-        }
-        else if($value == 'riduzione_spesa'){
+        } else if ($value == 'riduzione_spesa') {
             $value = $this->user_infos['riduzione_spesa'];
         }
 
@@ -203,10 +199,12 @@ class DeterminaCostituzioneDocument
             <b>Premesso che:</b>
             <br>
             <br>
-            • <?php self::getInput('var18', 'il/la', 'orange'); ?> <?php self::getInput('var19', 'nome_soggetto_deliberante', 'orange'); ?>
-            ha rispettato i vincoli previsti dalle regole del cosiddetto “Equilibrio di
-            Bilancio” e il principio di riduzione della spesa del personale sostenuta
-            rispetto <?php self::getInput('var20', 'criterio riduzione spesa', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F101')): ?>
+                • <?php self::getInput('var18', 'il/la', 'orange'); ?><?php self::getInput('var19', 'nome_soggetto_deliberante', 'orange'); ?>
+                ha rispettato i vincoli previsti dalle regole del cosiddetto “Equilibrio di
+                Bilancio” e il principio di riduzione della spesa del personale sostenuta
+                rispetto <?php self::getInput('var20', 'criterio riduzione spesa', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
             <b> Considerato che:</b>
@@ -287,166 +285,179 @@ class DeterminaCostituzioneDocument
             per un importo pari ad € <?php self::getInput('var25', 'S1_1', 'orange'); ?>;
             <br>
             <br>
-             <?php if (self::checkOptionalValues('R124')): ?>
-            • ai sensi dell’art. 67 comma 2 lett. c) CCNL 22.5.2018 che prevede che “le risorse di cui al comma 1, sono
-            integrate dall’importo annuo della retribuzione individuale di anzianità e degli assegni ad personam,
-            compresa la quota di tredicesima, in godimento da parte del personale cessato dal servizio nell’anno
-            precedente”, è prevista una integrazione pari a € <?php self::getInput('var26', 'R124', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F299')): ?>
+                • ai sensi dell’art. 67 comma 2 lett. c) CCNL 22.5.2018 che prevede che “le risorse di cui al comma 1, sono
+                integrate dall’importo annuo della retribuzione individuale di anzianità e degli assegni ad personam,
+                compresa la quota di tredicesima, in godimento da parte del personale cessato dal servizio nell’anno
+                precedente”, è prevista una integrazione pari a € <?php self::getInput('var26', 'R124', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
-             <?php if (self::checkOptionalValues('R128')): ?>
-            • ai sensi dell’art. 67 comma 5 lett. a) CCNL 22.5.2018 che prevede “in caso di incremento delle dotazioni
-            organiche, al fine di sostenere gli oneri dei maggiori trattamenti economici del personale” si inserisce
-            l'importo di € <?php self::getInput('var27', 'R128', 'orange'); ?>;, in quanto l’Ente
-            nell’anno <?php self::getInput('var28', 'xxxxxx', 'orange'); ?>; ha incrementato la dotazione organica e ha
-            effettuato
-            le conseguenti assunzioni;
-             <?php endif; ?>
+            <?php if (self::checkOptionalValues('F303')): ?>
+                • ai sensi dell’art. 67 comma 5 lett. a) CCNL 22.5.2018 che prevede “in caso di incremento delle dotazioni
+                organiche, al fine di sostenere gli oneri dei maggiori trattamenti economici del personale” si inserisce
+                l'importo di € <?php self::getInput('var27', 'R128', 'orange'); ?>;, in quanto l’Ente
+                nell’anno <?php self::getInput('var28', 'xxxxxx', 'orange'); ?>; ha incrementato la dotazione organica e ha
+                effettuato
+                le conseguenti assunzioni;
+            <?php endif; ?>
             <br>
             <br>
-             <?php if (self::checkOptionalValues('R127')): ?>
-            • ai sensi dell’art. 67 comma 2 lett. g) del CCNL 22.5.2018 si inseriscono le somme per la riduzione stabile
-            del fondo dello straordinario, ad invarianza complessiva di risorse stanziate, per
-            € <?php self::getInput('var29', 'R127', 'orange'); ?>;
-             <?php endif; ?>
+            <?php if (self::checkOptionalValues('F302')): ?>
+                • ai sensi dell’art. 67 comma 2 lett. g) del CCNL 22.5.2018 si inseriscono le somme per la riduzione stabile
+                del fondo dello straordinario, ad invarianza complessiva di risorse stanziate, per
+                € <?php self::getInput('var29', 'R127', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
-              <?php if (self::checkOptionalValues('R126')): ?>
-            • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 si inseriscono gli importi necessari a
-            sostenere
-            a regime gli oneri del trattamento economico di personale trasferito, anche nell’ambito di processi
-            associativi, di delega o trasferimento di funzioni, a fronte di corrispondente riduzione della componente
-            stabile dei Fondi delle amministrazioni di provenienza, ferma restando la capacità di spesa a carico del
-            bilancio dell’ente, nonché degli importi corrispondenti agli adeguamenti dei Fondi previsti dalle vigenti
-            disposizioni di legge, a seguito di trasferimento di personale, come ad esempio l’art. 1, commi da 793 a
-            799, della legge n. 205/2017; le Unioni di comuni tengono anche conto della speciale disciplina di cui
-            all’art. 70-sexies, per € <?php self::getInput('var30', 'R126', 'orange'); ?>;
-              <?php endif; ?>
+            <?php if (self::checkOptionalValues('F301')): ?>
+                • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 si inseriscono gli importi necessari a
+                sostenere
+                a regime gli oneri del trattamento economico di personale trasferito, anche nell’ambito di processi
+                associativi, di delega o trasferimento di funzioni, a fronte di corrispondente riduzione della componente
+                stabile dei Fondi delle amministrazioni di provenienza, ferma restando la capacità di spesa a carico del
+                bilancio dell’ente, nonché degli importi corrispondenti agli adeguamenti dei Fondi previsti dalle vigenti
+                disposizioni di legge, a seguito di trasferimento di personale, come ad esempio l’art. 1, commi da 793 a
+                799, della legge n. 205/2017; le Unioni di comuni tengono anche conto della speciale disciplina di cui
+                all’art. 70-sexies, per € <?php self::getInput('var30', 'R126', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
-             <?php if (self::checkOptionalValues('R125')): ?>
-            • ai sensi dell’art. 67 comma 2 lettera d) del CCNL 22.5.2018 si inseriscono risorse riassorbite ai sensi
-            dell’art. 2, comma 3, del D.Lgs. 30 marzo 2001, n. 165, per un importo di
-            € <?php self::getInput('var31', 'R125', 'orange'); ?>;
-             <?php endif; ?>
+            <?php if (self::checkOptionalValues('F300')): ?>
+                • ai sensi dell’art. 67 comma 2 lettera d) del CCNL 22.5.2018 si inseriscono risorse riassorbite ai sensi
+                dell’art. 2, comma 3, del D.Lgs. 30 marzo 2001, n. 165, per un importo di
+                € <?php self::getInput('var31', 'R125', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
-            • ai sensi dell’art.<?php self::getInput('var32', 'xx comma x del CCNL xx.xx.xxxx', 'orange'); ?> si
-            inseriscono le somme per € <?php self::getInput('var33', '(INSERIRE IL TITOLO TESTO
+            <?php if (self::checkOptionalValues('F83')): ?>
+                • ai sensi dell’art.<?php self::getInput('var32', 'xx comma x del CCNL xx.xx.xxxx', 'orange'); ?> si
+                inseriscono le somme per € <?php self::getInput('var33', '(INSERIRE IL TITOLO TESTO
             LIBERO SE SONO STATE AGGIUNTE ALTRE RISORSE NELLA PARTE STABILE)', 'orange'); ?> ;
-            <br>
-            <br>
-               <?php if (self::checkOptionalValues('R112')): ?>
-            • ai sensi dell’art. 67 comma 2 lettera b) del CCNL 22.5.2018 si inseriscono le somme di un importo pari
-            alle
-            differenze tra gli incrementi a regime di cui all’art. 64 CCNL 2018 riconosciuti alle posizioni economiche
-            di ciascuna categoria e gli stessi incrementi riconosciuti alle posizioni iniziali; tali differenze sono
-            calcolate con riferimento al personale in servizio alla data in cui decorrono gli incrementi e confluiscono
-            nel fondo a decorrere dalla medesima data, per € <?php self::getInput('var34', 'R112', 'orange'); ?>. Tali
-            somme, ai sensi della dichiarazione congiunta n.
-            5 del CCNL 2018, non sono assoggettate ai limiti di crescita dei Fondi previsti dalle norme vigenti ed in
-            particolare all’art. 23 del D.Lgs... 75/2017, così come confermato definitivamente dalla Delibera della
-            Corte dei Conti Sezione delle Autonomie n. 19/2018;
-               <?php endif; ?>
-            <br>
-            <br>
-              <?php if (self::checkOptionalValues('R146')): ?>
-            • ai sensi dell’art. 67 comma 2 lettera a) del CCNL 22.5.2018 si inseriscono le somme di un importo su base
-            annua, pari a euro 83,20 per le unità di personale destinatarie del presente CCNL in servizio alla data del
-            31.12.2015, a decorrere dal 31.12.2018 e a valere dall’anno 2019, per
-            € <?php self::getInput('var35', 'R146', 'orange'); ?>. Tali somme, ai sensi della
-            dichiarazione congiunta n. 5 del CCNL 2018, non sono assoggettate ai limiti di crescita dei Fondi previsti
-            dalle norme vigenti ed in particolare all’art. 23 del D.Lgs... 75/2017, così come confermato definitivamente
-            dalla Delibera della Corte dei Conti Sezione delle Autonomie n. 19/2018;
-              <?php endif; ?>
-            <br>
-            <br>
-            <?php if (self::checkOptionalValues('R154')): ?>
-            • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 e art 1 c 800 L. 205/2017 relativo
-            all’armonizzazione retribuzione accessoria del personale delle Città Metropolitane e Province transitato ad
-            altre Amministrazioni, si inseriscono gli importi necessari a sostenere a regime gli oneri del trattamento
-            economico di personale trasferito, a fronte di corrispondente riduzione della componente stabile dei Fondi
-            delle amministrazioni di provenienza, che in base ai chiarimenti della Ragioneria dello Stato (nota del
-            18.12.2018 di riscontro alla Regione Lombardia) sono considerate non assoggettate ai limiti di crescita dei
-            Fondi previsti dalle norme vigenti ed in particolare all’art. 23 del D.Lgs... 75/2017, per un importo pari a
-            € <?php self::getInput('var36', 'R154', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
-             <?php if (self::checkOptionalValues('R148')): ?>
-            • ai sensi dell'art 11 D.L. 135/2018 c. 1 lett. b) si inseriscono le somme per un importo di
-            € <?php self::getInput('var37', 'R148', 'orange'); ?> a
-            copertura degli oneri del trattamento economico accessorio per le assunzioni effettuate, in deroga alle
-            facoltà assunzionali vigenti, successivamente all'entrata in vigore dell'articolo 23 del D.Lgs. 75/2017;
-             <?php endif; ?>
+            <?php if (self::checkOptionalValues('F304')): ?>
+                • ai sensi dell’art. 67 comma 2 lettera b) del CCNL 22.5.2018 si inseriscono le somme di un importo pari
+                alle
+                differenze tra gli incrementi a regime di cui all’art. 64 CCNL 2018 riconosciuti alle posizioni economiche
+                di ciascuna categoria e gli stessi incrementi riconosciuti alle posizioni iniziali; tali differenze sono
+                calcolate con riferimento al personale in servizio alla data in cui decorrono gli incrementi e confluiscono
+                nel fondo a decorrere dalla medesima data, per € <?php self::getInput('var34', 'R112', 'orange'); ?>. Tali
+                somme, ai sensi della dichiarazione congiunta n.
+                5 del CCNL 2018, non sono assoggettate ai limiti di crescita dei Fondi previsti dalle norme vigenti ed in
+                particolare all’art. 23 del D.Lgs... 75/2017, così come confermato definitivamente dalla Delibera della
+                Corte dei Conti Sezione delle Autonomie n. 19/2018;
+            <?php endif; ?>
             <br>
             <br>
-             <?php if (self::checkOptionalValues('R25')): ?>
-            • per effetto del trasferimento dell’ex personale ATA da questo Ente presso il Comparto Scuola, già a far
-            data
-            dall’anno 2000, sono state decurtate dal fondo risorse pari ad
-            € <?php self::getInput('var37', 'R25', 'orange'); ?>;
-             <?php endif; ?>
+            <?php if (self::checkOptionalValues('F320')): ?>
+                • ai sensi dell’art. 67 comma 2 lettera a) del CCNL 22.5.2018 si inseriscono le somme di un importo su base
+                annua, pari a euro 83,20 per le unità di personale destinatarie del presente CCNL in servizio alla data del
+                31.12.2015, a decorrere dal 31.12.2018 e a valere dall’anno 2019, per
+                € <?php self::getInput('var35', 'R146', 'orange'); ?>. Tali somme, ai sensi della
+                dichiarazione congiunta n. 5 del CCNL 2018, non sono assoggettate ai limiti di crescita dei Fondi previsti
+                dalle norme vigenti ed in particolare all’art. 23 del D.Lgs... 75/2017, così come confermato definitivamente
+                dalla Delibera della Corte dei Conti Sezione delle Autonomie n. 19/2018;
+            <?php endif; ?>
             <br>
             <br>
-            <?php if (self::checkOptionalValues('R26')): ?>
-            • già a partire dall’anno xxxx, a seguito dell'affidamento delle posizioni organizzative e della relativa
-            retribuzione di posizione, per gli Enti senza dirigenza, il fondo di cui all'art. 15 del CCNL dell’1.4.1999
-            è stato decurtato della quota delle risorse prima destinate al pagamento dei compensi per il salario
-            accessorio del personale interessato <?php self::getTextArea('area2', '(OPPURE: per gli Enti con Dirigenza, a partire dall’anno 2018, in
+            <?php if (self::checkOptionalValues('F338')): ?>
+                • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 e art 1 c 800 L. 205/2017 relativo
+                all’armonizzazione retribuzione accessoria del personale delle Città Metropolitane e Province transitato ad
+                altre Amministrazioni, si inseriscono gli importi necessari a sostenere a regime gli oneri del trattamento
+                economico di personale trasferito, a fronte di corrispondente riduzione della componente stabile dei Fondi
+                delle amministrazioni di provenienza, che in base ai chiarimenti della Ragioneria dello Stato (nota del
+                18.12.2018 di riscontro alla Regione Lombardia) sono considerate non assoggettate ai limiti di crescita dei
+                Fondi previsti dalle norme vigenti ed in particolare all’art. 23 del D.Lgs... 75/2017, per un importo pari a
+                € <?php self::getInput('var36', 'R154', 'orange'); ?>;
+            <?php endif; ?>
+            <br>
+            <br>
+            <?php if (self::checkOptionalValues('F323')): ?>
+                • ai sensi dell'art 11 D.L. 135/2018 c. 1 lett. b) si inseriscono le somme per un importo di
+                € <?php self::getInput('var37', 'R148', 'orange'); ?> a
+                copertura degli oneri del trattamento economico accessorio per le assunzioni effettuate, in deroga alle
+                facoltà assunzionali vigenti, successivamente all'entrata in vigore dell'articolo 23 del D.Lgs. 75/2017;
+            <?php endif; ?>
+            <br>
+            <br>
+            <?php if (self::checkOptionalValues('F41')): ?>
+                • per effetto del trasferimento dell’ex personale ATA da questo Ente presso il Comparto Scuola, già a far
+                data
+                dall’anno 2000, sono state decurtate dal fondo risorse pari ad
+                € <?php self::getInput('var37', 'R25', 'orange'); ?>;
+            <?php endif; ?>
+            <br>
+            <br>
+            <?php if (self::checkOptionalValues('F72')): ?>
+                • già a partire dall’anno xxxx, a seguito dell'affidamento delle posizioni organizzative e della relativa
+                retribuzione di posizione, per gli Enti senza dirigenza, il fondo di cui all'art. 15 del CCNL dell’1.4.1999
+                è stato decurtato della quota delle risorse prima destinate al pagamento dei compensi per il salario
+                accessorio del personale interessato <?php self::getTextArea('area2', '(OPPURE: per gli Enti con Dirigenza, a partire dall’anno 2018, in
             applicazione delle disposizioni previste dall’art. 67 c. 1 CCNL 21.5.2018, il fondo deve essere decurtato
             della quota delle risorse prima destinate al pagamento dei compensi per il salario accessorio della
             Posizione organizzativa)', 'orange'); ?>, per un valore pari ad
-            € <?php self::getInput('var39', 'R26', 'orange'); ?>;
+                € <?php self::getInput('var39', 'R26', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
-            <?php if (self::checkOptionalValues('R27')): ?>
-            • già a partire dall’anno 1999, a seguito del primo inquadramento di alcune categorie di lavoratori in
-            applicazione del CCNL del 31.3.1999 (area di vigilanza e personale della prima e seconda qualifica
-            funzionale) il fondo è stato decurtato della quota delle risorse destinate al pagamento degli oneri
-            derivanti dalla riclassificazione del personale per un valore pari ad
-            € <?php self::getInput('var40', 'R27', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F73')): ?>
+                • già a partire dall’anno 1999, a seguito del primo inquadramento di alcune categorie di lavoratori in
+                applicazione del CCNL del 31.3.1999 (area di vigilanza e personale della prima e seconda qualifica
+                funzionale) il fondo è stato decurtato della quota delle risorse destinate al pagamento degli oneri
+                derivanti dalla riclassificazione del personale per un valore pari ad
+                € <?php self::getInput('var40', 'R27', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
-            • il fondo viene decurtato per
-            € <?php self::getInput('var41', '(INSERIRE IL TITOLO TESTO LIBERO SE SONO STATE DECURTATE ALTRE RISORSE NELLA PARTE STABILE)', 'orange'); ?>
-            ;
+            <?php if (self::checkOptionalValues('F85')): ?>
+                • il fondo viene decurtato per
+                € <?php self::getInput('var41', '(INSERIRE IL TITOLO TESTO LIBERO SE SONO STATE DECURTATE ALTRE RISORSE NELLA PARTE STABILE)', 'orange'); ?>
+                ;
+            <?php endif; ?>
             <br>
             <br>
-            • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 si procede alla decurtazione degli importi
-            relativi agli oneri del trattamento economico di personale trasferito presso altri Enti, nell’ambito di
-            processi associativi, di delega o trasferimento di funzioni, previsti da disposizioni di legge o altro, per
-            un importo pari a € <?php self::getInput('var40', 'R151', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F325')): ?>
+                • il fondo viene decurtato per
+                • ai sensi dell’art. 67 comma 2 lettera e) del CCNL 22.5.2018 si procede alla decurtazione degli importi
+                relativi agli oneri del trattamento economico di personale trasferito presso altri Enti, nell’ambito di
+                processi associativi, di delega o trasferimento di funzioni, previsti da disposizioni di legge o altro, per
+                un importo pari a € <?php self::getInput('var40', 'R151', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
             <b> Tenuto conto che:</b>
             <br>
             <br>
-            • il numero di dipendenti in servizio nell’anno, calcolato in base alle modalità fornite dalla Ragioneria
-            dello Stato da ultimo con nota Prot. 12454 del 15.1.2021, pari
-            a <?php self::getInput('var41', 'R162', 'orange'); ?> è superiore al numero dei dipendenti
-            in servizio al 31.12.2018 pari a R161, pertanto, in attuazione dell’art. 33 c. 2 D.L. 34/2019 convertito
-            nella L. 58/2019, il fondo risorse decentrate e il relativo limite di cui all’art. 23 c. 2 D.Lgs... 75/2017
-            devono essere adeguati in aumento al fine di garantire il valore medio pro-capite riferito al 2018, per un
-            importo pari ad € <?php self::getInput('var42', 'R150', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F324')): ?>
+                • il numero di dipendenti in servizio nell’anno, calcolato in base alle modalità fornite dalla Ragioneria
+                dello Stato da ultimo con nota Prot. 12454 del 15.1.2021, pari
+                a <?php self::getInput('var41', 'R162', 'orange'); ?> è superiore al numero dei dipendenti
+                in servizio al 31.12.2018 pari a R161, pertanto, in attuazione dell’art. 33 c. 2 D.L. 34/2019 convertito
+                nella L. 58/2019, il fondo risorse decentrate e il relativo limite di cui all’art. 23 c. 2 D.Lgs... 75/2017
+                devono essere adeguati in aumento al fine di garantire il valore medio pro-capite riferito al 2018, per un
+                importo pari ad € <?php self::getInput('var42', 'R150', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
-            Si precisa che, in base agli indirizzi
-            della <?php self::getInput('var43', 'nome_soggetto_deliberante', 'orange'); ?>, in attuazione dell’art. 33
-            c. 2 D.L.
-            34/2019 convertito nella L. 58/2019, viene aumentato anche il Fondo Posizioni organizzative per un importo
-            pari a € <?php self::getInput('var44', 'f374', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F378')): ?>
+                Si precisa che, in base agli indirizzi
+                della <?php self::getInput('var43', 'nome_soggetto_deliberante', 'orange'); ?>, in attuazione dell’art. 33
+                c. 2 D.L.
+                34/2019 convertito nella L. 58/2019, viene aumentato anche il Fondo Posizioni organizzative per un importo
+                pari a € <?php self::getInput('var44', 'f374', 'orange'); ?>;
+            <?php endif; ?>
             <br>
-            • il numero di dipendenti in servizio nell’anno, calcolato in base alle modalità fornite dalla Ragioneria
-            dello Stato da ultimo con nota Prot. 12454 del 15.1.2021, pari
-            a <?php self::getInput('var45', 'R162', 'orange'); ?> è inferiore o uguale al numero dei
-            dipendenti in servizio al 31.12.2018 pari a <?php self::getInput('var46', 'R161', 'orange'); ?>, pertanto,
-            in attuazione dell’art. 33 c. 2 D.L. 34/2019
-            convertito nella L. 58/2019, il fondo e il limite di cui all’art. 23 c.2 D.Lgs. 75/2017 non devono essere
-            adeguati in aumento al fine di garantire il valore medio pro-capite riferito al 2018;
+            <?php if (self::checkOptionalValues('F330')): ?>
+                • il numero di dipendenti in servizio nell’anno, calcolato in base alle modalità fornite dalla Ragioneria
+                dello Stato da ultimo con nota Prot. 12454 del 15.1.2021, pari
+                a <?php self::getInput('var45', 'R162', 'orange'); ?> è inferiore o uguale al numero dei
+                dipendenti in servizio al 31.12.2018 pari a <?php self::getInput('var46', 'R161', 'orange'); ?>, pertanto,
+                in attuazione dell’art. 33 c. 2 D.L. 34/2019
+                convertito nella L. 58/2019, il fondo e il limite di cui all’art. 23 c.2 D.Lgs. 75/2017 non devono essere
+                adeguati in aumento al fine di garantire il valore medio pro-capite riferito al 2018;
+            <?php endif; ?>
             <br>
             • <?php self::getTextArea('area3', 'l’Ente si impegna a modificare la presente costituzione del fondo nel caso di incremento o diminuzione del
             numero di dipendenti in servizio rispetto al 31.12.2018 e comunque a rideterminare (anche in diminuzione) il
@@ -461,186 +472,217 @@ class DeterminaCostituzioneDocument
             € <?php self::getInput('var49', 'f317', 'orange'); ?> soggette ai vincoli;
             <br>
             <br>
-            <b>Preso atto che:</b>
-            <br>
-            è stato autorizzato l'inserimento delle voci variabili di cui all’art. 67 comma 3 CCNL 21.5.2018
-            sottoposte al limite dell’anno 2016, di cui all’art. 23 del D.Lgs. 75/2017 e pertanto vengono stanziate:
-            <br>
-            <br>
-            <?php if (self::checkOptionalValues('R33')): ?>
-            • ai sensi dell’art. 67 comma 4 CCNL 21.5.2018, le risorse economiche derivanti dal calcolo fino ad un
-            massimo
-            dell'1,2% del monte salari anno 1997 (esclusa la quota riferita alla dirigenza), per un importo pari ad
-            € <?php self::getInput('var50', 'R33', 'orange'); ?>
-            ;
+            <?php if (self::checkOptionalValues('F150')): ?>
+                <b>Preso atto che:</b>
+                <br>
+                è stato autorizzato l'inserimento delle voci variabili di cui all’art. 67 comma 3 CCNL 21.5.2018
+                sottoposte al limite dell’anno 2016, di cui all’art. 23 del D.Lgs. 75/2017 e pertanto vengono stanziate:
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F44')): ?>
+                    • ai sensi dell’art. 67 comma 4 CCNL 21.5.2018, le risorse economiche derivanti dal calcolo fino ad un
+                    massimo
+                    dell'1,2% del monte salari anno 1997 (esclusa la quota riferita alla dirigenza), per un importo pari ad
+                    € <?php self::getInput('var50', 'R33', 'orange'); ?>
+                    ;
 
-            <br>
-            L’utilizzo è conseguente alla verifica dell’effettivo conseguimento dei risultati attesi.
-            <?php endif;?>
-            <br>
-            <br>
-             <?php if (self::checkOptionalValues('R29')): ?>
-            • ai sensi dell’art. 67 comma 3 lett. a) CCNL 21.5.2018 le somme derivanti da contratti di sponsorizzazione,
-            accordi di collaborazione, convenzioni con soggetti pubblici o privati e contributi dell'utenza per servizi
-            pubblici non essenziali, secondo la disciplina dettata dall'art. 43 della Legge 449/1997 per
-            € <?php self::getInput('var51', 'R29', 'orange'); ?> ,
-            rispettivamente
-            per <?php self::getTextArea('area4', '(INSERIRE IL TITOLO o allegare i file TESTO LIBERO)', 'red'); ?> ;
-             <?php endif;?>
-            <br>
-            <br>
-             <?php if (self::checkOptionalValues('R30')): ?>
-            • ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, le somme destinate alle attività di recupero ICI
-            per
-            € <?php self::getInput('var52', 'R30', 'orange'); ?>;
-             <?php endif;?>
-            <br>
-            <br>
-              <?php if (self::checkOptionalValues('R31')): ?>
-            • ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, le somme destinate al finanziamento delle attività
-            per l’attuazione della Legge Regionale specifica (INSERIRE IL TITOLO TESTO LIBERO es. L.R. SARDEGNA n. 19
-            del 1997) per €<?php self::getInput('var53', 'R31', 'orange'); ?> ;
-              <?php endif;?>
+                    <br>
+                    <?php if (self::checkOptionalValues('F44')): ?>
+                        L’utilizzo è conseguente alla verifica dell’effettivo conseguimento dei risultati attesi.
+                    <?php endif; ?>
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F46')): ?>
+                    • ai sensi dell’art. 67 comma 3 lett. a) CCNL 21.5.2018 le somme derivanti da contratti di sponsorizzazione,
+                    accordi di collaborazione, convenzioni con soggetti pubblici o privati e contributi dell'utenza per servizi
+                    pubblici non essenziali, secondo la disciplina dettata dall'art. 43 della Legge 449/1997 per
+                    € <?php self::getInput('var51', 'R29', 'orange'); ?> ,
+                    rispettivamente
+                    per <?php self::getTextArea('area4', '(INSERIRE IL TITOLO o allegare i file TESTO LIBERO)', 'red'); ?> ;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F47')): ?>
+                    • ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, le somme destinate alle attività di recupero ICI
+                    per
+                    € <?php self::getInput('var52', 'R30', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F48')): ?>
+                    • ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, le somme destinate al finanziamento delle attività
+                    per l’attuazione della Legge Regionale specifica (INSERIRE IL TITOLO TESTO LIBERO es. L.R. SARDEGNA n. 19
+                    del 1997) per €<?php self::getInput('var53', 'R31', 'orange'); ?> ;
+                <?php endif; ?>
 
-            <br>
-            <br>
-              <?php if (self::checkOptionalValues('R32')): ?>
-            • ai sensi dell’art. 67 comma 3 lett. f) CCNL 21.5.2018 una quota parte del rimborso spese per ogni
-            notificazione di atti per €<?php self::getInput('var54', 'R32', 'orange'); ?> ;
-              <?php endif;?>
-            <br>
-            <br>
-             <?php if (self::checkOptionalValues('R34')): ?>
-            • ai sensi dell’art. 67 comma 5 lett. b) CCNL 21.5.2018, le somme per il conseguimento di obiettivi
-            dell’ente,
-            anche di mantenimento, nonché obiettivi di potenziamento dei servizi di controllo finalizzati alla sicurezza
-            urbana e stradale Art. 56 quater CCNL 2018, definiti nel piano della performance o in altri analoghi
-            strumenti di programmazione della gestione, al fine di sostenere i correlati oneri dei trattamenti accessori
-            del personale, per un importo pari a €<?php self::getInput('var55', 'R34', 'orange'); ?> ;
-            <br>
-            Tali risorse sono destinate al finanziamento degli obiettivi contenuti nel Piano esecutivo di Gestione anno
-            unitamente al Piano della Performance e ne vengono qui di seguito elencati i titoli:
-            <br>
-            - <?php self::getInput('var56', '  xxxxx, (specificare almeno gli importi previsti per ogni obiettivo)', 'orange'); ?>
-            ;
-            <br>
-            - <?php self::getInput('var57', '  xxxxx', 'orange'); ?>
-            <br>
-            <?php self::getTextArea('area5', '(INSERIRE IL TITOLO o allegare i file TESTO LIBERO)', 'red'); ?>
-            <br>
-            Si precisa che gli importi, qualora non interamente distribuiti, non daranno luogo ad economie di fondo ma
-            ritorneranno nella disponibilità del bilancio dell’Ente;
-             <?php endif;?>
-            <br>
-            • ai sensi dell’art. xx comma x del CCNL <?php self::getInput('var58', 'xx.xx.xxxx', 'orange'); ?>, le somme
-            per € <?php self::getTextArea('area6', '(INSERIRE IL TITOLO TESTO LIBERO SE SONO
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F74')): ?>
+                    • ai sensi dell’art. 67 comma 3 lett. f) CCNL 21.5.2018 una quota parte del rimborso spese per ogni
+                    notificazione di atti per €<?php self::getInput('var54', 'R32', 'orange'); ?> ;
+                <?php endif; ?>
+                <br>
+
+                <?php if (self::checkOptionalValues('F45')): ?>
+                    • ai sensi dell’art. 67 comma 5 lett. b) CCNL 21.5.2018, le somme per il conseguimento di obiettivi
+                    dell’ente,
+                    anche di mantenimento, nonché obiettivi di potenziamento dei servizi di controllo finalizzati alla sicurezza
+                    urbana e stradale Art. 56 quater CCNL 2018, definiti nel piano della performance o in altri analoghi
+                    strumenti di programmazione della gestione, al fine di sostenere i correlati oneri dei trattamenti accessori
+                    del personale, per un importo pari a €<?php self::getInput('var55', 'R34', 'orange'); ?> ;
+                    <br>
+                    <?php if (self::checkOptionalValues('F45')): ?>
+                        Tali risorse sono destinate al finanziamento degli obiettivi contenuti nel Piano esecutivo di Gestione anno
+                        unitamente al Piano della Performance e ne vengono qui di seguito elencati i titoli:
+                        <br>
+                        - <?php self::getInput('var56', '  xxxxx, (specificare almeno gli importi previsti per ogni obiettivo)', 'orange'); ?>
+                        ;
+                        <br>
+                        - <?php self::getInput('var57', '  xxxxx', 'orange'); ?>
+                        <br>
+                        <?php self::getTextArea('area5', '(INSERIRE IL TITOLO o allegare i file TESTO LIBERO)', 'red'); ?>
+                        <br>
+                        Si precisa che gli importi, qualora non interamente distribuiti, non daranno luogo ad economie di fondo ma
+                        ritorneranno nella disponibilità del bilancio dell’Ente;
+                    <?php endif; ?>
+                <?php endif; ?>
+                <br>
+                <?php if (self::checkOptionalValues('F87')): ?>
+                    • ai sensi dell’art. xx comma x del CCNL <?php self::getInput('var58', 'xx.xx.xxxx', 'orange'); ?>, le somme
+                    per € <?php self::getTextArea('area6', '(INSERIRE IL TITOLO TESTO LIBERO SE SONO
             STATE AGGIUNTE ALTRE RISORSE NELLA PARTE VARIABILE)', 'red'); ?>;
-            <br>
-            <br>
-            <?php if (self::checkOptionalValues('R129')): ?>
-            • ai sensi dell’art. 67 comma 3 lett. d) CCNL 21.5.2018, le somme una tantum corrispondenti alla frazione di
-            RIA, calcolati in misura pari alle mensilità residue dopo la cessazione, computandosi a tal fine, oltre ai
-            ratei di tredicesima mensilità, le frazioni di mese superiori a quindici giorni; l’importo confluisce nel
-            Fondo dell’anno successivo alla cessazione dal servizio, per un importo pari ad
-            € <?php self::getInput('var59', 'R129', 'orange'); ?>;
-            <?php endif;?>
-            <br>
-            <br>
-            <?php if (self::checkOptionalValues('R130')): ?>
-            • ai sensi dell’art. 67 comma 3 lett. g CCNL 21.5.2018, le somme per gli importi delle risorse destinate ai
-            trattamenti economici accessori del personale delle case da gioco secondo le previsioni della legislazione
-            vigente e dei relativi decreti ministeriali attuativi, per
-            € <?php self::getInput('var59', 'R130', 'orange'); ?>;
-            <?php endif;?>
-            <br>
-            <br>
-            <?php if (self::checkOptionalValues('R131')): ?>
-            • ai sensi dell’art. 67 comma 3 lett. k CCNL 21.5.2018, le somme per gli importi a seguito dei trasferimenti
-            di personale di cui al comma 2 lett. e) ed a fronte della corrispondente riduzione ivi prevista della
-            componente variabile dei fondi - limitatamente all’anno in cui avviene il trasferimento, per
-            €<?php self::getInput('var60', 'R131', 'orange'); ?> ;
-            <?php endif;?>
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F305')): ?>
+                    • ai sensi dell’art. 67 comma 3 lett. d) CCNL 21.5.2018, le somme una tantum corrispondenti alla frazione di
+                    RIA, calcolati in misura pari alle mensilità residue dopo la cessazione, computandosi a tal fine, oltre ai
+                    ratei di tredicesima mensilità, le frazioni di mese superiori a quindici giorni; l’importo confluisce nel
+                    Fondo dell’anno successivo alla cessazione dal servizio, per un importo pari ad
+                    € <?php self::getInput('var59', 'R129', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F306')): ?>
+                    • ai sensi dell’art. 67 comma 3 lett. g CCNL 21.5.2018, le somme per gli importi delle risorse destinate ai
+                    trattamenti economici accessori del personale delle case da gioco secondo le previsioni della legislazione
+                    vigente e dei relativi decreti ministeriali attuativi, per
+                    € <?php self::getInput('var59', 'R130', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F307')): ?>
+                    • ai sensi dell’art. 67 comma 3 lett. k CCNL 21.5.2018, le somme per gli importi a seguito dei trasferimenti
+                    di personale di cui al comma 2 lett. e) ed a fronte della corrispondente riduzione ivi prevista della
+                    componente variabile dei fondi - limitatamente all’anno in cui avviene il trasferimento, per
+                    €<?php self::getInput('var60', 'R131', 'orange'); ?> ;
+                <?php endif; ?>
 
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F339')): ?>
+                    • ai sensi dell’art. 67 c. 7 e Art.15 c. 7 CCNL 2018 le somme pari alla quota di incremento del Fondo
+                    trattamento accessorio per riduzione delle risorse destinate alla retribuzione di posizione e di risultato
+                    delle PO rispetto al tetto complessivo del salario accessorio art. 23 c. 2 D.Lgs... 75/2017, per un importo
+                    pari a €<?php self::getInput('var60', 'R131', 'orange'); ?> ;
+                <?php endif; ?>
+            <?php endif; ?>
             <br>
             <br>
-             <?php if (self::checkOptionalValues('R131')): ?>
-            • ai sensi dell’art. 67 c. 7 e Art.15 c. 7 CCNL 2018 le somme pari alla quota di incremento del Fondo
-            trattamento accessorio per riduzione delle risorse destinate alla retribuzione di posizione e di risultato
-            delle PO rispetto al tetto complessivo del salario accessorio art. 23 c. 2 D.Lgs... 75/2017, per un importo
-            pari a €<?php self::getInput('var60', 'R131', 'orange'); ?> ;
-             <?php endif;?>
-            <br>
-            <br>
-            Ritenuto:
-            <br>
-            <br>
-            di integrare le risorse variabili di cui all’art. 67 comma 3 CCNL 21.5.2018, in base alla normativa
-            vigente, degli importi NON soggetti al limite del 2016, di cui all’art. 23 del D.Lgs. 75/2017 mediante:
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate alle attività
-            svolte per conto dell’ISTAT per €<?php self::getInput('var60', 'R39', 'orange'); ?>;
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate alla “avvocatura”
-            per € <?php self::getInput('var61', 'R40', 'orange'); ?>;
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018 delle somme finanziate da fondi di
-            derivazione dell'Unione Europea per € <?php self::getInput('var62', 'R41', 'orange'); ?>;
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) del CCNL 21.5.2018 delle somme destinate alle attività
-            di recupero IMU e TARI in riferimento dell'art. 1 comma 1091 della L. 145 del 31.12.2018 (Legge di Bilancio
-            2019) da distribuire ai sensi del regolamento vigente in materia e nel rispetto della normativa vigente in
-            materia per € <?php self::getInput('var63', 'R147', 'orange'); ?>;
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate alle attività
-            <?php self::getTextArea('area7', '(INSERIRE IL TITOLO TESTO LIBERO)', 'red'); ?> per
-            €<?php self::getInput('var64', 'R111', 'orange'); ?> ; (Opzionale)
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018 e dell’art. 16 comma 5 della Legge
-            111/2011 relativi a “Piani di razionalizzazione” dell'importo di
-            € <?php self::getInput('var65', 'R37', 'orange'); ?>, che dovrà essere distribuito nel
-            rigoroso rispetto dei principi introdotti dalla norma vigente e solo se, a consuntivo, verrà espresso parere
-            favorevole da parte dell'Organo di Revisione;
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. e) CCNL 21.5.2018, delle somme derivanti dai risparmi del
-            Fondo lavoro straordinario anno precedente, pari ad €<?php self::getInput('var66', 'R45', 'orange'); ?> ;
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 68 comma 1 CCNL 21.5.2018, delle risorse derivanti dai risparmi di parte
-            stabile del Fondo risorse decentrate degli anni precedenti, pari ad
-            € <?php self::getInput('var67', 'R44', 'orange'); ?>;
-            <br>
-            <br>
-            • iscrizione, ai sensi dell’art. 67 comma 3 lett. a) CCNL 21.5.2018, delle somme derivanti da contratti di
-            sponsorizzazione, accordi di collaborazione, convenzioni con soggetti pubblici o privati e contributi
-            dell'utenza per servizi pubblici non essenziali, secondo la disciplina dettata dall'art. 43 della Legge
-            449/1997 stipulati nel periodo successivo all’entrata in vigore dei limiti per il salario accessorio (2016),
-            per € <?php self::getInput('var68', 'R42', 'orange'); ?>, rispettivamente
-            per <?php self::getTextArea('area8', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO)', 'red'); ?>;
-            <br>
-            <br>
-
-            • iscrizione, ai sensi 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate ai cosiddetti incentivi per
-            funzioni tecniche D.Lgs... 50/2016 e ss.mm.ii. per €<?php self::getInput('var69', 'R122', 'orange'); ?> ;
-            <br>
-            <br>
-            • iscrizione ai sensi dell’art. 67, comma 5 lett. b) del CCNL 21.5.2018, della sola quota di maggior incasso
-            rispetto all’anno precedente a seguito di obiettivi di potenziamento dei servizi di controllo finalizzati
-            alla sicurezza urbana e stradale Art. 56 quater CCNL 2018, così come precisato dalla Corte dei Conti Sezione
-            delle Autonomie con delibera n. 5 del 2019, per un importo pari a
-            € <?php self::getInput('var70', 'R152', 'orange'); ?>;
-            <br>
-            <br>
-            • iscrizione, ai sensi
-            dell’art.<?php self::getInput('var71', 'xx comma x del CCNL xx.xx.xxxx', 'orange'); ?> , delle somme per €
-            <?php self::getTextArea('area9', ' (INSERIRE IL TITOLO TESTO
-            LIBERO SE SONO STATE AGGIUNTE ALTRE RISORSE NELLA PARTE VARIABILE NON SOTTOPOSTA A BLOCCO)', 'red'); ?>;
+            <?php if (self::checkOptionalValues('F153')): ?>
+                Ritenuto:
+                <br>
+                <br>
+                di integrare le risorse variabili di cui all’art. 67 comma 3 CCNL 21.5.2018, in base alla normativa
+                vigente, degli importi NON soggetti al limite del 2016, di cui all’art. 23 del D.Lgs. 75/2017 mediante:
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F51')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate alle attività
+                    svolte per conto dell’ISTAT per €<?php self::getInput('var60', 'R39', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F52')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate alla “avvocatura”
+                    per € <?php self::getInput('var61', 'R40', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F88')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018 delle somme finanziate da fondi di
+                    derivazione dell'Unione Europea per € <?php self::getInput('var62', 'R41', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F321')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) del CCNL 21.5.2018 delle somme destinate alle attività
+                    di recupero IMU e TARI in riferimento dell'art. 1 comma 1091 della L. 145 del 31.12.2018 (Legge di Bilancio
+                    2019) da distribuire ai sensi del regolamento vigente in materia e nel rispetto della normativa vigente in
+                    materia per € <?php self::getInput('var63', 'R147', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F53')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate alle attività
+                    <?php self::getTextArea('area7', '(INSERIRE IL TITOLO TESTO LIBERO)', 'red'); ?> per
+                    €<?php self::getInput('var64', 'R111', 'orange'); ?> ;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F89')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. c) CCNL 21.5.2018 e dell’art. 16 comma 5 della Legge
+                    111/2011 relativi a “Piani di razionalizzazione” dell'importo di
+                    € <?php self::getInput('var65', 'R37', 'orange'); ?>, che dovrà essere distribuito nel
+                    rigoroso rispetto dei principi introdotti dalla norma vigente e solo se, a consuntivo, verrà espresso parere
+                    favorevole da parte dell'Organo di Revisione;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F90')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. e) CCNL 21.5.2018, delle somme derivanti dai risparmi del
+                    Fondo lavoro straordinario anno precedente, pari ad €<?php self::getInput('var66', 'R45', 'orange'); ?> ;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F49')): ?>
+                    • iscrizione, ai sensi dell’art. 68 comma 1 CCNL 21.5.2018, delle risorse derivanti dai risparmi di parte
+                    stabile del Fondo risorse decentrate degli anni precedenti, pari ad
+                    € <?php self::getInput('var67', 'R44', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F285')): ?>
+                    • iscrizione, ai sensi dell’art. 67 comma 3 lett. a) CCNL 21.5.2018, delle somme derivanti da contratti di
+                    sponsorizzazione, accordi di collaborazione, convenzioni con soggetti pubblici o privati e contributi
+                    dell'utenza per servizi pubblici non essenziali, secondo la disciplina dettata dall'art. 43 della Legge
+                    449/1997 stipulati nel periodo successivo all’entrata in vigore dei limiti per il salario accessorio (2016),
+                    per € <?php self::getInput('var68', 'R42', 'orange'); ?>, rispettivamente
+                    per <?php self::getTextArea('area8', ' (INSERIRE IL TITOLO o allegare i file TESTO LIBERO)', 'red'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F326')): ?>
+                    • iscrizione, ai sensi 67 comma 3 lett. c) CCNL 21.5.2018, delle somme destinate ai cosiddetti incentivi per
+                    funzioni tecniche D.Lgs... 50/2016 e ss.mm.ii. per €<?php self::getInput('var69', 'R122', 'orange'); ?> ;
+                <?php endif; ?>
+                <br>
+                <br>
+                <?php if (self::checkOptionalValues('F92')): ?>
+                    • iscrizione ai sensi dell’art. 67, comma 5 lett. b) del CCNL 21.5.2018, della sola quota di maggior incasso
+                    rispetto all’anno precedente a seguito di obiettivi di potenziamento dei servizi di controllo finalizzati
+                    alla sicurezza urbana e stradale Art. 56 quater CCNL 2018, così come precisato dalla Corte dei Conti Sezione
+                    delle Autonomie con delibera n. 5 del 2019, per un importo pari a
+                    € <?php self::getInput('var70', 'R152', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <br>
+                • iscrizione, ai sensi
+                dell’art.<?php self::getInput('var71', 'xx comma x del CCNL xx.xx.xxxx', 'orange'); ?> , delle somme per €
+                <?php self::getTextArea('area9', ' (INSERIRE IL TITOLO TESTO
+            LIBERO SE SONO STATE AGGIUNTE ALTRE RISORSE NELLA PARTE VARIABILE NON SOTTOPOSTA A BLOCCO)', 'red'); ?>
+            <?php endif; ?>
             <b>Considerato che:</b>
             <br>
             <br>
@@ -658,6 +700,7 @@ class DeterminaCostituzioneDocument
             partire dall'anno 2015.
             <br>
             <br>
+
             <b> Considerato che</b> il D.L. 78/2010, convertito con modificazioni nella legge n. 122/2010 e ssmmii, ha
             previsto per le annualità 2011/2014 limitazioni in materia di spesa per il personale e in particolare
             l'art. 9 comma 2 bis disponeva:
@@ -726,52 +769,66 @@ class DeterminaCostituzioneDocument
             del fondo dell’anno 2015 e economie del fondo straordinario anno 2015), pari a
             € <?php self::getInput('var80', 'f331', 'orange'); ?>;
             <br>
-            e che lo stesso deve essere adeguato in riferimento alle disposizioni del D.L. 34/2019 e di quanto definito
-            nel DM attuativo del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019, per
-            garantire l'invarianza del valore medio pro-capite riferito all'anno 2018, per un importo pari ad
-            €<?php self::getInput('var81', 'R150', 'orange'); ?> ,
-            per un totale del nuovo limite complessivo di cui all'art. 23 del D.Lgs... 75/2017 pari ad
-            € <?php self::getInput('var82', 'f373', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F324')): ?>
+                e che lo stesso deve essere adeguato in riferimento alle disposizioni del D.L. 34/2019 e di quanto definito
+                nel DM attuativo del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019, per
+                garantire l'invarianza del valore medio pro-capite riferito all'anno 2018, per un importo pari ad
+                €<?php self::getInput('var81', 'R150', 'orange'); ?> ,
+                per un totale del nuovo limite complessivo di cui all'art. 23 del D.Lgs... 75/2017 pari ad
+                € <?php self::getInput('var82', 'f373', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
-            e che lo stesso non deve essere adeguato in riferimento alle disposizioni del D.L. 34/2019 e di quanto
-            definito DM attuativo del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019,
-            per garantire l'invarianza del valore medio pro-capite riferito all'anno 2018 e pertanto il totale del
-            limite di cui all'art. 23 del D.Lgs... 75/2017 è confermato pari ad
-            € <?php self::getInput('var83', 'f1', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F330')): ?>
+                e che lo stesso non deve essere adeguato in riferimento alle disposizioni del D.L. 34/2019 e di quanto
+                definito DM attuativo del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019,
+                per garantire l'invarianza del valore medio pro-capite riferito all'anno 2018 e pertanto il totale del
+                limite di cui all'art. 23 del D.Lgs... 75/2017 è confermato pari ad
+                € <?php self::getInput('var83', 'f1', 'orange'); ?>;
+            <?php endif; ?>
             <br><br>
-            <b>Vista</b> la costituzione del fondo per l’anno <?php self::getInput('var84', 'anno', 'orange'); ?>, che
-            per le risorse soggetto al limite (con esclusione di:
-            avvocatura, ISTAT, di cui art. 67 comma 3 lett. c CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. c
-            CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. a, ove tale attività non risulti ordinariamente
-            resa dall’Amministrazione precedentemente l’entrata in vigore del D.Lgs. 75/2017, importi di cui all’art. 67
-            comma 2 lett. b., art. 79 c. 1 lett. b CCNL 16.11.2022, art. 79 c.1 lett. c CCNL 16.11.2022, art. 79 c.3
-            CCNL 16.11.2022, art. 79 c. 5 CCNL 16.11.2022,, economie del fondo dell’anno precedente e economie del fondo
-            straordinario anno precedente), adeguato alle disposizioni del DL 34/2019 e di quanto definito DM attuativo
-            del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019, per garantire
-            l'invarianza del valore medio pro-capite riferito all'anno 2018, per un importo pari ad € R150, per un
-            totale del nuovo limite di cui all'art. 23 del D.Lgs... 75/2017 di
-            € <?php self::getInput('var85', 'f8', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F324')): ?>
+                <b>Vista</b> la costituzione del fondo per l’anno <?php self::getInput('var84', 'anno', 'orange'); ?>, che
+                per le risorse soggetto al limite (con esclusione di:
+                avvocatura, ISTAT, di cui art. 67 comma 3 lett. c CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. c
+                CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. a, ove tale attività non risulti ordinariamente
+                resa dall’Amministrazione precedentemente l’entrata in vigore del D.Lgs. 75/2017, importi di cui all’art. 67
+                comma 2 lett. b., art. 79 c. 1 lett. b CCNL 16.11.2022, art. 79 c.1 lett. c CCNL 16.11.2022, art. 79 c.3
+                CCNL 16.11.2022, art. 79 c. 5 CCNL 16.11.2022,, economie del fondo dell’anno precedente e economie del fondo
+                straordinario anno precedente), adeguato alle disposizioni del DL 34/2019 e di quanto definito DM attuativo
+                del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019, per garantire
+                l'invarianza del valore medio pro-capite riferito all'anno 2018, per un importo pari ad € R150, per un
+                totale del nuovo limite di cui all'art. 23 del D.Lgs... 75/2017 di
+                € <?php self::getInput('var85', 'f8', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
-            <b>Vista</b> la costituzione del fondo per l’anno<?php self::getInput('var86', 'anno', 'orange'); ?>, che
-            per le risorse soggetto al limite (con esclusione di:
-            avvocatura, ISTAT, di cui art. 67 comma 3 lett. c CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. c
-            CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. a, ove tale attività non risulti ordinariamente
-            resa dall’Amministrazione precedentemente l’entrata in vigore del D.Lgs... 75/2017 importi di cui all’art.
-            67 comma 2 lett. b., art. 79 c. 1 lett. b CCNL 16.11.2022, art. 79 c.1 lett. c CCNL 16.11.2022, art. 79 c.3
-            CCNL 16.11.2022, art. 79 c. 5 CCNL 16.11.2022, economie del fondo dell’anno precedente e economie del fondo
-            straordinario anno precedente), risulta pari a € <?php self::getInput('var87', 'f8', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F368')): ?>
+                <b>Vista</b> la costituzione del fondo per l’anno<?php self::getInput('var86', 'anno', 'orange'); ?>, che
+                per le risorse soggetto al limite (con esclusione di:
+                avvocatura, ISTAT, di cui art. 67 comma 3 lett. c CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. c
+                CCNL 21.5.2018, importi di cui all’art. 67 comma 3 lett. a, ove tale attività non risulti ordinariamente
+                resa dall’Amministrazione precedentemente l’entrata in vigore del D.Lgs... 75/2017 importi di cui all’art.
+                67 comma 2 lett. b., art. 79 c. 1 lett. b CCNL 16.11.2022, art. 79 c.1 lett. c CCNL 16.11.2022, art. 79 c.3
+                CCNL 16.11.2022, art. 79 c. 5 CCNL 16.11.2022, economie del fondo dell’anno precedente e economie del fondo
+                straordinario anno precedente), risulta pari a € <?php self::getInput('var87', 'f8', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
-            <b>Dato atto</b> che ai sensi dell’art. 33 del DL 34/2019 il salario accessorio complessivo è stato
-            incrementato di
-            un importo pari a <?php self::getInput('var88', 'R153', 'orange'); ?> di cui:
-            <br>
-            • Fondo risorse decentrate, come indicato nei paragrafi precedenti per
-            € <?php self::getInput('var89', 'R150', 'orange'); ?>;
-            <br>
-            • Fondo Posizioni organizzative pari a € <?php self::getInput('var90', 'f374', 'orange'); ?>;
+            <?php if (self::checkOptionalValues('F368')): ?>
+                <b>Dato atto che </b> ai sensi dell’art. 33 del DL 34/2019 il salario accessorio complessivo è stato
+                incrementato di
+                un importo pari a <?php self::getInput('var88', 'R153', 'orange'); ?> di cui:
+                <br>
+                <?php if (self::checkOptionalValues('F368')): ?>
+                    • Fondo risorse decentrate, come indicato nei paragrafi precedenti per
+                    € <?php self::getInput('var89', 'R150', 'orange'); ?>;
+                <?php endif; ?>
+                <br>
+                <?php if (self::checkOptionalValues('F368')): ?>
+                    • Fondo Posizioni organizzative pari a € <?php self::getInput('var90', 'f374', 'orange'); ?>;
+                <?php endif; ?>
+            <?php endif; ?>
             <br>
             <br>
             <b> Considerato che</b>
@@ -782,20 +839,26 @@ class DeterminaCostituzioneDocument
             che operano nell’amministrazione, così come chiarito da diverse ma costanti indicazioni di sezioni regionali
             della Corte dei Conti e dal MEF e RGS;
             <br>
+             <?php if (self::checkOptionalValues('F344')): ?>
             • l'Ente si è avvalso della facoltà prevista dall'art. 11-bis comma 2 D.L. 135/2018, che prevede di
             utilizzare
             le facoltà assunzionali per incrementare il fondo delle PO;
+             <?php endif; ?>
             <br>
             <br>
+            <?php if (self::checkOptionalValues('F95')): ?>
             <b> Preso atto che</b> il fondo anno (per le voci soggette al blocco del D.Lgs... 75/2017) deve essere
             decurtato per
             il superamento del limite del fondo 2016 per un valore pari ad
             € <?php self::getInput('var91', 'f10', 'orange'); ?>;
+            <?php endif; ?>
             <br>
             <br>
+             <?php if (self::checkOptionalValues('F96')): ?>
             <b> Preso atto che</b> il fondo anno (per le voci soggette al blocco del D.Lgs... 75/2017) non deve essere
             decurtato
             poiché non supera il limite del fondo 2016;
+             <?php endif; ?>
             <br>
             <br>
             <b>Considerato che:</b>
@@ -808,24 +871,29 @@ class DeterminaCostituzioneDocument
             per l’anno <?php self::getInput('var93', 'anno', 'orange'); ?> tolte le decurtazioni per il superamento del
             valore del 2016 è pari ad € <?php self::getInput('var94', 'f254', 'orange'); ?>;
             <br>
+             <?php if (self::checkOptionalValues('F363')): ?>
             • il tetto del salario accessorio di cui all’art. 23 c. 2 del D.Lgs... 75/2017 nel suo complesso (indennità
             di
             Posizione e Risultato, Fondo risorse decentrate e Fondo straordinario) per
             l’anno <?php self::getInput('var95', 'anno', 'orange'); ?>
             risulta <?php self::getInput('var96', 'inferiore o uguale', 'orange'); ?> al 2016 come illustrato nella
             tabella sotto:
+             <?php endif; ?>
             <br>
+             <?php if (self::checkOptionalValues('F364')): ?>
             • il tetto del salario accessorio di cui all’art. 23 c. 2 del D.Lgs... 75/2017 nel suo complesso (indennità
             di
             Posizione e Risultato, Fondo risorse decentrate e Fondo straordinario) per
             l’anno <?php self::getInput('var96', 'anno', 'orange'); ?> risulta superiore al
             2016 come illustrato nella tabella sotto:
+
             <br>
             • <p style="color: red">ATTENZIONE: In caso di superamento del limite si consiglia di intervenire su
                 DATEXFONDO e di procedere alla
                 verifica e alla regolarizzazione degli importi al fine di garantire il rispetto del limite di cui
                 all’art.
                 23 c. 2 D.Lgs. 75/2017.</p>
+             <?php endif; ?>
             <br>
             <br>
             <table class="table">
@@ -847,11 +915,14 @@ class DeterminaCostituzioneDocument
                     <td><?php self::getInput('var99', 'f253', 'orange'); ?></td
                     </td>
                 </tr>
+                 <?php if (self::checkOptionalValues('F376')): ?>
                 <tr>
                     <td>Indennità di Posizione e risultato PO</td>
                     <td>  <?php self::getInput('var100', 'R138', 'orange'); ?></td>
                     <td> <?php self::getInput('var101', 'R141', 'orange'); ?></td>
                 </tr>
+                 <?php endif; ?>
+                  <?php if (self::checkOptionalValues('F375')): ?>
                 <tr>
                     <td>Indennità di Posizione e risultato PO anno corrente COMPRESO Quota integrazione PO finanziate
                         dalla rinuncia delle capacità assunzionali (Incremento Art. 11-bis comma 2 D.L. 135/2018) e
@@ -860,12 +931,14 @@ class DeterminaCostituzioneDocument
                     <td> <?php self::getInput('var101', 'R138', 'orange'); ?></td>
                     <td> <?php self::getInput('var103', 'R141', 'orange'); ?></td>
                 </tr>
+                  <?php endif; ?>
                 <tr>
                     <td>Fondo straordinario
                     </td>
                     <td> <?php self::getInput('var104', 'R157', 'orange'); ?></td>
                     <td> <?php self::getInput('var105', 'R99', 'orange'); ?></td>
                 </tr>
+                      <?php if (self::checkOptionalValues('F310')): ?>
                 <tr>
                     <td>Indennità di Posizione e risultato DIRIGENTI
 
@@ -873,6 +946,8 @@ class DeterminaCostituzioneDocument
                     <td> <?php self::getInput('var106', 'R139', 'orange'); ?></td>
                     <td> <?php self::getInput('var107', 'R142', 'orange'); ?></td>
                 </tr>
+                      <?php endif; ?>
+                <?php if (self::checkOptionalValues('F368')): ?>
                 <tr>
                     <td> Quota di incremento valore medio pro-capite del trattamento accessorio rispetto al 2018 - Art.
                         33 c. 2 DL 34/2019- aumento virtuale limite 2016
@@ -880,11 +955,15 @@ class DeterminaCostituzioneDocument
                     <td> <?php self::getInput('var108', 'R153', 'orange'); ?></td>
                     <td> <?php self::getInput('var109', '', 'orange'); ?></td>
                 </tr>
+                <?php endif; ?>
+                 <?php if (self::checkOptionalValues('F376')): ?>
                 <tr>
                     <td><b> TOTALE TRATTAMENTO ACCESSORIO SOGGETTO AL LIMITE ART. 23 C. 2 D.LGS. 75/2017</b></td>
                     <td> <?php self::getInput('var110', 'f354', 'orange'); ?></td>
                     <td> <?php self::getInput('var111', 'f355', 'orange'); ?></td>
                 </tr>
+                 <?php endif; ?>
+                 <?php if (self::checkOptionalValues('F375')): ?>
                 <tr>
                     <td><b>TOTALE TRATTAMENTO ACCESSORIO SOGGETTO AL LIMITE ART. 23 C. 2 D.LGS. 75/2017 COMPRESO Quota
                             integrazione PO finanziate dalla rinuncia delle capacità assunzionali (Incremento Art.
@@ -892,17 +971,23 @@ class DeterminaCostituzioneDocument
                     <td> <?php self::getInput('var112', 'f354', 'orange'); ?></td>
                     <td> <?php self::getInput('var113', 'f355', 'orange'); ?></td>
                 </tr>
+                 <?php endif; ?>
+                <?php if (self::checkOptionalValues('F344')): ?>
                 <tr>
                     <td><b>Quota integrazione PO finanziate dalla rinuncia delle capacità assunzionali (Incremento Art.
                             11-bis comma 2 D.L. 135/2018)</b></td>
                     <td> <?php self::getInput('var114', '', 'orange'); ?></td>
                     <td> <?php self::getInput('var115', 'f355', 'orange'); ?></td>
                 </tr>
+                <?php endif; ?>
+                 <?php if (self::checkOptionalValues('F376')): ?>
                 <tr>
                     <td><b>RISPETTO DEL LIMITE TRATTAMENTO ACCESSORIO</b></td>
                     <td> <?php self::getInput('var116', '', 'orange'); ?></td>
                     <td> <?php self::getInput('var117', 'f358', 'orange'); ?></td>
                 </tr>
+                 <?php endif; ?>
+                <?php if (self::checkOptionalValues('F375')): ?>
                 <tr>
                     <td><b>RISPETTO DEL LIMITE TRATTAMENTO ACCESSORIO COMPRESO Quota integrazione PO finanziate dalla
                             rinuncia delle capacità assunzionali (Incremento Art. 11-bis comma 2 D.L. 135/2018) e Quota
@@ -910,6 +995,7 @@ class DeterminaCostituzioneDocument
                     <td> <?php self::getInput('var118', '', 'orange'); ?></td>
                     <td> <?php self::getInput('var119', 'f360', 'orange'); ?></td>
                 </tr>
+                <?php endif; ?>
                 </tbody>
             </table>
             <br>
@@ -938,10 +1024,12 @@ class DeterminaCostituzioneDocument
                     <td> <?php self::getInput('var124', 'f4', 'orange'); ?></td>
                 </tr>
                 <tr>
+                     <?php if (self::checkOptionalValues('F324')): ?>
                     <td>Incremento valore medio di cui all’art. 33 comma 2 D.L. 34/2019 SOLO FONDO</td>
                     <td> <?php self::getInput('var125', 'R150', 'orange'); ?></td>
                     <td> <?php self::getInput('var126', 'R150', 'orange'); ?></td>
                 </tr>
+                <?php endif; ?>
                 <tr>
                     <td>RISORSE DECENTRATE
                     </td>
@@ -988,8 +1076,8 @@ class DeterminaCostituzioneDocument
                 <tr>
                     <td></td>
                     <td> <?php self::getInput('var143', '', 'orange'); ?></td>
-                    <td> <?php self::getInput('var144', 'FONDO INCREMENTATO garantendo il rispetto del limite complessivo del salario accessorio come indicato nella tabella precedente
-', 'orange'); ?></td>
+                    <td> <?php if (self::checkOptionalValues('F366')): ?> <?php self::getInput('var144', 'FONDO INCREMENTATO garantendo il rispetto del limite complessivo del salario accessorio come indicato nella tabella precedente
+', 'orange'); ?> <?php endif; ?> </td>
                 </tr>
                 <tr>
                     <td>Risorse stabili NON sottoposte al limite</td>
@@ -1055,9 +1143,11 @@ class DeterminaCostituzioneDocument
             per la progressione economica, ecc.) che, ai sensi delle vigenti disposizioni contrattuali, sono già stati
             erogati in corso d’anno per un importo pari ad € <?php self::getInput('var156', 'f93', 'orange'); ?>;
             <br>
+            <?php if (self::checkOptionalValues('F345')): ?>
             6. di confermare il Fondo per il Lavoro Straordinario, ai sensi dell'art. 14 CCNL 1.4.1999, per
             l’anno <?php self::getInput('var157', 'anno', 'orange'); ?>
             per un importo pari ad €<?php self::getInput('var158', 'R99', 'orange'); ?> ;
+            <?php endif; ?>
             <br>
             7. che il grado di raggiungimento del Piano delle Performance assegnato nell’anno al Dirigente/Posizioni
             Organizzative, verrà certificato dall’Organismo di Valutazione, che accerterà il raggiungimento degli
