@@ -3012,7 +3012,7 @@ class RelazioneIllustrativaDocument
 
  <?php if (self::checkOptionalValues('F237')): ?>
             Parte non pertinente allo specifico accordo illustrato.
-
+ <?php endif ?>l
             <br>
             <br>
             Si precisa che ai sensi dell'Art. 33 del CCNL 22.1.2004 l'indennità di comparto prevede una parte di
@@ -3668,7 +3668,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                 </tr>
                 <?php endif ?>
-<?php if (self::checkOptionalValues('F163')): ?>
+            <?php if (self::checkOptionalValues('F163')): ?>
                 <tr>
 
                     <td>Indennità educatori asilo nido
@@ -3678,7 +3678,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                 </tr>
                 <?php endif ?>
-<?php if (self::checkOptionalValues('F189')): ?>
+        <?php if (self::checkOptionalValues('F189')): ?>
                 <tr>
 
                     <td>ALTRI UTILIZZI</td>
@@ -3771,7 +3771,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-<?php endif ?>
+                <?php endif ?>
                       <?php if (self::checkOptionalValues('F135')): ?>
                 <tr>
 
@@ -3891,7 +3891,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-<?php endif ?>
+                <?php endif ?>
                       <?php if (self::checkOptionalValues('F322')): ?>
                 <tr>
                     <td> Art. 68 c. 2 lett. g) CCNL 2018 - Compensi IMU e TARI
