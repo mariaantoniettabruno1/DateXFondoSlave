@@ -23,7 +23,6 @@ class TemplateFondoTable
                 if (subsection)
                     filteredArticoli = filteredArticoli.filter(art => art.sottosezione === subsection)
                 let delete_button = '';
-                let heredity = '';
                 let nota = '';
                 let id_articolo = '';
                 let descrizione = '';
@@ -32,6 +31,7 @@ class TemplateFondoTable
                 let nome_articolo = '';
                 let valore = '';
                 let valore_precedente = '';
+                let link_button = '';
 
 
                 filteredArticoli.forEach(art => {
@@ -55,6 +55,14 @@ class TemplateFondoTable
                     }
 
 
+                    if (art.link !== null) {
+                        link_button = ` <button class="btn btn-link btn-art-link" data-link='${art.link}'><i class="fa-solid fa-arrow-up-right-from-square"></i></button>`;
+                    }
+                    else{
+                        link_button='';
+                    }
+
+
                     $('#dataTemplateTableBody' + index).append(`
                                  <tr>
                                        <td>${art.ordinamento}</td>
@@ -75,7 +83,7 @@ class TemplateFondoTable
                                        <div class="row pr-3">
                                        <div class="col-8">${link}</div>
                                        <div class="col-2">
-<button class="btn btn-link btn-art-link" data-link='${art.link}'><i class="fa-solid fa-arrow-up-right-from-square"></i></button></div>
+${link_button}</div>
 </div>
 </td>
                                        <td><div class="row pr-3">
@@ -107,7 +115,7 @@ class TemplateFondoTable
 
                 });
                 $('.btn-art-link').click(function () {
-                    var url =  '<?= DateXFondoCommon::get_website_url() ?>/date-doc/articoli/' + $(this).attr('data-link');
+                    var url = '<?= DateXFondoCommon::get_website_url() ?>/date-doc/articoli/' + $(this).attr('data-link');
                     window.open(url, '_blank');
                 });
                 $('.btn-edit-row').click(function () {

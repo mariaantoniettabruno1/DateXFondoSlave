@@ -3012,7 +3012,7 @@ class RelazioneIllustrativaDocument
 
  <?php if (self::checkOptionalValues('F237')): ?>
             Parte non pertinente allo specifico accordo illustrato.
- <?php endif ?>l
+ <?php endif ?>
             <br>
             <br>
             Si precisa che ai sensi dell'Art. 33 del CCNL 22.1.2004 l'indennità di comparto prevede una parte di
