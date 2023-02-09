@@ -2771,7 +2771,7 @@ class RelazioneIllustrativaDocument
                     <td>Turno</td>
                     <td><?php self::getInput('var266', 'R65', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
  <?php if (self::checkOptionalValues('F293')): ?>
                 <tr>
                     <td>Indennità condizioni di lavoro Art. 70 bis CCNL 2018 (Maneggio valori, attività disagiate e
@@ -2779,7 +2779,7 @@ class RelazioneIllustrativaDocument
                     </td>
                     <td><?php self::getInput('var267', 'R145', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
  <?php if (self::checkOptionalValues('F128')): ?>
                 <tr>
                     <td>Reperibilità
@@ -2834,7 +2834,7 @@ class RelazioneIllustrativaDocument
                     <td>Premi collegati alla performance individuale - art. 68 c. 2 lett. b) CCNL 2018</td>
                     <td><?php self::getInput('var275', 'R87', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
  <?php if (self::checkOptionalValues('F186')): ?>
                 <tr>
                     <td>Premi collegati alla performance organizzativa - Obiettivi finanziati con risorse Art. 67 c.
@@ -2842,7 +2842,7 @@ class RelazioneIllustrativaDocument
                     </td>
                     <td><?php self::getInput('var276', 'R88', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
  <?php if (self::checkOptionalValues('F296')): ?>
                 <tr>
                     <td>Premi collegati alla performance organizzativa - Obiettivi collegati a risorse art 67 c. 5
@@ -2851,7 +2851,7 @@ class RelazioneIllustrativaDocument
                     </td>
                     <td><?php self::getInput('var277', 'R136', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+ <?php endif ?>
  <?php if (self::checkOptionalValues('F294')): ?>
                 <tr>
                     <td>Indennità di servizio esterno – art. 56 quinquies CCNL 2018 (Vigilanza)</td>
@@ -2871,14 +2871,14 @@ class RelazioneIllustrativaDocument
                     </td>
                     <td><?php self::getInput('var280', 'R110', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
  <?php if (self::checkOptionalValues('F322')): ?>
                 <tr>
                     <td>ALTRI UTILIZZI (contrattati nel CCDI dell'anno)
                     </td>
                     <td><?php self::getInput('var281', 'F68', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+ <?php endif ?>
  <?php if (self::checkOptionalValues('F168')): ?>
                 <tr>
                     <td>Premi collegati alla performance organizzativa - Compensi per SPONSORIZZAZIONI Art. 67 c. 3
@@ -2908,7 +2908,7 @@ class RelazioneIllustrativaDocument
                     </td>
                     <td><?php self::getInput('var285', 'R93', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+                     <?php endif ?>
  <?php if (self::checkOptionalValues('F172')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018 RIF – ISTAT
@@ -2929,7 +2929,7 @@ class RelazioneIllustrativaDocument
                     </td>
                     <td><?php self::getInput('var288', 'R96', 'orange'); ?></td>
                     </tr>
-                     <?php endif ?>
+  <?php endif ?>
  <?php if (self::checkOptionalValues('F272')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018 RIF - Diritto soggiorno Unione Europea D.lgs 30/2007
@@ -2957,7 +2957,7 @@ class RelazioneIllustrativaDocument
                     </td>
                     <td><?php self::getInput('var292', 'R119', 'orange'); ?></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
 
                 <tr>
                     <td><b>TOTALE RISORSE REGOLATE SPECIFICAMENTE DAL CONTRATTO INTEGRATIVO
@@ -3012,7 +3012,7 @@ class RelazioneIllustrativaDocument
 
  <?php if (self::checkOptionalValues('F237')): ?>
             Parte non pertinente allo specifico accordo illustrato.
- <?php endif ?>
+
             <br>
             <br>
             Si precisa che ai sensi dell'Art. 33 del CCNL 22.1.2004 l'indennità di comparto prevede una parte di
@@ -3151,7 +3151,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+                  <?php endif ?>
                  <?php if (self::checkOptionalValues('F300')): ?>
                 <tr>
 
@@ -3160,7 +3160,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                <?php endif ?>
+                    <?php endif ?>
                  <?php if (self::checkOptionalValues('F301')): ?>
                 <tr>
 
@@ -3171,7 +3171,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                <?php endif ?>
+                 <?php endif ?>
                  <?php if (self::checkOptionalValues('F302')): ?>
                 <tr>
 
@@ -3189,7 +3189,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                <?php endif ?>
+                 <?php endif ?>
                  <?php if (self::checkOptionalValues('F324')): ?>
                 <tr>
 
@@ -3199,7 +3199,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                <?php endif ?>
+ <?php endif ?>
 
                 <tr>
                     <th scope="row"><b>Incrementi con carattere di certezza e stabilità NON soggetti al limite (b)</b>
@@ -3225,7 +3225,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                <?php endif ?>
+                 <?php endif ?>
                  <?php if (self::checkOptionalValues('F379')): ?>
                 <tr>
 
@@ -3255,7 +3255,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+ <?php endif ?>
                  <?php if (self::checkOptionalValues('F83')): ?>
                 <tr>
 
@@ -3325,7 +3325,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
                  <?php if (self::checkOptionalValues('F74')): ?>
                 <tr>
                     <td> Art. 67 c. 3 lett. f) CCNL 2018 – Compensi per Notifiche
@@ -3362,7 +3362,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+                     <?php endif ?>
                  <?php if (self::checkOptionalValues('F305')): ?>
                 <tr>
                     <td> Art. 67 c. 3 lett. d) CCNL 2018 - Ria e assegni ad personam personale cessato quota rateo
@@ -3400,7 +3400,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+  <?php endif ?>
                  <?php if (self::checkOptionalValues('F87')): ?>
                 <tr>
                     <td> Altre risorse
@@ -3434,7 +3434,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+                     <?php endif ?>
                   <?php if (self::checkOptionalValues('F52')): ?>
                 <tr>
                     <td>Art. 67 c. 3 lett. c) CCNL 2018 AVVOCATURA
@@ -3452,7 +3452,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+                   <?php endif ?>
                   <?php if (self::checkOptionalValues('F321')): ?>
                 <tr>
                     <td>Art. 67 c. 3 lett. c) CCNL 2018 Compensi IMU e TARI
@@ -3461,7 +3461,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+                       <?php endif ?>
                   <?php if (self::checkOptionalValues('F88')): ?>
                 <tr>
                     <td>Art. 67 c. 3 lett. c) CCNL 2018 Somme finanziate da fondi di derivazione dell'Unione Europea
@@ -3470,7 +3470,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                 <?php endif ?>
+                         <?php endif ?>
                   <?php if (self::checkOptionalValues('F53')): ?>
                 <tr>
                     <td>Altro - Art. 67 c. 3 lett. c) CCNL 2018
@@ -3497,7 +3497,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                   <?php endif ?>
+    <?php endif ?>
                   <?php if (self::checkOptionalValues('F49')): ?>
                 <tr>
                     <td>Art. 68 c. 1 CCNL 2018 - Risparmi Fondo Stabile Anno Precedente
@@ -3506,7 +3506,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-                   <?php endif ?>
+                       <?php endif ?>
                   <?php if (self::checkOptionalValues('F92')): ?>
                 <tr>
                     <td>Art. 67 c. 3 lett. e) CCNL 2018 - Risparmi Fondo Straordinario Anno Precedente
@@ -3526,7 +3526,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                 </tr>
                    <?php endif ?>
-             
+
                 <tr>
                     <td><b>Totale risorse variabili</b>
                     </td>
@@ -3545,35 +3545,37 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td>Decurtazione operate nel periodo 2011/2014 ai sensi dell'art. 9 C. 2 bis L.122/2010 secondo
                         periodo
                     </td>
-                    <td><?php self::getInput('var344', 'f263', 'orange'); ?></td>
+                    <td><?php self::getInput('var344', 'F263', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Decurtazioni operate nel 2016 per cessazioni e rispetto limite 2015
                     </td>
-                    <td><?php self::getInput('var345', 'f282', 'orange'); ?></td>
+                    <td><?php self::getInput('var345', 'F282', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Decurtazione per rispetto limite 2016
                     </td>
-                    <td><?php self::getInput('var346', 'f284', 'orange'); ?></td>
+                    <td><?php self::getInput('var346', 'F284', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
+                 <?php if (self::checkOptionalValues('F241')): ?>
                 <tr>
                     <td>Altre decurtazioni del fondo
                     </td>
-                    <td><?php self::getInput('var347', 'f240', 'orange'); ?></td>
+                    <td><?php self::getInput('var347', 'F240', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
+                  <?php endif ?>
                 <tr>
                     <td><b>Totale decurtazioni del fondo</b>
                     </td>
-                    <td><?php self::getInput('var348', 'f280', 'orange'); ?></td>
+                    <td><?php self::getInput('var348', 'F280', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -3587,28 +3589,28 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                 <tr>
                     <td>Risorse fisse aventi carattere di certezza e stabilità
                     </td>
-                    <td><?php self::getInput('var349', 'f242', 'orange'); ?></td>
+                    <td><?php self::getInput('var349', 'F242', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Risorse variabili
                     </td>
-                    <td><?php self::getInput('var350', 'f239', 'orange'); ?></td>
+                    <td><?php self::getInput('var350', 'F239', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Altre decurtazioni
                     </td>
-                    <td><?php self::getInput('var351', 'f280', 'orange'); ?></td>
+                    <td><?php self::getInput('var351', 'F280', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td><b>Totale risorse Fondo sottoposte a certificazione</b>
                     </td>
-                    <td><?php self::getInput('var352', 'f254', 'orange'); ?></td>
+                    <td><?php self::getInput('var352', 'F254', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -3626,7 +3628,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <th scope="col"><b>COSTITUZIONE DEL FONDO</b></th>
                     <th scope="col"><b>Fondo <?php self::getInput('var353', 'anno', 'orange'); ?>(A)</b>
                     </th>
-                    <th scope="col"><b>Fondo <?php self::getInput('var354', 'f13', 'orange'); ?>
+                    <th scope="col"><b>Fondo <?php self::getInput('var354', 'F13', 'orange'); ?>
                             (B)</b>
                     </th>
                     <th scope="col"><b>Diff A-B</b></th>
@@ -3639,6 +3641,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                 <?php if (self::checkOptionalValues('F160')): ?>
                 <tr>
 
                     <td>Inquadramento ex Led</td>
@@ -3646,7 +3649,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-
+<?php endif ?>
+<?php if (self::checkOptionalValues('F161')): ?>
                 <tr>
 
                     <td>Progressioni economiche STORICHE</td>
@@ -3654,6 +3658,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+<?php if (self::checkOptionalValues('F162')): ?>
                 <tr>
 
                     <td>Indennità di comparto art.33 ccnl 22.01.04, quota a carico fondo</td>
@@ -3661,6 +3667,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+<?php if (self::checkOptionalValues('F163')): ?>
                 <tr>
 
                     <td>Indennità educatori asilo nido
@@ -3669,13 +3677,16 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+<?php if (self::checkOptionalValues('F189')): ?>
                 <tr>
 
                     <td>ALTRI UTILIZZI</td>
-                    <td><?php self::getInput('var359', 'f66', 'orange'); ?></td>
+                    <td><?php self::getInput('var359', 'F66', 'orange'); ?></td>
                     <td></td>
                     <td></td>
                 </tr>
+                    <?php endif ?>
                 <tr>
 
                     <td><b>Totale destinazioni non regolate in sede di contrattazione integrativa</b></td>
@@ -3691,6 +3702,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php if (self::checkOptionalValues('F115')): ?>
                 <tr>
 
                     <td>Progressioni economiche specificatamente contratte nel CCDI dell'anno</td>
@@ -3698,6 +3710,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                   <?php endif ?>
+                      <?php if (self::checkOptionalValues('F125')): ?>
                 <tr>
 
                     <td>Indennità di turno</td>
@@ -3705,6 +3719,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                  <?php endif ?>
+                      <?php if (self::checkOptionalValues('F293')): ?>
                 <tr>
 
                     <td> Indennità condizioni di lavoro Art. 70 bis CCNL 2018 (Maneggio valori, attività disagiate e
@@ -3714,6 +3730,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                   <?php endif ?>
+                      <?php if (self::checkOptionalValues('F128')): ?>
                 <tr>
 
                     <td> Reperibilità
@@ -3722,6 +3740,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                  <?php endif ?>
+                      <?php if (self::checkOptionalValues('F132')): ?>
                 <tr>
 
                     <td>Indennità Specifiche Responsabilità art. 70 quinquies c. 1 CCNL 2018 (ex art. 17 lett. f)
@@ -3730,6 +3750,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                  <?php endif ?>
+                      <?php if (self::checkOptionalValues('F133')): ?>
                 <tr>
 
                     <td> Indennità Specifiche Responsabilità art. 70 quinquies c. 1 CCNL 2018 (ex art. 17 lett. i)
@@ -3739,6 +3761,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                  <?php endif ?>
+                      <?php if (self::checkOptionalValues('F134')): ?>
                 <tr>
 
                     <td> Indennità particolare compenso incentivante (personale Unioni dei comuni)
@@ -3747,7 +3771,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-
+<?php endif ?>
+                      <?php if (self::checkOptionalValues('F135')): ?>
                 <tr>
 
                     <td> Indennità centri estivi asili nido art 31 comma 5 CCNL 14 -9- 2000 code
@@ -3756,6 +3781,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F136')): ?>
                 <tr>
 
                     <td> Compenso previsto dall'art.24, comma 1 CCNL 14.9.2000, per il personale che presta attività
@@ -3765,6 +3792,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F137')): ?>
                 <tr>
 
                     <td> Premi collegati alla performance organizzativa – art. 68 c. 2 lett. a) CCNL 2018
@@ -3773,6 +3802,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F138')): ?>
                 <tr>
                     <td> Premi collegati alla performance individuale - art. 68 c. 2 lett. b) CCNL 2018 contrattate
                         nel CCDI dell'anno
@@ -3781,6 +3812,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F186')): ?>
                 <tr>
                     <td> Premi collegati alla performance organizzativa - Obiettivi finanziati con risorse Art. 67
                         c. 5 lett. b) CCNL 2018
@@ -3789,6 +3822,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F296')): ?>
                 <tr>
                     <td> Premi collegati alla performance organizzativa -Obiettivi finanziati da risorse art 67 c. 5
                         lett. b) per potenziamento dei servizi di controllo finalizzati alla sicurezza urbana e
@@ -3798,6 +3833,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F187')): ?>
                 <tr>
                     <td> Compensi 50% economie da Piani di Razionalizzazione - Art. 67 c. 3 lett. b) CCNL 2018-Art.
                         16 C. 5 L. 111/2011
@@ -3806,6 +3843,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F294')): ?>
                 <tr>
                     <td>Indennità di servizio esterno – art. 56 quinquies CCNL 2018 (Vigilanza)
                     </td>
@@ -3813,6 +3852,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F295')): ?>
                 <tr>
                     <td> Indennità di funzione – Art. 56 sexies CCNL 2018 (Vigilanza)
                     </td>
@@ -3820,6 +3861,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F192')): ?>
                 <tr>
                     <td> ALTRE indennità contrattate nel CCDI dell'anno trasferito
                     </td>
@@ -3827,6 +3870,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F188')): ?>
                 <tr>
                     <td> Premi collegati alla performance organizzativa – Compensi per sponsorizzazioni Art. 67 c. 3
                         lett. a) CCNL 2018
@@ -3835,6 +3880,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F167')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018
                         FUNZIONI TECNICHE
@@ -3844,7 +3891,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
-
+<?php endif ?>
+                      <?php if (self::checkOptionalValues('F322')): ?>
                 <tr>
                     <td> Art. 68 c. 2 lett. g) CCNL 2018 - Compensi IMU e TARI
                     </td>
@@ -3852,6 +3900,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F168')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. h CCNL 2018 - Compensi per notifiche
                     </td>
@@ -3859,6 +3909,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F169')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018
                         RIF – ISTAT
@@ -3868,6 +3920,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F170')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018
                         RIF - ICI
@@ -3877,6 +3931,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F171')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018
                         RIF - avvocatura
@@ -3886,6 +3942,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F172')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018
                         RIF - Diritto soggiorno Unione Europea D.lgs 30/2007
@@ -3895,6 +3953,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F173')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018
                         Legge Regionale specifica
@@ -3904,6 +3964,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F190')): ?>
                 <tr>
                     <td>Art. 68 c. 2 lett. g) CCNL 2018
                         RIF - Legge o ALTRO
@@ -3913,6 +3975,8 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                <?php endif ?>
+                      <?php if (self::checkOptionalValues('F272')): ?>
                 <tr>
                     <td>Quota recupero somme (Art. 4 DL 16/2014 Salva Roma Ter)
                     </td>
@@ -3920,6 +3984,7 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td></td>
                     <td></td>
                 </tr>
+                 <?php endif ?>
                 <tr>
                     <td><b>Totale destinazioni regolate in sede di contrattazione integrativa</b>
                     </td>
@@ -4028,12 +4093,16 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
             stanziamenti dei diversi interventi a cui si riferiscono;
             <br>
             <br>
+             <?php if (self::checkOptionalValues('F102')): ?>
             Si attesta che la spesa del personale per l'anno 2008 era pari ad
             € <?php self::getInput('var400', 'xxxx', 'orange'); ?>
+            <?php endif;?>
             <br>
             <br>
+            <?php if (self::checkOptionalValues('F101')): ?>
             Si attesta che la spesa del personale per la media del triennio 2011-2013 era pari ad
             € <?php self::getInput('var401', 'xxx', 'orange'); ?>
+              <?php endif;?>
             <br>
             <br>
             Si attesta che la spesa del personale per
@@ -4122,8 +4191,10 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
             diverse ma costanti indicazioni di sezioni regionali della Corte dei Conti e dal MEF e RGS;
             <br>
             <br>
+            <?php if (self::checkOptionalValues('F344')): ?>
             • l'Ente si è avvalso della facoltà prevista dall'art. 11-bis comma 2 D.L. 135/2018, che prevede di
             utilizzare le facoltà assunzionali per incrementare il fondo delle PO;
+             <?php endif;?>
             <br>
             <br>
             <table class="table">
@@ -4140,11 +4211,14 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td><?php self::getInput('var417', 'f370', 'orange'); ?></td>
                     <td><?php self::getInput('var418', 'f253', 'orange'); ?></td>
                 </tr>
+                <?php if (self::checkOptionalValues('F376')): ?>
                 <tr>
                     <td>Indennità di Posizione e risultato PO</td>
                     <td><?php self::getInput('var418', 'R138', 'orange'); ?></td>
                     <td><?php self::getInput('var419', 'R141', 'orange'); ?></td>
                 </tr>
+                  <?php endif;?>
+                   <?php if (self::checkOptionalValues('F375')): ?>
                 <tr>
                     <td>Indennità di Posizione e risultato PO anno corrente COMPRESO Quota integrazione PO
                         finanziate dalla rinuncia delle capacità assunzionali (Incremento Art. 11-bis comma 2 D.L.
@@ -4153,58 +4227,70 @@ Valutazione inferiore a xx% - nessuna erogazione di premio', 'orange'); ?>
                     <td><?php self::getInput('var420', 'R157', 'orange'); ?></td>
                     <td><?php self::getInput('var421', 'R99', 'orange'); ?></td>
                 </tr>
+                 <?php endif;?>
                 <tr>
                     <td>Fondo Straordinario 2016</td>
                     <td><?php self::getInput('var422', 'R139', 'orange'); ?></td>
                     <td><?php self::getInput('var423', 'R142', 'orange'); ?></td>
                 </tr>
+                 <?php if (self::checkOptionalValues('F310')): ?>
                 <tr>
                     <td>Indennità di Posizione e risultato DIRIGENTI</td>
                     <td><?php self::getInput('var424', 'R153', 'orange'); ?></td>
                     <td><?php self::getInput('var425', '', 'orange'); ?></td>
                 </tr>
+                 <?php endif;?>
                 <tr>
                     <td>Quota di incremento valore medio procapite del trattamento accessorio rispetto al 2018 -
                         Art. 33 c. 2 DL 34/2019- aumento virtuale limite 2016
                     </td>
-                    <td><?php self::getInput('var426', 'f354', 'orange'); ?></td>
-                    <td><?php self::getInput('var427', 'f355', 'orange'); ?></td>
+                    <td><?php self::getInput('var426', 'F354', 'orange'); ?></td>
+                    <td><?php self::getInput('var427', 'F355', 'orange'); ?></td>
                 </tr>
+                  <?php if (self::checkOptionalValues('F375')): ?>
                 <tr>
-                    <td>Quota di incremento valore medio procapite del trattamento accessorio rispetto al 2018 -
-                        Art. 33 c. 2 DL 34/2019- aumento virtuale limite 2016
+                    <td><b>TOTALE TRATTAMENTO ACCESSORIO SOGGETTO AL LIMITE ART. 23 C. 2 D.LGS 75/2017</b>
                     </td>
-                    <td><?php self::getInput('var428', 'f354', 'orange'); ?></td>
-                    <td><?php self::getInput('var429', 'f355', 'orange'); ?></td>
+                    <td><?php self::getInput('var428', 'F354', 'orange'); ?></td>
+                    <td><?php self::getInput('var429', 'F355', 'orange'); ?></td>
                 </tr>
+                 <?php endif;?>
+                <?php if (self::checkOptionalValues('F375')): ?>
                 <tr>
-                    <td>TOTALE TRATTAMENTO ACCESSORIO SOGGETTO AL LIMITE ART. 23 C. 2 D.LGS 75/2017 COMPRESO Quota
+                    <td><b>TOTALE TRATTAMENTO ACCESSORIO SOGGETTO AL LIMITE ART. 23 C. 2 D.LGS 75/2017 COMPRESO Quota
                         integrazione PO finanziate dalla rinuncia delle capacità assunzionali (Incremento Art.
-                        11-bis comma 2 D.L. 135/2018) e Quota art. 33 del DL 34/2019
+                        11-bis comma 2 D.L. 135/2018) e Quota art. 33 del DL 34/2019</b>
                     </td>
-                    <td><?php self::getInput('var430', '', 'orange'); ?></td>
-                    <td><?php self::getInput('var431', 'R160', 'orange'); ?></td>
+                    <td><?php self::getInput('var430', 'F354', 'orange'); ?></td>
+                    <td><?php self::getInput('var431', 'F355', 'orange'); ?></td>
                 </tr>
+                <?php endif;?>
+                <?php if (self::checkOptionalValues('F344')): ?>
                 <tr>
-                    <td>Quota integrazione PO finanziate dalla rinuncia delle capacità assunzionali (Incremento Art.
-                        11-bis comma 2 D.L. 135/2018)
+                    <td><b>Quota integrazione PO finanziate dalla rinuncia delle capacità assunzionali (Incremento Art.
+                        11-bis comma 2 D.L. 135/2018)</b>
                     </td>
                     <td><?php self::getInput('var432', '', 'orange'); ?></td>
-                    <td><?php self::getInput('var433', 'f358', 'orange'); ?></td>
+                    <td><?php self::getInput('var433', 'F358', 'orange'); ?></td>
                 </tr>
+                 <?php endif;?>
+                    <?php if (self::checkOptionalValues('F376')): ?>
                 <tr>
                     <td>RISPETTO DEL LIMITE TRATTAMENTO ACCESSORIO</td>
                     <td><?php self::getInput('var434', '', 'orange'); ?></td>
-                    <td><?php self::getInput('var435', 'f360', 'orange'); ?></td>
+                    <td><?php self::getInput('var435', 'F360', 'orange'); ?></td>
                 </tr>
+                 <?php endif;?>
+                   <?php if (self::checkOptionalValues('F375')): ?>
                 <tr>
-                    <td>RISPETTO DEL LIMITE TRATTAMENTO ACCESSORIO COMPRESO Quota integrazione PO finanziate dalla
+                    <td><b>RISPETTO DEL LIMITE TRATTAMENTO ACCESSORIO COMPRESO Quota integrazione PO finanziate dalla
                         rinuncia delle capacità assunzionali (Incremento Art. 11-bis comma 2 D.L. 135/2018) e Quota
-                        art. 33 del DL 34/2019
+                        art. 33 del DL 34/2019</b>
                     </td>
                     <td><?php self::getInput('var436', '', 'orange'); ?></td>
                     <td><?php self::getInput('var437', '', 'orange'); ?></td>
                 </tr>
+                 <?php endif;?>
                 </tbody>
             </table>
             <br>
