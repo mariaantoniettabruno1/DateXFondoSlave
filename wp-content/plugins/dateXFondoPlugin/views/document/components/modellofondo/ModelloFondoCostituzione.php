@@ -13,8 +13,7 @@ class ModelloFondoCostituzione
             function renderDataTable() {
                 let filteredDocArticoli = articoli;
                 let preventivo = '';
-                let edit_button = '';
-                let delete_button = '';
+               
                 console.log(sezioni)
                 for (let i = 0; i < sezioni.length; i++) {
                     $('#dataCostituzioneDocumentTableBody' + i).html('');
