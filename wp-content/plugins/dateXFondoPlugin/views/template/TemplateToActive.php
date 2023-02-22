@@ -38,6 +38,18 @@ class TemplateToActive
 
         <body>
         <div class="container-fluid">
+            <?php if(my_get_current_user_roles()[0]=='subscriber'): ?>
+                <div class="row pb-3" style="width: 20%">
+
+                        <label>Seleziona comune per visualizzare i suoi dati:</label>
+
+                        <select name="comune" id="idComune">
+                            <option>Torino</option>
+                            <option>Ivrea</option>
+                        </select>
+                    </div>
+
+            <?php endif; ?>
             <div class="row">
                 <?php
                 TemplateFondoToActiveRow::render();

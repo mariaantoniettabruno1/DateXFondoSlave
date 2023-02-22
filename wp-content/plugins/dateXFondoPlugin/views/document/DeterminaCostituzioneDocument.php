@@ -151,6 +151,15 @@ class DeterminaCostituzioneDocument
 
     </head>
     <body>
+    <?php if(my_get_current_user_roles()[0]=='subscriber'): ?>
+        <div style="width: 20%">
+            <label>Seleziona comune per visualizzare i suoi dati:</label>
+            <select name="comune" id="idComune">
+                <option>Torino</option>
+                <option>Ivrea</option>
+            </select>
+        </div>
+    <?php endif; ?>
     <div class="d-flex justify-content-end">
         <button class="btn btn-outline-secondary btn-export" onclick="exportHTML();">Esporta in word
         </button>

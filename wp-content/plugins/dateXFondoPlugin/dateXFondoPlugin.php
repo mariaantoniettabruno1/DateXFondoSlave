@@ -111,12 +111,10 @@ function shortcodes_init()
 }
 
 
-
 function visualize_join_table()
 {
     \dateXFondoPlugin\FondoCompleto::render();
 }
-
 
 
 function visualize_master_all_template()
@@ -149,7 +147,6 @@ function visualize_formula_template()
 }
 
 
-
 function document_template()
 {
     \dateXFondoPlugin\ModelloFondoDocument::render();
@@ -168,18 +165,21 @@ function delibera_template()
     $document->render();
 
 }
+
 function determina_costituzione_template()
 {
     $document = new \dateXFondoPlugin\DeterminaCostituzioneDocument();
-   $document->render();
-
-}
-function relazione_illustrativa_template()
-{
-    $document = new \dateXFondoPlugin\RelazioneIllustrativaDocument();
     $document->render();
 
 }
+
+function relazione_illustrativa_template()
+{
+    (new dateXFondoPlugin\RelazioneIllustrativaDocument)->render();
+
+
+}
+
 function document_table_template()
 {
     $document = new \dateXFondoPlugin\DocumentHistory();
@@ -187,14 +187,38 @@ function document_table_template()
 
 }
 
-function slave_user_settings(){
+function slave_user_settings()
+{
     $document = new \dateXFondoPlugin\UserSettings();
     $document->render();
 }
 
 
-function admin_default_page() {
-    return DateXFondoCommon::get_website_url().'/impostazioni-utente/';
+function admin_default_page()
+{
+    return DateXFondoCommon::get_website_url() . '/impostazioni-utente/';
 }
 
 add_filter('login_redirect', 'admin_default_page');
+
+
+add_action('wp_head', 'my_get_current_user_roles');
+
+function my_get_current_user_roles()
+{
+
+    if (is_user_logged_in()) {
+
+        $user = wp_get_current_user();
+
+        $roles = ( array )$user->roles;
+        //return $roles; // This will returns an array, per cui per il value [0]
+        return array_values($roles);
+
+    } else {
+
+        return array();
+
+    }
+
+}
