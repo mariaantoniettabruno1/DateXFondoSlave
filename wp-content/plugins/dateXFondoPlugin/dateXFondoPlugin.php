@@ -21,6 +21,7 @@ require_once(plugin_dir_path(__FILE__) . 'repositories/FormulaRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/RegioniDocumentRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/FondoCompletoTableRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/UserRepository.php');
+require_once(plugin_dir_path(__FILE__) . 'repositories/CitiesRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'views/table/FondoCompleto.php');
 require_once(plugin_dir_path(__FILE__) . 'views/table/components/FondoCompletoTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/TemplateFondo.php');
@@ -73,6 +74,7 @@ require_once(plugin_dir_path(__FILE__) . 'api/template.php');
 require_once(plugin_dir_path(__FILE__) . 'api/newrow.php');
 require_once(plugin_dir_path(__FILE__) . 'api/user.php');
 require_once(plugin_dir_path(__FILE__) . 'api/joinTable.php');
+require_once(plugin_dir_path(__FILE__) . 'api/cities.php');
 
 
 /**

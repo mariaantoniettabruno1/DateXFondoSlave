@@ -249,10 +249,11 @@ ${link_button}</div>
     {
         $data = new MasterTemplateRepository();
         if (isset($_GET['fondo']) || isset($_GET['anno']) || isset($_GET['descrizione']) || isset($_GET['version'])) {
-            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name']);
+            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name'],isset($_GET['city']));
 
         } else {
-            $results_articoli = $data->getArticoli($_GET['template_name']);
+            if (isset($_GET['template_name']) )
+                $results_articoli = $data->getArticoli($_GET['template_name'],$_GET['city']);
         }
         $sezioni = [];
         $tot_array = [];

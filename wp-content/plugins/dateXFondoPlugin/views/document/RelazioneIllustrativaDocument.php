@@ -155,8 +155,12 @@ class RelazioneIllustrativaDocument
 
                     <label>Seleziona comune per visualizzare i suoi dati:</label>
                     <select name="comune" id="idComune">
-                        <option>Torino</option>
-                        <option>Ivrea</option>
+                        <option>Bosa</option>
+                        <option>Bitti</option>
+                        <option>Rubiana</option>
+                        <option>Spotorno</option>
+                        <option>Robassomero</option>
+                        <option>Sangano</option>
                     </select>
 
             </div>

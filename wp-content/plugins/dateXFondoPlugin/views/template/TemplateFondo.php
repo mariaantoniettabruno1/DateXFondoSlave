@@ -13,12 +13,12 @@ class TemplateFondo
 
         $data = new MasterTemplateRepository();
         $results_articoli = [];
-        if (isset($_GET['fondo']) && isset($_GET['anno']) && isset($_GET['descrizione']) && isset($_GET['version']) && isset($_GET['template_name'])) {
-            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name']);
+        if (isset($_GET['fondo']) && isset($_GET['anno']) && isset($_GET['descrizione']) && isset($_GET['version']) && isset($_GET['template_name']) ) {
+            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name'],isset($_GET['city']));
 
         } else {
             if (isset($_GET['template_name']))
-                $results_articoli = $data->getArticoli($_GET['template_name']);
+                $results_articoli = $data->getArticoli($_GET['template_name'],$_GET['city']);
         }
         foreach ($results_articoli as $key => $value) {
             $results_articoli[$key]["sottotitolo_articolo"] = str_replace('"', '\"', $value["sottotitolo_articolo"]);
@@ -68,19 +68,6 @@ class TemplateFondo
 
         <body>
         <div class="container-fluid">
-            <?php if(my_get_current_user_roles()[0]=='subscriber'): ?>
-                <div class="row pb-3" style="width: 20%">
-                    <div class="col">
-                        <label>Seleziona comune per visualizzare i suoi dati:</label>
-
-                        <select name="comune" id="idComune">
-                            <option>Torino</option>
-                            <option>Ivrea</option>
-                        </select>
-                    </div>
-
-                </div>
-            <?php endif; ?>
             <div class="row pb-2">
                 <?php
                 TemplateHeader::render();

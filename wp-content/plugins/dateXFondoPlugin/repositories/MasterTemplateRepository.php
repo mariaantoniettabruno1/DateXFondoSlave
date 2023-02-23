@@ -2,20 +2,39 @@
 
 namespace dateXFondoPlugin;
 
+use mysqli;
+
 class MasterTemplateRepository
 {
-    public static function getArticoli($template_name)
+    public static function getArticoli($template_name, $city)
     {
-        $conn = new Connection();
-        $mysqli = $conn->connect();
-        $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? ORDER BY ordinamento ASC";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $template_name);
-        $res = $stmt->execute();
-        if ($res = $stmt->get_result()) {
-            $rows = $res->fetch_all(MYSQLI_ASSOC);
-        } else
-            $rows = [];
+        if (isset($city)) {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_custom';
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? ORDER BY ordinamento ASC";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("s", $template_name);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+        } else {
+            $conn = new Connection();
+            $mysqli = $conn->connect();
+            $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? ORDER BY ordinamento ASC";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("s", $template_name);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+
+        }
         mysqli_close($mysqli);
         return $rows;
     }
@@ -41,6 +60,7 @@ class MasterTemplateRepository
         mysqli_close($mysqli);
         return $row;
     }
+
     public static function getAllTemplate()
     {
         $conn = new Connection();
@@ -75,7 +95,6 @@ WHERE id=?";
     }
 
 
-
     public static function active_row($request)
     {
         $conn = new Connection();
@@ -93,19 +112,37 @@ WHERE id=?";
     }
 
 
-    public static function visualize_template($fondo, $anno, $descrizione, $version,$template_name)
+    public static function visualize_template($fondo, $anno, $descrizione, $version, $template_name, $city)
     {
-        $conn = new Connection();
-        $mysqli = $conn->connect();
-        $sql = "SELECT *
+        if (isset($city)) {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_custom';
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT *
 FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("sisis", $fondo, $anno, $descrizione, $version,$template_name);
-        $res = $stmt->execute();
-        if ($res = $stmt->get_result()) {
-            $rows = $res->fetch_all(MYSQLI_ASSOC);
-        } else
-            $rows = [];
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $fondo, $anno, $descrizione, $version, $template_name);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+        } else {
+            $conn = new Connection();
+            $mysqli = $conn->connect();
+            $sql = "SELECT *
+FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $fondo, $anno, $descrizione, $version, $template_name);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+        }
+
         mysqli_close($mysqli);
         return $rows;
 
