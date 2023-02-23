@@ -117,16 +117,34 @@ WHERE id=?";
 
     public static function active_row($request)
     {
-        $conn = new Connection();
-        $mysqli = $conn->connect();
-        $sql = "UPDATE DATE_template_fondo SET attivo=1 WHERE id=?";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("i", $request['id']);
-        $res = $stmt->execute();
-        $sql = "UPDATE DATE_storico_template_fondo SET attivo=1 WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=?";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("sisi", $request['fondo'], $request['anno'], $request['descrizione'], $request['version']);
-        $res = $stmt->execute();
+        if(!isset($request['citySelected']) || $request['citySelected'] == ''){
+            $conn = new Connection();
+            $mysqli = $conn->connect();
+            $sql = "UPDATE DATE_template_fondo SET attivo=1 WHERE id=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("i", $request['id']);
+            $res = $stmt->execute();
+            $sql = "UPDATE DATE_storico_template_fondo SET attivo=1 WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisi", $request['fondo'], $request['anno'], $request['descrizione'], $request['version']);
+            $res = $stmt->execute();
+        }
+        else{
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_custom';
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "UPDATE DATE_template_fondo SET attivo=1 WHERE id=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("i", $request['id']);
+            $res = $stmt->execute();
+            $sql = "UPDATE DATE_storico_template_fondo SET attivo=1 WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisi", $request['fondo'], $request['anno'], $request['descrizione'], $request['version']);
+            $res = $stmt->execute();
+        }
+
         mysqli_close($mysqli);
         return $res;
     }

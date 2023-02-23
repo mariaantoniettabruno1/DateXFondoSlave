@@ -4,7 +4,7 @@ namespace dateXFondoPlugin;
 
 use mysqli;
 
-class MasterTemplateRowRepository
+class TemplateRowRepository
 {
 
 

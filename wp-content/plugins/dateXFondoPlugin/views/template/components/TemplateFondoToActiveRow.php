@@ -17,7 +17,7 @@ class TemplateFondoToActiveRow
             let version = 0;
 
 
-            function renderDataTable() {
+            function renderDataTableActiveRow() {
                 $('#dataTemplateTableBody').html('');
 
                 articoli.forEach(art => {
@@ -71,7 +71,7 @@ class TemplateFondoToActiveRow
 
             $(document).ready(function () {
 
-                renderDataTable();
+                renderDataTableActiveRow();
 
                 $('#activeRowButton').click(function () {
                     const payload = {
@@ -79,7 +79,8 @@ class TemplateFondoToActiveRow
                         fondo,
                         anno,
                         descrizione,
-                        version
+                        version,
+                        citySelected
                     }
                     console.log(payload)
 
@@ -91,7 +92,7 @@ class TemplateFondoToActiveRow
                             console.log(response);
                             $("#activeModal").modal('hide');
                             articoli = articoli.filter(art => art.id !== id)
-                            renderDataTable();
+                            renderDataTableActiveRow();
                             $(".alert-active-row-success").show();
                             $(".alert-active-row-success").fadeTo(2000, 500).slideUp(500, function () {
                                 $(".alert-active-row-success").slideUp(500);

@@ -14,7 +14,7 @@ function create_endpoint_datefondo_disattiva_riga()
 
 function esegui_cancellazione_riga($params)
 {
-     \dateXFondoPlugin\MasterTemplateRowRepository::delete_row($params);
+     \dateXFondoPlugin\TemplateRowRepository::delete_row($params);
     $data = [ 'message' => 'Riga cancellata correttamente'];
     $response = new WP_REST_Response($data);
     $response->set_status(201);
