@@ -83,7 +83,7 @@ class ModelloFondoCostituzione
     {
 
         $data = new DocumentRepository();
-        $tot_sezioni = $data->getSezioni($_GET['editor_name'],$_GET['version']);
+        $tot_sezioni = $data->getSezioni($_GET['editor_name'],$_GET['version'],$_GET['city']);
 
         ?>
         <div class="accordion mt-2 col" id="accordionCostituzioneDocumentTable">

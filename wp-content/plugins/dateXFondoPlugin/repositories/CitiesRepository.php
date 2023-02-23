@@ -20,6 +20,7 @@ class CitiesRepository
         mysqli_close($mysqli);
         return $row;
     }
+
     public function get_history_data($params)
     {
         //cambiare il db name concatenando la stringa con il params che gli passo
@@ -48,6 +49,25 @@ class CitiesRepository
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
         return $row;
+    }
+
+    public function get_city_document_data($params)
+    {
+        $document_repository = new \DocumentRepository();
+        $documents = array_merge(
+            array_map(function ($doc) {
+                $doc['page'] = 'documento-modello-fondo';
+                return $doc;
+            }, $document_repository->getDataDocument('DATE_documento_modello_fondo_storico', $params['citySelected'])),
+            array_map(function ($doc) {
+                $doc['page'] = 'regioni_autonomie_locali_storico';
+
+                return $doc;
+            }, $document_repository->getDataDocument('DATE_documento_regioni_autonomie_locali_storico', $params['citySelected'])),
+            $document_repository->getDataOdtDocument('DATE_documenti_odt_storico', $params['citySelected'])
+        );
+
+        return $documents;
     }
 
 }

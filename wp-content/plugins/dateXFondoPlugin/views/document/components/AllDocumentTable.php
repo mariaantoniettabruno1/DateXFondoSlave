@@ -4,20 +4,15 @@ use dateXFondoPlugin\DateXFondoCommon;
 
 class AllDocumentTable
 {
-    private $documents;
 
-    public function __construct($documents)
-    {
-        $this->documents = $documents;
-    }
 
     public function render_scripts()
     {
         ?>
         <script>
-            let documents = JSON.parse((`<?= json_encode($this->documents); ?>`));
 
-            function renderDataTable() {
+
+            function renderDataTableDoc() {
                 documents.forEach(doc => {
                     $('#dataDocumentTableBody').append(`
                                  <tr>
@@ -38,19 +33,20 @@ class AllDocumentTable
 
             $(document).ready(function () {
 
-                renderDataTable();
+                renderDataTableDoc();
 
                 let current_url = '<?=
                    (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
                         === 'on' ? "https" : "http") .
                         "://" . $_SERVER['HTTP_HOST'] .
                         $_SERVER['REQUEST_URI'];?>';
+
                 $('.btn-vis-templ').click(function () {
                     let document_name = $(this).attr('data-document');
                     let editor_name = $(this).attr('data-editor');
                     let page = $(this).attr('data-page');
                     let version = $(this).attr('data-version');
-                        location.href = '<?= DateXFondoCommon::get_website_url()?>/' + page + '?document_name=' + document_name + '&editor_name=' + editor_name + '&version=' + version;
+                        location.href = '<?= DateXFondoCommon::get_website_url()?>/' + page + '?document_name=' + document_name + '&editor_name=' + editor_name + '&version=' + version + '&city=' + citySelected;
 
                 });
 

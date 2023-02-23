@@ -14,10 +14,10 @@ class DeterminaCostituzioneDocument
     public function __construct()
     {
         $data = new DocumentRepository();
-        $this->formule = $data->getFormulas($_GET['editor_name']);
-        $this->articoli = $data->getIdsArticoli($_GET['editor_name']);
+        $this->formule = $data->getFormulas($_GET['editor_name'],$_GET['city']);
+        $this->articoli = $data->getIdsArticoli($_GET['editor_name'],$_GET['city']);
         $delibera_data = new DeliberaDocumentRepository();
-        $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version']);
+        $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version'],$_GET['city']);
         $user_data = new UserRepository();
         $this->user_infos = $user_data->getUserInfos();
 
@@ -151,15 +151,7 @@ class DeterminaCostituzioneDocument
 
     </head>
     <body>
-    <?php if(my_get_current_user_roles()[0]=='subscriber'): ?>
-        <div style="width: 20%">
-            <label>Seleziona comune per visualizzare i suoi dati:</label>
-            <select name="comune" id="idComune">
-                <option>Torino</option>
-                <option>Ivrea</option>
-            </select>
-        </div>
-    <?php endif; ?>
+
     <div class="d-flex justify-content-end">
         <button class="btn btn-outline-secondary btn-export" onclick="exportHTML();">Esporta in word
         </button>

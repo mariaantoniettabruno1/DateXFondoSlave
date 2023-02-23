@@ -7,7 +7,6 @@ use AllDocumentTable;
 class DocumentHistory
 {
     private $documents = [];
-    private $allDocuments;
 
 
     public function __construct()
@@ -17,16 +16,15 @@ class DocumentHistory
             array_map(function ($doc) {
                 $doc['page'] = 'documento-modello-fondo';
                 return $doc;
-            }, $document_repository->getDataDocument('DATE_documento_modello_fondo_storico')),
+            }, $document_repository->getDataDocument('DATE_documento_modello_fondo_storico','')),
             array_map(function ($doc) {
                 $doc['page'] = 'regioni_autonomie_locali_storico';
 
                 return $doc;
-            }, $document_repository->getDataDocument('DATE_documento_regioni_autonomie_locali_storico')),
-            $document_repository->getDataOdtDocument('DATE_documenti_odt_storico')
+            }, $document_repository->getDataDocument('DATE_documento_regioni_autonomie_locali_storico','')),
+            $document_repository->getDataOdtDocument('DATE_documenti_odt_storico','')
         );
 
-        $this->allDocuments = new AllDocumentTable($this->documents);
 
     }
 
@@ -61,25 +59,84 @@ class DocumentHistory
 
         <body>
         <div class="container-fluid">
-            <?php if(my_get_current_user_roles()[0]=='subscriber'): ?>
+            <?php if (my_get_current_user_roles()[0] == 'subscriber'): ?>
                 <div class="row pb-3" style="width: 20%">
+                    <div class="col-10">
 
                         <label>Seleziona comune per visualizzare i suoi dati:</label>
 
                         <select name="comune" id="idComune">
-                            <option>Torino</option>
-                            <option>Ivrea</option>
+                            <option value="Bosa">Bosa</option>
+                            <option value="Bitti">Bitti</option>
+                            <option value="Rubiana">Rubiana</option>
+                            <option value="Spotorno">Spotorno</option>
+                            <option value="Robassomero">Robassomero</option>
+                            <option value="Sangano">Sangano</option>
                         </select>
 
+
+                    </div>
+                    <div class="col-2 align-self-end">
+                        <button class="btn btn-primary" id="selectedCity">Conferma selezione</button>
+                    </div>
                 </div>
             <?php endif; ?>
             <div class="row">
                 <?php
-                $this->allDocuments->render();
+                (new \AllDocumentTable)->render();
                 ?>
             </div>
 
         </body>
+        <script>
+            let documents = JSON.parse((`<?= json_encode($this->documents); ?>`));
+            let citySelected = '';
+            $('#selectedCity').click(function () {
+                citySelected = $("#idComune").val();
+                const payload = {
+                    citySelected
+                }
+                console.log(payload)
+
+                $.ajax({
+                    url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/citydocuments',
+                    data: payload,
+                    type: "POST",
+                    success: function (response) {
+                        console.log(response);
+                        documents = response['data'];
+                        renderDataTableDoc();
+                        console.log(documents);
+                        $(".alert-data-success").show();
+                        $(".alert-data-success").fadeTo(2000, 500).slideUp(500, function () {
+                            $(".alert-data-success").slideUp(500);
+                        });
+                    },
+                    error: function (response) {
+                        console.error(response);
+                        $(".alert-data-wrong").show();
+                        $(".alert-data-wrong").fadeTo(2000, 500).slideUp(500, function () {
+                            $(".alert-data-wrong").slideUp(500);
+                        });
+                    }
+                });
+            });
+
+        </script>
+        <div class="alert alert-success alert-data-success" role="alert"
+             style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
+            Dati caricati correttamente!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="alert alert-danger alert-data-wrong" role="alert"
+             style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
+            Dati non caricati correttamente, riprovare
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         </html lang="en">
 
         <?php

@@ -110,9 +110,9 @@ class ModelloRegioniDestinazioneTable
     {
         $data = new \dateXFondoPlugin\RegioniDocumentRepository();
         $data_document = new DocumentRepository();
-        $results_articoli = $data->getHistoryDestinazioneArticoli($_GET['editor_name'],$_GET['version']);
-        $formulas = $data_document->getFormulas($_GET['editor_name']);
-        $ids_articolo = $data_document->getIdsArticoli($_GET['editor_name']);
+        $results_articoli = $data->getHistoryDestinazioneArticoli($_GET['editor_name'],$_GET['version'],$_GET['city']);
+        $formulas = $data_document->getFormulas($_GET['editor_name'],$_GET['city']);
+        $ids_articolo = $data_document->getIdsArticoli($_GET['editor_name'],$_GET['city']);
         $array = $formulas + $ids_articolo;
         $sezioni = [];
         $tot_array = [];

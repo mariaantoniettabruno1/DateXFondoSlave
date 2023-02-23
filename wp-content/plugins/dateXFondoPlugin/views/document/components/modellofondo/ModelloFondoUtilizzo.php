@@ -82,7 +82,7 @@ class ModelloFondoUtilizzo
     public static function render()
     {
         $data = new DocumentRepository();
-        $tot_sezioni = $data->getSezioniUtilizzo($_GET['editor_name'],$_GET['version']);
+        $tot_sezioni = $data->getSezioniUtilizzo($_GET['editor_name'],$_GET['version'],$_GET['city']);
 
 
         ?>
