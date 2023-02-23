@@ -15,7 +15,7 @@ class TemplateHistoryTable
             let template_name = '';
             let version = 0;
 
-            function renderDataTable() {
+            function renderDataTableHistoryTemplate() {
                 $('#dataTemplateTableBody').html('');
 
                 articoli.forEach(art => {
@@ -41,15 +41,16 @@ class TemplateHistoryTable
                     version = $(this).attr('data-version');
                     template_name = $(this).attr('data-template');
                 });
+                $('.btn-visualize-template').click(function () {
+                    location.href = '<?= DateXFondoCommon::get_website_url()?>/visualizza-template-fondo/?fondo=' + fondo + '&anno=' + anno + '&descrizione=' + descrizione + '&version=' + version + '&template_name=' + template_name + '&city=' + citySelected;
+                });
             }
 
             $(document).ready(function () {
 
-                renderDataTable();
+                renderDataTableHistoryTemplate();
 
-                $('.btn-visualize-template').click(function () {
-                    location.href = '<?= DateXFondoCommon::get_website_url()?>/visualizza-template-fondo/?fondo=' + fondo + '&anno=' + anno + '&descrizione=' + descrizione + '&version=' + version + '&template_name=' + template_name;
-                });
+
             });
         </script>
     <?php }

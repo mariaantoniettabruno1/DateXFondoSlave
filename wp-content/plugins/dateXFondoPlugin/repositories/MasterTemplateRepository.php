@@ -75,21 +75,41 @@ class MasterTemplateRepository
 
     public static function edit_row($request)
     {
+        if ($request['city'] == '') {
+            $conn = new Connection();
+            $mysqli = $conn->connect();
 
-        $conn = new Connection();
-        $mysqli = $conn->connect();
-
-        $sql = "UPDATE DATE_template_fondo SET valore=?,
+            $sql = "UPDATE DATE_template_fondo SET valore=?,
                                valore_anno_precedente=?,
                                nota=?
 WHERE id=?";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("iisi",
-            $request['valore'],
-            $request['valore_anno_precedente'],
-            $request['nota'],
-            $request['id']);
-        $res = $stmt->execute();
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("iisi",
+                $request['valore'],
+                $request['valore_anno_precedente'],
+                $request['nota'],
+                $request['id']);
+            $res = $stmt->execute();
+        } else {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_custom';
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+
+            $sql = "UPDATE DATE_template_fondo SET valore=?,
+                               valore_anno_precedente=?,
+                               nota=?
+WHERE id=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("iisi",
+                $request['valore'],
+                $request['valore_anno_precedente'],
+                $request['nota'],
+                $request['id']);
+            $res = $stmt->execute();
+        }
+
         $mysqli->close();
         return $res;
     }

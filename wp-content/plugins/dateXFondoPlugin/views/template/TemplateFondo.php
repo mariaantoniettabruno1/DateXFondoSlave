@@ -53,7 +53,10 @@ class TemplateFondo
 
             <script>
                 let articoli = JSON.parse((`<?=json_encode($results_articoli);?>`));
+                let city ='<?=($_GET['city']);?>';
+
                 console.log(articoli)
+
                 const sezioni = {}
                 articoli.forEach(a => {
                     if (!sezioni[a.sezione]) {

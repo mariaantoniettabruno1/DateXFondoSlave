@@ -170,13 +170,12 @@ ${link_button}</div>
                     let valore = $('#idValore').val();
                     let valore_anno_precedente = $('#idValorePrecedente').val();
                     let nota = $('#idNotaArticolo').val().replaceAll("[^a-zA-Z0-9]+", "");
-
-
                     const payload = {
                         id,
                         valore,
                         valore_anno_precedente,
-                        nota
+                        nota,
+                        city
                     }
                     console.log(payload)
 
@@ -209,7 +208,8 @@ ${link_button}</div>
 
                 $('#deleteRowButton').click(function () {
                     const payload = {
-                        id
+                        id,
+                        city
                     }
 
                     $.ajax({
