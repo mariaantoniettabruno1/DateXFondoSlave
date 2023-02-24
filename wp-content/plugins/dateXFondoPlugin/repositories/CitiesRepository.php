@@ -50,6 +50,20 @@ class CitiesRepository
         mysqli_close($mysqli);
         return $row;
     }
+    public function get_city_user_data($params)
+    {
+        //cambiare il db name concatenando la stringa con il params che gli passo
+        $url = DB_HOST . ":" . DB_PORT . "/";
+        $username = DB_USER;
+        $password = DB_PASSWORD;
+        $dbname = 'c1date_custom';
+        $mysqli = new mysqli($url, $username, $password, $dbname);
+        $sql = "SELECT * FROM DATE_user_form";
+        $result = $mysqli->query($sql);
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+        mysqli_close($mysqli);
+        return $rows;
+    }
 
     public function get_city_document_data($params)
     {
