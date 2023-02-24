@@ -8,3 +8,8 @@
     width: 100%;
     table-layout: fixed;
 }
+
+.btn-city{
+    border-color: #26282f !important;
+    background-color: #26282f !important;
+}

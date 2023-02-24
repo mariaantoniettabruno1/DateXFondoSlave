@@ -25,6 +25,8 @@ public static function render(){
               integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
               crossorigin="anonymous" referrerpolicy="no-referrer"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?= DateXFondoCommon::get_base_url() ?>/wp-content/plugins/dateXFondoPlugin/assets/styles/main.css">
+
 
 
 
@@ -50,7 +52,7 @@ public static function render(){
 
                 </div>
                 <div class="col-2 align-self-end">
-                    <button class="btn btn-primary" id="selectedCity">Conferma selezione</button>
+                    <button class="btn btn-primary btn-city" id="selectedCity">Conferma selezione</button>
                 </div>
             </div>
         <?php endif; ?>
