@@ -137,6 +137,12 @@ class DocumentHistory
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+        <style>
+            #selectedCity {
+                border-color: #26282f !important;
+                background-color: #26282f !important;
+            }
+        </style>
         </html lang="en">
 
         <?php

@@ -224,3 +224,9 @@ function my_get_current_user_roles()
     }
 
 }
+function your_namespace() {
+    wp_register_style('your_namespace', plugins_url('main.css','wp-content/plugins/dateXFondoPlugin/assets/styles/main.css' ));
+    wp_enqueue_style('your_namespace');
+}
+
+add_action( 'admin_init','your_namespace');

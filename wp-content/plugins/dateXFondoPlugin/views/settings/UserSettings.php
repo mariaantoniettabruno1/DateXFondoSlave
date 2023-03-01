@@ -6,6 +6,8 @@ class UserSettings
 public static function render(){
     $data = new UserRepository();
     $results_infos = $data->getUserInfos();
+    your_namespace();
+
 
     ?>
     <!DOCTYPE html>
@@ -113,6 +115,12 @@ public static function render(){
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <style>
+        #selectedCity {
+            border-color: #26282f !important;
+            background-color: #26282f !important;
+        }
+    </style>
     </html lang="en">
     <?php
 }
