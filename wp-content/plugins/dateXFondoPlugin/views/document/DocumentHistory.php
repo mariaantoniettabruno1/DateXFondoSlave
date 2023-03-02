@@ -66,12 +66,9 @@ class DocumentHistory
                         <label>Seleziona comune per visualizzare i suoi dati:</label>
 
                         <select name="comune" id="idComune">
-                            <option value="Bosa">Bosa</option>
-                            <option value="Bitti">Bitti</option>
                             <option value="Rubiana">Rubiana</option>
                             <option value="Spotorno">Spotorno</option>
                             <option value="Robassomero">Robassomero</option>
-                            <option value="Sangano">Sangano</option>
                         </select>
 
 

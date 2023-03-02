@@ -98,21 +98,30 @@ class ModelloFondoDatiUtili
                     <div id="collapseDatiUtiliDocument<?= $section_index ?>" class="collapse"
                          aria-labelledby="headingDatiUtiliDocument<?= $section_index ?>"
                          data-parent="#accordionDatiUtiliDocumentTable">
-                        <div class="card-body ">
-                            <table class="table datatable_dati_utili" id="exportableTableDatiUtili<?= $section_index ?>">
-                                <thead>
+                        <div class="card-body">
+                            <table class="content_table" id="contentTable<?= $section_index ?>">
                                 <tr>
-                                    <th>Ordinamento</th>
-                                    <th>Sottosezione</th>
-                                    <th>Nome Articolo</th>
-                                    <th>formula</th>
-                                    <th>nota</th>
-
+                                    <td>
+                                        <table class="table datatable_dati_utili" id="exportableTableDatiUtili<?= $section_index ?>">
+                                            <thead style="position:relative; min-width: 100%;">
+                                            <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #457FAF; color: #FFFFFF;">
+                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Ordinamento</th>
+                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Sottosezione</th>
+                                                <th  style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Nome Articolo</th>
+                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">formula</th>
+                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">nota</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="dataDatiUtiliDocumentTableBody<?= $section_index ?>">
+                                            </tbody>
+                                        </table>
+                                    </td>
                                 </tr>
-                                </thead>
-                                <tbody id="dataDatiUtiliDocumentTableBody<?= $section_index ?>">
-                                </tbody>
+                                <tr></tr>
                             </table>
+
+
+                        </div>
                         </div>
                     </div>
                 </div>
