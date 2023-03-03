@@ -23,6 +23,7 @@ class TemplateFondoTable
                 if (subsection)
                     filteredArticoli = filteredArticoli.filter(art => art.sottosezione === subsection)
                 let delete_button = '';
+                let edit_button = '';
                 let nota = '';
                 let id_articolo = '';
                 let descrizione = '';
@@ -42,6 +43,7 @@ class TemplateFondoTable
                     sottotitolo = art.sottotitolo_articolo ?? '';
                     link = art.link ?? '';
                     nome_articolo = art.nome_articolo ?? '';
+
                     if (art.valore === '' || art.valore === undefined || art.valore === null) {
                         valore = `<medium  class="form-text text-danger">Valore obbligatorio, per favore inseriscilo.</medium>`;
                     } else {
@@ -61,7 +63,18 @@ class TemplateFondoTable
                     else{
                         link_button='';
                     }
-
+                    //sistemare meglio
+                    if(new Date().getFullYear()!==art.anno){
+                        edit_button = '';
+                    }
+                    else{
+                        if(art.version !== 0){
+                            edit_button = ` <button class="btn btn-link btn-edit-row" data-id='${art.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button>`;
+                        }
+                        else{
+                            edit_button = '';
+                        }
+                    }
 
                     $('#dataTemplateTableBody' + index).append(`
                                  <tr>
@@ -87,7 +100,7 @@ ${link_button}</div>
 </div>
 </td>
                                        <td><div class="row pr-3">
-                <div class="col-3"> <button class="btn btn-link btn-edit-row" data-id='${art.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button></div>
+                <div class="col-3">${edit_button}</div>
                 <div class="col-3">${delete_button}</div>
                 </div></td>
                                  </tr>

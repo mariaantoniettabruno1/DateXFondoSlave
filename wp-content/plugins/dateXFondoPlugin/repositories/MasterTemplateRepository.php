@@ -8,7 +8,7 @@ class MasterTemplateRepository
 {
     public static function getArticoli($template_name, $city)
     {
-        if (isset($city)) {
+        if (isset($city) && $city != '') {
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
