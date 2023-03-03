@@ -152,7 +152,7 @@ WHERE id=?";
 
     public static function visualize_template($fondo, $anno, $descrizione, $version, $template_name, $city)
     {
-        if (isset($city)) {
+        if (isset($city) && $city!= '') {
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
