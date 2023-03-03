@@ -13,8 +13,9 @@ class TemplateFondo
 
         $data = new MasterTemplateRepository();
         $results_articoli = [];
+
         if (isset($_GET['fondo']) && isset($_GET['anno']) && isset($_GET['descrizione']) && isset($_GET['version']) && isset($_GET['template_name']) ) {
-            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name'],isset($_GET['city']));
+            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name'],$_GET['city']);
 
         } else {
             if (isset($_GET['template_name']))

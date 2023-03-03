@@ -12,7 +12,7 @@ class MasterTemplateRepository
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -94,7 +94,7 @@ WHERE id=?";
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$request['city'];
             $mysqli = new mysqli($url, $username, $password, $dbname);
 
             $sql = "UPDATE DATE_template_fondo SET valore=?,
@@ -133,7 +133,7 @@ WHERE id=?";
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$request['citySelected'];
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "UPDATE DATE_template_fondo SET attivo=1 WHERE id=?";
             $stmt = $mysqli->prepare($sql);
@@ -156,10 +156,9 @@ WHERE id=?";
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            $sql = "SELECT *
-FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
+            $sql = "SELECT * FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
             $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("sisis", $fondo, $anno, $descrizione, $version, $template_name);
             $res = $stmt->execute();
@@ -170,8 +169,7 @@ FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=
         } else {
             $conn = new Connection();
             $mysqli = $conn->connect();
-            $sql = "SELECT *
-FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
+            $sql = "SELECT * FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
             $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("sisis", $fondo, $anno, $descrizione, $version, $template_name);
             $res = $stmt->execute();

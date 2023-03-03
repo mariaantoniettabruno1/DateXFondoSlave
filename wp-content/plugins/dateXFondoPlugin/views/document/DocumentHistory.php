@@ -66,9 +66,9 @@ class DocumentHistory
                         <label>Seleziona comune per visualizzare i suoi dati:</label>
 
                         <select name="comune" id="idComune">
-                            <option value="Rubiana">Rubiana</option>
-                            <option value="Spotorno">Spotorno</option>
-                            <option value="Robassomero">Robassomero</option>
+                            <option value="rubiana">Rubiana</option>
+                            <option value="spotorno">Spotorno</option>
+                            <option value="robassomero">Robassomero</option>
                         </select>
 
 
