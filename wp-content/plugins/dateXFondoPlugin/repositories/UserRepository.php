@@ -2,6 +2,8 @@
 
 namespace dateXFondoPlugin;
 
+use mysqli;
+
 class UserRepository
 {
 public static function getUserInfos(){
@@ -14,8 +16,26 @@ public static function getUserInfos(){
     return $rows;
 }
 function update_user_settings($request){
-    $conn = new Connection();
-    $mysqli = $conn->connect();
+    if($request['citySelected'] == ''){
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+        $sql = "UPDATE DATE_user_form SET titolo_ente=?, nome_soggetto_deliberante=?,responsabile=?,firma=?,riduzione_spesa=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("sssss",
+            $request['titolo_ente'],
+            $request['soggetto_deliberante'],
+            $request['responsabile_documento'],
+            $request['firma'],
+            $request['riduzione_spesa']);
+        $res = $stmt->execute();
+    }
+else{
+
+    $url = DB_HOST . ":" . DB_PORT . "/";
+    $username = DB_USER;
+    $password = DB_PASSWORD;
+    $dbname = 'c1date_'.$request['citySelected'];
+    $mysqli = new mysqli($url, $username, $password, $dbname);
     $sql = "UPDATE DATE_user_form SET titolo_ente=?, nome_soggetto_deliberante=?,responsabile=?,firma=?,riduzione_spesa=?";
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("sssss",
@@ -25,6 +45,7 @@ function update_user_settings($request){
         $request['firma'],
         $request['riduzione_spesa']);
     $res = $stmt->execute();
+}
     $mysqli->close();
     return $res;
 }

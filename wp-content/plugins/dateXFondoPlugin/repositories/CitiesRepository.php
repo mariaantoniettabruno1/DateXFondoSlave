@@ -52,11 +52,10 @@ class CitiesRepository
     }
     public function get_city_user_data($params)
     {
-        //cambiare il db name concatenando la stringa con il params che gli passo
         $url = DB_HOST . ":" . DB_PORT . "/";
         $username = DB_USER;
         $password = DB_PASSWORD;
-        $dbname = 'c1date_custom';
+        $dbname = 'c1date_'.$params['citySelected'];
         $mysqli = new mysqli($url, $username, $password, $dbname);
         $sql = "SELECT * FROM DATE_user_form";
         $result = $mysqli->query($sql);

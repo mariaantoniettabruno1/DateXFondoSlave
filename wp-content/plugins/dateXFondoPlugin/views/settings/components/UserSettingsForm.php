@@ -43,15 +43,18 @@ class UserSettingsForm
                     let riduzione_spesa = $('input:radio[name=typeRiduzione]:checked').val();
 
 
+
                     const payload = {
                         titolo_ente,
                         soggetto_deliberante,
                         responsabile_documento,
                         firma,
-                        riduzione_spesa
+                        riduzione_spesa,
+                        citySelected
                     }
-
+                    console.log("payload")
                     console.log(payload)
+
 
                     $.ajax({
                         url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/usersettings',

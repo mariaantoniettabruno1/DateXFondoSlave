@@ -43,9 +43,9 @@ public static function render(){
                     <label>Seleziona comune per visualizzare i suoi dati:</label>
 
                     <select name="comune" id="idComune">
-                        <option value="Rubiana">Rubiana</option>
-                        <option value="Spotorno">Spotorno</option>
-                        <option value="Robassomero">Robassomero</option>
+                        <option value="rubiana">Rubiana</option>
+                        <option value="spotorno">Spotorno</option>
+                        <option value="robassomero">Robassomero</option>
                     </select>
 
 
@@ -59,12 +59,12 @@ public static function render(){
             <?php
             \UserSettingsForm::render();
             ?>
-
         </div>
     </div>
     </body>
     <script>
         let infos = JSON.parse((`<?=json_encode($results_infos);?>`));
+
         let citySelected = '';
         $('#selectedCity').click(function () {
             citySelected = $("#idComune").val();
@@ -79,9 +79,16 @@ public static function render(){
                 type: "POST",
                 success: function (response) {
                     console.log(response);
-                    infos = response['data'];
-                    renderDataTableDoc();
-                    console.log(infos);
+
+                    $('#titoloEnte').val(response['data'][0].titolo_ente)
+                    $('#soggettoDeliberante').val(response['data'][0].nome_soggetto_deliberante)
+                    $('#responsabileDocumento').val(response['data'][0].responsabile)
+                    $('#firma').val(response['data'][0].firma)
+                    if (response['data'][0].riduzione_spesa === '2008') {
+                        $('#duemilaotto').prop('checked', true);
+                    } else if (response['data'][0].riduzione_spesa === 'Media Triennio 2011/2013') {
+                        $('#mediaTriennio').prop('checked', true);
+                    }
                     $(".alert-data-success").show();
                     $(".alert-data-success").fadeTo(2000, 500).slideUp(500, function () {
                         $(".alert-data-success").slideUp(500);
