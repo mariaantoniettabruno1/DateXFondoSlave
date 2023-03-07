@@ -6,7 +6,7 @@ class FondoCompletoTableRepository
 {
     public static function getJoinedArticoli($template_name)
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT * FROM DATE_template_fondo  WHERE attivo =1 AND template_name=?";
         $stmt = $mysqli->prepare($sql);
@@ -20,7 +20,7 @@ class FondoCompletoTableRepository
 
     public static function getJoinedFormulas($template_name)
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT * FROM DATE_formula  WHERE attivo=1 AND visibile = 1 AND formula_template_name=?";
         $stmt = $mysqli->prepare($sql);
@@ -34,7 +34,7 @@ class FondoCompletoTableRepository
 
     public static function getJoinedRecords()
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT id, external_id, type, ordinamento FROM DATE_template_formula";
         $result = $mysqli->query($sql);
@@ -45,7 +45,7 @@ class FondoCompletoTableRepository
 
     public static function updateJoinedIndex($id, $ordinamento)
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "UPDATE DATE_template_formula SET ordinamento = ? WHERE id = ?";
         $stmt = $mysqli->prepare($sql);
@@ -57,7 +57,7 @@ class FondoCompletoTableRepository
 
     public static function insertJoinedIndex($external_id, $type, $ordinamento)
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "INSERT INTO DATE_template_formula (external_id, type, ordinamento) VALUES (?, ?, ?)";
         $stmt = $mysqli->prepare($sql);

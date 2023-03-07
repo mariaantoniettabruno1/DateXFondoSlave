@@ -5,7 +5,7 @@ namespace dateXFondoPlugin;
 class TemplateHistory
 {
 public static function getAllYears(){
-    $conn = new Connection();
+    $conn = new ConnectionFirstCity();
     $mysqli = $conn->connect();
     $sql = "SELECT DISTINCT anno FROM DATE_storico_template_fondo";
     $result = $mysqli->query($sql);
@@ -15,7 +15,7 @@ public static function getAllYears(){
 }
 
 public static function getCurrentDataByYear($year){
-    $conn = new Connection();
+    $conn = new ConnectionFirstCity();
     $mysqli = $conn->connect();
     $sql = "SELECT * FROM DATE_storico_template_fondo WHERE anno=?";
     $stmt = $mysqli->prepare($sql);

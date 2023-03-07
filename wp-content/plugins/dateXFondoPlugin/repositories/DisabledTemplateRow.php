@@ -6,7 +6,7 @@ class DisabledTemplateRow
 {
     public static function getDataByCurrentYear(){
         $year = 2022;
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT * FROM DATE_template_fondo WHERE anno=? AND attivo=0";
         $stmt = $mysqli->prepare($sql);

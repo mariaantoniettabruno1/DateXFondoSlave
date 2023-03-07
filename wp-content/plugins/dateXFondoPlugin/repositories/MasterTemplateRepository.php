@@ -23,7 +23,7 @@ class MasterTemplateRepository
             } else
                 $rows = [];
         } else {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -41,7 +41,7 @@ class MasterTemplateRepository
 
     public static function getStoredArticoli()
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
@@ -52,7 +52,7 @@ class MasterTemplateRepository
 
     public static function getDisabledArticoli()
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT * FROM DATE_template_fondo WHERE attivo = 0 and row_type='special' ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
@@ -63,7 +63,7 @@ class MasterTemplateRepository
 
     public static function getAllTemplate()
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name FROM DATE_template_fondo  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
@@ -76,7 +76,7 @@ class MasterTemplateRepository
     public static function edit_row($request)
     {
         if ($request['city'] == '') {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
 
             $sql = "UPDATE DATE_template_fondo SET valore=?,
@@ -118,7 +118,7 @@ WHERE id=?";
     public static function active_row($request)
     {
         if(!isset($request['citySelected']) || $request['citySelected'] == ''){
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "UPDATE DATE_template_fondo SET attivo=1 WHERE id=?";
             $stmt = $mysqli->prepare($sql);
@@ -167,7 +167,7 @@ WHERE id=?";
             } else
                 $rows = [];
         } else {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT * FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
             $stmt = $mysqli->prepare($sql);

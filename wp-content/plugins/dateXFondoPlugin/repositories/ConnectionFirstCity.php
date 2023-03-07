@@ -1,12 +1,13 @@
 <?php
+
 namespace dateXFondoPlugin;
 use mysqli;
 
 /**
-classe per la connessione al db di dateXFondo
+classe per la connessione al db di dateXFondo al comune di Rubiana
  */
 
-class Connection
+class ConnectionFirstCity
 {
     private $url;
     private $username;
@@ -28,7 +29,7 @@ class Connection
         $this->url = DB_HOST . ":" . DB_PORT . "/";
         $this->username = DB_USER;
         $this->password = DB_PASSWORD;
-        $this->dbname = DB_NAME;
+        $this->dbname = 'c1date_rubiana';
     }
 
     function connect()
@@ -42,10 +43,8 @@ class Connection
     }
     public static function create_connection(){
         echo DB_HOST."<br>";
-        return new Connection();
+        return new ConnectionFirstCity();
     }
-
-
 
 
 }

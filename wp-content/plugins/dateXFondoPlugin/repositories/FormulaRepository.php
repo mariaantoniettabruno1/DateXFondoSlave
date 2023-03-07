@@ -1,13 +1,14 @@
 <?php
 
 use dateXFondoPlugin\Connection;
+use dateXFondoPlugin\ConnectionFirstCity;
 
 class FormulaRepository
 {
 
     public static function getArticoli()
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL AND attivo=1";
         $result = $mysqli->query($sql);
@@ -19,7 +20,7 @@ class FormulaRepository
 
     public static function getFormule()
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT * FROM DATE_formula WHERE attivo = 1";
         $result = $mysqli->query($sql);
@@ -30,7 +31,7 @@ class FormulaRepository
 
     public static function create_formula($request)
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "INSERT INTO DATE_formula (sezione,sottosezione,nome,descrizione,condizione,formula,visibile,formula_template_name,text_type) VALUES (?,?,?,?,?,?,?,?,?) ";
         $stmt = $mysqli->prepare($sql);
@@ -51,7 +52,7 @@ class FormulaRepository
 
     public static function update_formula($request)
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "UPDATE DATE_formula SET sezione = ?, sottosezione = ?, nome = ?, descrizione = ?, condizione = ?, formula = ?, visibile = ?, formula_template_name=? WHERE ID = ?;";
         $stmt = $mysqli->prepare($sql);
@@ -73,7 +74,7 @@ class FormulaRepository
     public static function valorize_formula($request)
     {
         //(opzionale) Aggiungere il formula_template_name
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "UPDATE DATE_formula SET valore = ? WHERE nome = ?";
         $stmt = $mysqli->prepare($sql);
@@ -90,7 +91,7 @@ class FormulaRepository
 
     public static function delete_formula($request)
     {
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "UPDATE DATE_formula SET attivo=0  WHERE id=?";
         $stmt = $mysqli->prepare($sql);

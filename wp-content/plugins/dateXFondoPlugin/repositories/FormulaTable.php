@@ -1,12 +1,13 @@
 <?php
 
 use dateXFondoPlugin\Connection;
+use dateXFondoPlugin\ConnectionFirstCity;
 
 class FormulaTable
 {
 
     public static function getArticoli(){
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "SELECT id_articolo, nome_articolo, sottotitolo_articolo, sezione, sottosezione FROM DATE_template_fondo WHERE id_articolo IS NOT NULL";
         $result = $mysqli->query($sql);
@@ -20,7 +21,7 @@ class FormulaTable
     public static function getAllSections()
     {
 
-       $conn = new Connection();
+       $conn = new ConnectionFirstCity();
        $mysqli = $conn->connect();
        $sql = "SELECT DISTINCT sezione FROM DATE_template_fondo";
        $result = $mysqli->query($sql);

@@ -11,7 +11,7 @@ class TemplateRowRepository
     public static function delete_row($request)
     {
         if($request['city'] == ''){
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "UPDATE DATE_template_fondo SET attivo=0  WHERE id=?";
             $stmt = $mysqli->prepare($sql);

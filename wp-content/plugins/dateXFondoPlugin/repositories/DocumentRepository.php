@@ -1,13 +1,14 @@
 <?php
 
 use dateXFondoPlugin\Connection;
+use dateXFondoPlugin\ConnectionFirstCity;
 
 class DocumentRepository
 {
     public static function getDataDocument($table_name, $city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = 'SELECT DISTINCT document_name, editor_name, anno, version FROM ' . $table_name;
             $stmt = $mysqli->prepare($sql);
@@ -20,7 +21,7 @@ class DocumentRepository
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = 'SELECT DISTINCT document_name, editor_name, anno, version FROM ' . $table_name;
             $stmt = $mysqli->prepare($sql);
@@ -39,7 +40,7 @@ class DocumentRepository
     public static function getDataOdtDocument($table_name, $city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = 'SELECT DISTINCT document_name, editor_name, anno,page,version FROM ' . $table_name;
             $stmt = $mysqli->prepare($sql);
@@ -52,7 +53,7 @@ class DocumentRepository
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = 'SELECT DISTINCT document_name, editor_name, anno,page,version FROM ' . $table_name;
             $stmt = $mysqli->prepare($sql);
@@ -71,7 +72,7 @@ class DocumentRepository
     {
         if (!isset($city)) {
 
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT * FROM DATE_documento_modello_fondo WHERE  attivo=1 and editor_name=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -83,11 +84,11 @@ class DocumentRepository
                 $rows = [];
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT * FROM DATE_documento_modello_fondo WHERE  attivo=1 and editor_name=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -107,7 +108,7 @@ class DocumentRepository
     public static function getHistoryArticoli($editor_name, $version,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT * FROM DATE_documento_modello_fondo_storico WHERE  attivo=1 and editor_name=? AND version=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -119,11 +120,11 @@ class DocumentRepository
                 $rows = [];
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
 
             $sql = "SELECT * FROM DATE_documento_modello_fondo_storico WHERE  attivo=1 and editor_name=? AND version=? ORDER BY ordinamento ASC";
@@ -143,7 +144,7 @@ class DocumentRepository
     public static function getHistoryArticoliUtilizzo($editor_name, $version,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT * FROM DATE_documento_modello_fondo_utilizzo_storico WHERE  attivo=1 and editor_name=? AND version=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -155,11 +156,11 @@ class DocumentRepository
                 $rows = [];
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
 
             $sql = "SELECT * FROM DATE_documento_modello_fondo_utilizzo_storico WHERE  attivo=1 and editor_name=? AND version=? ORDER BY ordinamento ASC";
@@ -178,7 +179,7 @@ class DocumentRepository
     public static function getHistoryArticoliDatiUtili($editor_name, $version,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT * FROM DATE_documento_modello_fondo_dati_utili WHERE  attivo=1 and editor_name=? AND version=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -190,11 +191,11 @@ class DocumentRepository
                 $rows = [];
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT * FROM DATE_documento_modello_fondo_dati_utili WHERE  attivo=1 and editor_name=? AND version=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
@@ -212,7 +213,7 @@ class DocumentRepository
     public static function getIdsArticoli($editor_name,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT id_articolo,valore FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=?";
             $stmt = $mysqli->prepare($sql);
@@ -224,11 +225,11 @@ class DocumentRepository
                 $rows = [];
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT id_articolo,valore FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=?";
             $stmt = $mysqli->prepare($sql);
@@ -246,7 +247,7 @@ class DocumentRepository
     public static function getSezioni($editor_name, $version,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_storico WHERE editor_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
@@ -256,11 +257,11 @@ class DocumentRepository
             $rows = $res->fetch_all(MYSQLI_ASSOC);
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_storico WHERE editor_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
@@ -276,7 +277,7 @@ class DocumentRepository
     public static function getSezioniUtilizzo($template_name, $version,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_utilizzo_storico WHERE editor_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
@@ -286,11 +287,11 @@ class DocumentRepository
             $rows = $res->fetch_all(MYSQLI_ASSOC);
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_utilizzo_storico WHERE editor_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
@@ -306,7 +307,7 @@ class DocumentRepository
     public static function getSezioniDatiUtili($template_name, $version,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_dati_utili_storico WHERE editor_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
@@ -315,11 +316,11 @@ class DocumentRepository
             $res = $stmt->get_result();
             $rows = $res->fetch_all(MYSQLI_ASSOC);
         } else {
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT DISTINCT sezione FROM DATE_documento_modello_fondo_dati_utili_storico WHERE editor_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
@@ -335,7 +336,7 @@ class DocumentRepository
     public static function getFormulas($document_name, $city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT nome,valore FROM DATE_formula WHERE formula_template_name=?";
             $stmt = $mysqli->prepare($sql);
@@ -344,11 +345,11 @@ class DocumentRepository
             $res = $stmt->get_result();
             $rows = $res->fetch_all(MYSQLI_ASSOC);
         } else {
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT nome,valore FROM DATE_formula WHERE formula_template_name=?";
             $stmt = $mysqli->prepare($sql);

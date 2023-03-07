@@ -10,7 +10,7 @@ class DeliberaDocumentRepository
     public static function getAllHistoryValues($document_name, $editor_name,$version,$city)
     {
         if (!isset($city)) {
-            $conn = new Connection();
+            $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT chiave, valore, document_name, editor_name, anno, editable FROM DATE_documenti_odt_storico WHERE document_name=? AND editor_name=? AND version=?";
             $stmt = $mysqli->prepare($sql);
@@ -20,11 +20,11 @@ class DeliberaDocumentRepository
             $rows = $res->fetch_all(MYSQLI_ASSOC);
         }
         else{
-            //cambiare il db name concatenando la stringa con il params che gli passo
+
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "SELECT chiave, valore, document_name, editor_name, anno, editable FROM DATE_documenti_odt_storico WHERE document_name=? AND editor_name=? AND version=?";
             $stmt = $mysqli->prepare($sql);

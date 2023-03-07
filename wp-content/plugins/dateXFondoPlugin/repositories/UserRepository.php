@@ -7,7 +7,7 @@ use mysqli;
 class UserRepository
 {
 public static function getUserInfos(){
-    $conn = new Connection();
+    $conn = new ConnectionFirstCity();
     $mysqli = $conn->connect();
     $sql = "SELECT * FROM DATE_user_form";
     $result = $mysqli->query($sql);

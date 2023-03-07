@@ -12,6 +12,7 @@ use dateXFondoPlugin\DateXFondoCommon;
 
 require_once(plugin_dir_path(__FILE__) . 'common.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/Connection.php');
+require_once(plugin_dir_path(__FILE__) . 'repositories/ConnectionFirstCity.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/MasterTemplateRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/TemplateRowRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/DisabledTemplateRow.php');
