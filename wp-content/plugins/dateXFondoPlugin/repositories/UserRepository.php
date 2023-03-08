@@ -17,7 +17,7 @@ public static function getUserInfos(){
 }
 function update_user_settings($request){
     if($request['citySelected'] == ''){
-        $conn = new Connection();
+        $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
         $sql = "UPDATE DATE_user_form SET titolo_ente=?, nome_soggetto_deliberante=?,responsabile=?,firma=?,riduzione_spesa=?";
         $stmt = $mysqli->prepare($sql);
