@@ -25,6 +25,7 @@ class Connection
 
     public function __construct()
     {
+
         $this->url = DB_HOST . ":" . DB_PORT . "/";
         $this->username = DB_USER;
         $this->password = DB_PASSWORD;

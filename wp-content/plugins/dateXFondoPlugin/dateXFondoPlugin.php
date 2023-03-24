@@ -225,6 +225,24 @@ function my_get_current_user_roles()
     }
 
 }
+function my_get_current_user_id()
+{
+
+    if (is_user_logged_in()) {
+
+        $user = wp_get_current_user();
+
+        $id = ( array )$user->ID;
+
+        return array_values($id);
+
+    } else {
+
+        return array();
+
+    }
+
+}
 function your_namespace() {
     wp_register_style('your_namespace', plugins_url('main.css','wp-content/plugins/dateXFondoPlugin/assets/styles/main.css' ));
     wp_enqueue_style('your_namespace');
