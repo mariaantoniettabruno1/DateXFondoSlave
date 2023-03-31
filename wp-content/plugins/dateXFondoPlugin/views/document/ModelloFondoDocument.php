@@ -4,6 +4,7 @@ namespace dateXFondoPlugin;
 
 
 use DocumentRepository;
+use ModelloFondoCostituzione;
 use ModelloFondoDocumentTable;
 
 
@@ -99,7 +100,7 @@ class ModelloFondoDocument
 
             <div class="row">
                 <?php
-                ModelloFondoDocumentTable::render();
+                ModelloFondoCostituzione::render();
                 ?>
             </div>
         </div>
