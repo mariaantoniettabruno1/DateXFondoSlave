@@ -23,8 +23,8 @@ class FondoCompleto
         if (isset($_GET['template_name'])) {
             $results_formula = $data->getJoinedFormulas($_GET['template_name'],$_GET['city']);
         }
-     
-        $results_joined = $data->getJoinedRecords();
+
+        $results_joined = $data->getJoinedRecords($_GET['city']);
 
         foreach ($results_formula as $key => $value) {
             $results_formula[$key]["descrizione"] = str_replace('"', '\"', $value["descrizione"]);

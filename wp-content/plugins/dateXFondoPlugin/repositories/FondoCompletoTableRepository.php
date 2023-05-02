@@ -68,38 +68,79 @@ class FondoCompletoTableRepository
         return $rows;
     }
 
-    public static function getJoinedRecords()
+    public static function getJoinedRecords($city)
     {
-        $conn = new ConnectionFirstCity();
-        $mysqli = $conn->connect();
-        $sql = "SELECT id, external_id, type, ordinamento FROM DATE_template_formula";
-        $result = $mysqli->query($sql);
-        $rows = $result->fetch_all(MYSQLI_ASSOC);
+        if (isset($city) && $city!= '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_'.$city;
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT id, external_id, type, ordinamento FROM DATE_template_formula";
+            $result = $mysqli->query($sql);
+            $rows = $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT id, external_id, type, ordinamento FROM DATE_template_formula";
+            $result = $mysqli->query($sql);
+            $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        }
+
         mysqli_close($mysqli);
         return $rows;
     }
 
-    public static function updateJoinedIndex($id, $ordinamento)
+    public static function updateJoinedIndex($id, $ordinamento, $city)
     {
-        $conn = new ConnectionFirstCity();
-        $mysqli = $conn->connect();
-        $sql = "UPDATE DATE_template_formula SET ordinamento = ? WHERE id = ?";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("ii", $ordinamento, $id);
-        $stmt->execute();
+        if (isset($city) && $city!= '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_'.$city;
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "UPDATE DATE_template_formula SET ordinamento = ? WHERE id = ?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("ii", $ordinamento, $id);
+            $stmt->execute();
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "UPDATE DATE_template_formula SET ordinamento = ? WHERE id = ?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("ii", $ordinamento, $id);
+            $stmt->execute();
+
+        }
         mysqli_close($mysqli);
         return $stmt->affected_rows;
     }
 
-    public static function insertJoinedIndex($external_id, $type, $ordinamento)
+    public static function insertJoinedIndex($external_id, $type, $ordinamento, $city)
     {
-        $conn = new ConnectionFirstCity();
-        $mysqli = $conn->connect();
-        $sql = "INSERT INTO DATE_template_formula (external_id, type, ordinamento) VALUES (?, ?, ?)";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("iii", $external_id, $type, $ordinamento);
-        $stmt->execute();
-        $id = $mysqli->insert_id;
+        if (isset($city) && $city!= '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_'.$city;
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "INSERT INTO DATE_template_formula (external_id, type, ordinamento) VALUES (?, ?, ?)";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("iii", $external_id, $type, $ordinamento);
+            $stmt->execute();
+            $id = $mysqli->insert_id;
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "INSERT INTO DATE_template_formula (external_id, type, ordinamento) VALUES (?, ?, ?)";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("iii", $external_id, $type, $ordinamento);
+            $stmt->execute();
+            $id = $mysqli->insert_id;
+
+        }
+
         mysqli_close($mysqli);
         return $id;
     }
