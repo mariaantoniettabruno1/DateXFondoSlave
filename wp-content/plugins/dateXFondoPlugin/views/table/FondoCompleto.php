@@ -16,14 +16,14 @@ class FondoCompleto
         $results_articoli = [];
         $results_formula = [];
 
-        if (isset($_GET['template_name'])) {
-            $results_articoli = $data->getJoinedArticoli($_GET['template_name']);
+        if (isset($_GET['template_name']) && isset($_GET['version']) && isset($_GET['fondo'])) {
+            $results_articoli = $data->getJoinedArticoli($_GET['template_name'],$_GET['version'],$_GET['fondo'],$_GET['city']);
         }
 
         if (isset($_GET['template_name'])) {
-            $results_formula = $data->getJoinedFormulas($_GET['template_name']);
+            $results_formula = $data->getJoinedFormulas($_GET['template_name'],$_GET['city']);
         }
-
+     
         $results_joined = $data->getJoinedRecords();
 
         foreach ($results_formula as $key => $value) {
@@ -60,6 +60,7 @@ class FondoCompleto
                 const articoli = JSON.parse(`<?=json_encode($results_articoli);?>`);
                 const formulas = JSON.parse(`<?=json_encode($results_formula);?>`);
                 const joined = JSON.parse(`<?=json_encode($results_joined);?>`);
+                let city ='<?=($_GET['city']);?>';
                 let joined_record = [
                     ...articoli,
                     ...formulas

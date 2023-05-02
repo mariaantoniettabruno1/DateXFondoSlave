@@ -119,16 +119,9 @@ class FondoCompletoTable
 
                         $('#dataTemplateTableBody' + index).append(`
                          <tr>
-                           <td>
-                            ${ordinamento}
-                           </td>
                            <td>${id_articolo}</td>
                            <td>${nome_articolo}</td>
-                           <td>${sottotitolo}</td>
-                            <td>
-                                          ${descrizione}
-
-                                        </td>
+                            <td> ${descrizione}</td>
                            <td>${nota}</td>
                            <td>${valore}</td>
                            <td>${valore_precedente}</td>
@@ -255,8 +248,9 @@ class FondoCompletoTable
     public static function render()
     {
         $data = new FondoCompletoTableRepository();
-        $results_articoli = $data->getJoinedArticoli($_GET['template_name']);
-        $results_formula = $data->getJoinedFormulas($_GET['template_name']);
+
+        $results_articoli = $data->getJoinedArticoli($_GET['template_name'],$_GET['version'],$_GET['fondo'], $_GET['city']);
+        $results_formula = $data->getJoinedFormulas($_GET['template_name'],$_GET['city']);
 
         $sezioni = [];
         $tot_array = [];
@@ -325,10 +319,9 @@ class FondoCompletoTable
                             <table class="table datetable">
                                 <thead>
                                 <tr>
-                                    <th>Ordinamento</th>
+
                                     <th>Id Articolo</th>
                                     <th>Nome Articolo</th>
-                                    <th>Sottotitolo Articolo</th>
                                     <th>Descrizione Articolo</th>
                                     <th>Valore</th>
                                     <th>Valore anno precedente</th>

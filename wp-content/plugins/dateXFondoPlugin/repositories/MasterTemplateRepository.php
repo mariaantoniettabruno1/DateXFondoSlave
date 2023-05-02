@@ -25,9 +25,9 @@ class MasterTemplateRepository
         } else {
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
-            $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? ORDER BY ordinamento ASC";
+            $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? AND fondo=? AND version=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("s", $template_name);
+            $stmt->bind_param("ssi", $template_name, $fondo, $version);
             $res = $stmt->execute();
             if ($res = $stmt->get_result()) {
                 $rows = $res->fetch_all(MYSQLI_ASSOC);

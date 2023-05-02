@@ -79,8 +79,6 @@ class TemplateFondoTable
 
                     $('#dataTemplateTableBody' + index).append(`
                                  <tr>
-                                       <td>${art.ordinamento}</td>
-                                       <td>${id_articolo}</td>
                                        <td>${nome_articolo}</td>
                                        <td>
                                            <span style='display:none' class="sottotitoloFull">${sottotitolo}</span>
@@ -324,8 +322,6 @@ ${link_button}</div>
                             <table class="table datetable">
                                 <thead>
                                 <tr>
-                                    <th>Ordinamento</th>
-                                    <th>Id Articolo</th>
                                     <th style="width: 140px">Nome Articolo</th>
                                     <th style="width: 170px">Sottotitolo Articolo</th>
                                     <th style="width: 175px">Descrizione Articolo</th>
