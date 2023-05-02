@@ -26,7 +26,7 @@ class DeliberaDocumentRepository
             $password = DB_PASSWORD;
             $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            $sql = "SELECT chiave, valore, document_name, editor_name, anno, editable FROM DATE_documenti_odt_storico WHERE document_name=? AND editor_name=? AND version=?";
+            $sql = "SELECT chiave, valore,document_name, editor_name, anno, editable FROM DATE_documenti_odt_storico WHERE document_name=? AND editor_name=? AND version=?";
             $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("ssi", $document_name, $editor_name, $version);
             $res = $stmt->execute();

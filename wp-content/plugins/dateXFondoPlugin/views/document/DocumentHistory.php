@@ -87,7 +87,7 @@ class DocumentHistory
         </body>
         <script>
             let documents = JSON.parse((`<?= json_encode($this->documents); ?>`));
-            let citySelected = '';
+            let citySelected = $("#idComune").val();
             $('#selectedCity').click(function () {
                 citySelected = $("#idComune").val();
                 const payload = {
@@ -108,6 +108,7 @@ class DocumentHistory
                         $(".alert-data-success").fadeTo(2000, 500).slideUp(500, function () {
                             $(".alert-data-success").slideUp(500);
                         });
+
                     },
                     error: function (response) {
                         console.error(response);

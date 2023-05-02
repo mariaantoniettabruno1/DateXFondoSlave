@@ -10,11 +10,11 @@ class AllDocumentTable
     {
         ?>
         <style>
-            .btn-vis-templ {
+            .btn-vis-doc {
                 color: #26282f;
             }
 
-            .btn-vis-templ:hover {
+            .btn-vis-doc:hover {
                 color: #26282f;
             }
         </style>
@@ -22,6 +22,7 @@ class AllDocumentTable
 
 
             function renderDataTableDoc() {
+                replaceTable();
                 documents.forEach(doc => {
                     $('#dataDocumentTableBody').append(`
                                  <tr>
@@ -32,12 +33,25 @@ class AllDocumentTable
 
 
                      <td><div class="row pr-3">
-               <button class="btn btn-link btn-vis-templ" data-document='${doc.document_name}' data-editor='${doc.editor_name}' data-page = '${doc.page}' data-version ='${doc.version}' data-toggle="tooltip" title="Visualizza e modifica documento"><i class="fa-solid fa-eye"></i></button>
+               <button class="btn btn-link btn-vis-doc" data-document='${doc.document_name}' data-editor='${doc.editor_name}' data-page = '${doc.page}' data-version ='${doc.version}' data-toggle="tooltip" title="Visualizza e modifica documento"><i class="fa-solid fa-eye"></i></button>
                                     </td>
                                  </tr>
                              `);
                 });
 
+                $('.btn-vis-doc').click(function () {
+                    let document_name = $(this).attr('data-document');
+                    let editor_name = $(this).attr('data-editor');
+                    let page = $(this).attr('data-page');
+                    let version = $(this).attr('data-version');
+                    location.href = '<?= DateXFondoCommon::get_website_url()?>/' + page + '?document_name=' + document_name + '&editor_name=' + editor_name + '&version=' + version + '&city=' + citySelected;
+                });
+            }
+
+            function replaceTable() {
+                const old_tbody = document.getElementById("dataDocumentTableBody")
+                old_tbody.innerHTML = '';
+                console.log(old_tbody)
             }
 
             $(document).ready(function () {
@@ -45,19 +59,10 @@ class AllDocumentTable
                 renderDataTableDoc();
 
                 let current_url = '<?=
-                   (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
-                        === 'on' ? "https" : "http") .
-                        "://" . $_SERVER['HTTP_HOST'] .
-                        $_SERVER['REQUEST_URI'];?>';
-
-                $('.btn-vis-templ').click(function () {
-                    let document_name = $(this).attr('data-document');
-                    let editor_name = $(this).attr('data-editor');
-                    let page = $(this).attr('data-page');
-                    let version = $(this).attr('data-version');
-                        location.href = '<?= DateXFondoCommon::get_website_url()?>/' + page + '?document_name=' + document_name + '&editor_name=' + editor_name + '&version=' + version + '&city=' + citySelected;
-
-                });
+                    (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']
+                    === 'on' ? "https" : "http") .
+                    "://" . $_SERVER['HTTP_HOST'] .
+                    $_SERVER['REQUEST_URI'];?>';
 
             });
         </script>

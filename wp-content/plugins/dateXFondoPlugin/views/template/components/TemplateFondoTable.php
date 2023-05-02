@@ -68,13 +68,14 @@ class TemplateFondoTable
                         edit_button = '';
                     }
                     else{
-                        if(art.version !== 0){
-                            edit_button = ` <button class="btn btn-link btn-edit-row" data-id='${art.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button>`;
-                        }
-                        else{
-                            edit_button = '';
-                        }
+                        // if(art.version !== 0){
+                        //     edit_button = ` <button class="btn btn-link btn-edit-row" data-id='${art.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button>`;
+                        // }
+                        // else{
+                        //     edit_button = '';
+                        // }
                     }
+                    edit_button = ` <button class="btn btn-link btn-edit-row" data-id='${art.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button>`;
 
                     $('#dataTemplateTableBody' + index).append(`
                                  <tr>
