@@ -3,6 +3,7 @@
 namespace dateXFondoPlugin;
 
 use dateXFondoPlugin\MasterTemplateRepository;
+use PHPMailer\PHPMailer\Exception;
 
 header('Content-Type: text/javascript');
 
@@ -18,8 +19,8 @@ class TemplateFondo
             $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name'],$_GET['city']);
 
         } else {
-            if (isset($_GET['template_name']))
-                $results_articoli = $data->getArticoli($_GET['template_name'],$_GET['city']);
+            if (isset($_GET['template_name']) && isset($_GET['fondo']) && isset($_GET['version']))
+                $results_articoli = $data->getArticoli($_GET['template_name'],$_GET['city'],$_GET['fondo'],$_GET['version']);
         }
         foreach ($results_articoli as $key => $value) {
             $results_articoli[$key]["sottotitolo_articolo"] = str_replace('"', '\"', $value["sottotitolo_articolo"]);

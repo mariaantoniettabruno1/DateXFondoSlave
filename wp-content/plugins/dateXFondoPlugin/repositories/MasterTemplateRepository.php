@@ -6,7 +6,7 @@ use mysqli;
 
 class MasterTemplateRepository
 {
-    public static function getArticoli($template_name, $city)
+    public static function getArticoli($template_name, $city, $fondo, $version)
     {
         if (isset($city) && $city != '') {
             $url = DB_HOST . ":" . DB_PORT . "/";
@@ -14,9 +14,9 @@ class MasterTemplateRepository
             $password = DB_PASSWORD;
             $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? ORDER BY ordinamento ASC";
+            $sql = "SELECT * FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? AND fondo=? AND version=? ORDER BY ordinamento ASC";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("s", $template_name);
+            $stmt->bind_param("ssi", $template_name, $fondo, $version);
             $res = $stmt->execute();
             if ($res = $stmt->get_result()) {
                 $rows = $res->fetch_all(MYSQLI_ASSOC);
@@ -65,7 +65,7 @@ class MasterTemplateRepository
     {
         $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name FROM DATE_template_fondo  ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version FROM DATE_template_fondo  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);

@@ -89,6 +89,7 @@ class AllTemplate
                     },
                     error: function (response) {
                         console.error(response);
+                        console.log(response);
                         $(".alert-data-wrong").show();
                         $(".alert-data-wrong").fadeTo(2000, 500).slideUp(500, function () {
                             $(".alert-data-wrong").slideUp(500);
