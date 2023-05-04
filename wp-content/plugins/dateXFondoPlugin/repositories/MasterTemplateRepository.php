@@ -84,7 +84,7 @@ class MasterTemplateRepository
                                nota=?
 WHERE id=?";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("iisi",
+            $stmt->bind_param("sssi",
                 $request['valore'],
                 $request['valore_anno_precedente'],
                 $request['nota'],
@@ -102,7 +102,7 @@ WHERE id=?";
                                nota=?
 WHERE id=?";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("iisi",
+            $stmt->bind_param("sssi",
                 $request['valore'],
                 $request['valore_anno_precedente'],
                 $request['nota'],
