@@ -74,17 +74,30 @@ class FormulaRepository
     public static function valorize_formula($request)
     {
         //(opzionale) Aggiungere il formula_template_name
-        $conn = new ConnectionFirstCity();
-        $mysqli = $conn->connect();
-        $sql = "UPDATE DATE_formula SET valore = ? WHERE nome = ?";
-        $stmt = $mysqli->prepare($sql);
-        $i = 0;
-        foreach($request as $item){
-            $stmt->bind_param("ss",
-                $item[$i]['valore'],  $item[$i]['formula']);
-            $stmt->execute();$i++;
-        }
 
+        if (isset($request['city']) && $request['city']!= '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_'.$request['city'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "UPDATE DATE_formula SET valore =? WHERE nome =?";
+            $stmt = $mysqli->prepare($sql);
+            for ($i = 0; $i <= sizeof($request['array']); $i++) {
+                $stmt->bind_param("ss", $request['array'][$i]['valore'],  $request['array'][$i]['formula']);
+                $stmt->execute();
+            }
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "UPDATE DATE_formula SET valore =? WHERE nome =?";
+            $stmt = $mysqli->prepare($sql);
+            for ($i = 0; $i <= sizeof($request['array']); $i++) {
+                $stmt->bind_param("ss", $request['array'][$i]['valore'],  $request['array'][$i]['formula']);
+                $stmt->execute();
+            }
+
+        }
         mysqli_close($mysqli);
         return $stmt->affected_rows;
     }

@@ -19,13 +19,15 @@ class FondoCompletoTable
                 filteredRecord.forEach(art => {
                     if (art.formula !== undefined) {
                         descrizione = evaluateFormula(art.formula);
+
                         let element = {};
                         element.formula = art.nome;
                         element.valore = descrizione;
                         array.push(element);
                     }
                 });
-                const payload = {array};
+                const payload = {array, city};
+                console.log(payload);
                 $.ajax({
                     url: '<?= DateXFondoCommon::get_website_url() ?>///wp-json/datexfondoplugin/v1/valuesformula',
                     data: payload,
@@ -78,7 +80,6 @@ class FondoCompletoTable
                     // Sorting
                     return ajoinOrder - bjoinOrder
                 })
-
 
                 filteredRecord.forEach(art => {
                         nota = art.nota ?? "";
@@ -175,6 +176,7 @@ class FondoCompletoTable
                 }
                 try {
                     return eval(formula);
+
                 } catch (e) {
                     console.log(e);
                     return " C'è un errore nei valori inseriti, ricontrolla";
