@@ -3,6 +3,7 @@
 namespace dateXFondoPlugin;
 
 use mysqli;
+use PHPMailer\PHPMailer\Exception;
 
 class FondoCompletoTableRepository
 {
@@ -144,5 +145,99 @@ class FondoCompletoTableRepository
         mysqli_close($mysqli);
         return $id;
     }
+    public static function getHistoryArticles($fondo, $anno, $descrizione, $version, $template_name,$city)
+    {
+        if (isset($city) && $city!= '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_'.$city;
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,nome_articolo,sottotitolo_articolo,descrizione_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,editable,heredity,template_name
+FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $fondo, $anno, $descrizione, $version, $template_name);
+            $res = $stmt->execute();
 
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,sottotitolo_articolo,descrizione_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,editable,heredity,template_name
+FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $fondo, $anno, $descrizione, $version, $template_name);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+        }
+        mysqli_close($mysqli);
+        return $rows;
+
+    }
+
+    public static function getHistoryFormulas($template_name,$anno,$city )
+    {
+        if (isset($city) && $city!= '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_'.$city;
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT id,sezione,sottosezione,nome,descrizione,condizione,formula,text_type 
+                FROM DATE_storico_formula  WHERE anno=? AND visibile = 1 AND formula_template_name=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("is", $anno, $template_name);
+            $res = $stmt->execute();
+            $res = $stmt->get_result();
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT id,sezione,sottosezione,nome,descrizione,condizione,formula,text_type 
+                FROM DATE_storico_formula  WHERE anno=? AND visibile = 1 AND formula_template_name=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("is", $anno, $template_name);
+            $res = $stmt->execute();
+            $res = $stmt->get_result();
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        }
+
+        mysqli_close($mysqli);
+        return $rows;
+    }
+    public static function getHistoryJoinedRecords($anno,$city)
+    {
+        if (isset($city) && $city!= '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_'.$city;
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT id, external_id, type, ordinamento FROM DATE_template_formula_storico WHERE anno=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("i", $anno);
+            $res = $stmt->execute();
+            $res = $stmt->get_result();
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT id, external_id, type, ordinamento FROM DATE_template_formula_storico WHERE anno=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("i", $anno);
+            $res = $stmt->execute();
+            $res = $stmt->get_result();
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+
+        }
+        mysqli_close($mysqli);
+        return $rows;
+    }
 }

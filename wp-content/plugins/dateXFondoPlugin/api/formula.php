@@ -88,3 +88,25 @@ function valorizza_formula($params)
 }
 
 add_action('rest_api_init', 'create_endpoint_datefondo_values_formula');
+
+function create_endpoint_datefondo_values_formula_storico()
+{
+
+    register_rest_route('datexfondoplugin/v1', 'valuesformulastorico', array(
+        'methods' => 'POST',
+        'callback' => 'valorizza_formula_storico'
+    ));
+
+
+}
+
+function valorizza_formula_storico($params)
+{
+    $bool_res = FormulaRepository::valorize_formula_storico($params);
+    $data = ['valorized formula' => $bool_res, 'message' => 'Formula valorizzata correttamente'];
+    $response = new WP_REST_Response($data);
+    $response->set_status(201);
+    return $response;
+}
+
+add_action('rest_api_init', 'create_endpoint_datefondo_values_formula_storico');

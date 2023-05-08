@@ -27,7 +27,6 @@ class FondoCompletoTable
                     }
                 });
                 const payload = {array, city};
-                console.log(payload);
                 $.ajax({
                     url: '<?= DateXFondoCommon::get_website_url() ?>///wp-json/datexfondoplugin/v1/valuesformula',
                     data: payload,
@@ -87,6 +86,7 @@ class FondoCompletoTable
                         id_articolo = art.id_articolo ?? "";
                         sottotitolo = art.sottotitolo_articolo ?? "";
                         link = art.link ?? "";
+                    let link_button = '';
                         nome_articolo = art.nome_articolo ?? "";
                         descrizione = art.descrizione_articolo ?? ""
                         nota = art.nota ?? ""
@@ -116,7 +116,9 @@ class FondoCompletoTable
                             }
 
                         }
-
+                    if (art.link !== null) {
+                        link_button = ` <button class="btn btn-link btn-art-link" data-link='${art.link}'><i class="fa-solid fa-arrow-up-right-from-square"></i></button>`;
+                    }
 
                         $('#dataTemplateTableBody' + index).append(`
                          <tr>
@@ -126,7 +128,13 @@ class FondoCompletoTable
                            <td>${nota}</td>
                            <td>${valore}</td>
                            <td>${valore_precedente}</td>
-                           <td>${link}</td>
+                             <td>
+                                       <div class="row pr-3">
+                                       <div class="col-8">${link}</div>
+                                       <div class="col-2">
+                                        ${link_button}</div>
+                                        </div>
+                                        </td>
                          </tr>
                              `);
                     }
@@ -139,6 +147,10 @@ class FondoCompletoTable
                 $('.descrizioneFull').click(function () {
                     $(this).attr("style", "display:none");
                     $(this).next().attr("style", "display:block");
+                });
+                $('.btn-art-link').click(function () {
+                    var url =  '<?= DateXFondoCommon::get_website_url() ?>/date-doc/articoli/' + $(this).attr('data-link');
+                    window.open(url, '_blank');
                 });
             }
 
@@ -251,8 +263,34 @@ class FondoCompletoTable
     {
         $data = new FondoCompletoTableRepository();
 
-        $results_articoli = $data->getJoinedArticoli($_GET['template_name'],$_GET['version'],$_GET['fondo'], $_GET['city']);
-        $results_formula = $data->getJoinedFormulas($_GET['template_name'],$_GET['city']);
+        $results_articoli = [];
+        $results_formula = [];
+
+        if(isset($_GET['city'])){
+            $city = $_GET['city'];
+        }
+        else {
+            $city = '';
+        }
+
+        if (isset($_GET['fondo']) && isset($_GET['anno']) && isset($_GET['descrizione']) && isset($_GET['version']) && isset($_GET['template_name'])) {
+            If(!isset($_GET['descrizione']))
+                $descrizione = '';
+            else
+                $descrizione = $_GET['descrizione'];
+            $results_articoli = $data->getHistoryArticles($_GET['fondo'], $_GET['anno'], $descrizione, $_GET['version'], $_GET['template_name'] , $city);
+            $results_formula = $data->getHistoryFormulas($_GET['template_name'], $_GET['anno'], $city);
+            $results_joined = $data->getHistoryJoinedRecords($_GET['anno'], $city);
+
+
+        } else {
+
+            if (isset($_GET['template_name'])) {
+
+                $results_articoli = $data->getJoinedArticoli($_GET['template_name'], $_GET['version'], $_GET['fondo'], $city);
+                $results_formula = $data->getJoinedFormulas($_GET['template_name'], $city);
+            }
+        }
 
         $sezioni = [];
         $tot_array = [];

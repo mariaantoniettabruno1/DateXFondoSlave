@@ -15,17 +15,36 @@ class FondoCompleto
 
         $results_articoli = [];
         $results_formula = [];
-
-        if (isset($_GET['template_name']) && isset($_GET['version']) && isset($_GET['fondo'])) {
-            $results_articoli = $data->getJoinedArticoli($_GET['template_name'],$_GET['version'],$_GET['fondo'],$_GET['city']);
+        $results_joined = [];
+        if (isset($_GET['city'])) {
+            $city = $_GET['city'];
+        } else {
+            $city = '';
         }
 
-        if (isset($_GET['template_name'])) {
-            $results_formula = $data->getJoinedFormulas($_GET['template_name'],$_GET['city']);
+        if (isset($_GET['fondo']) && isset($_GET['anno']) && isset($_GET['version']) && isset($_GET['template_name'])) {
+
+            if (!isset($_GET['descrizione'])) {
+                $descrizione = '';
+
+            } else {
+                $descrizione = $_GET['descrizione'];
+            }
+
+            $results_articoli = $data->getHistoryArticles($_GET['fondo'], $_GET['anno'], $descrizione, $_GET['version'], $_GET['template_name'], $city);
+            $results_formula = $data->getHistoryFormulas($_GET['template_name'], $_GET['anno'], $city);
+            $results_joined = $data->getHistoryJoinedRecords($_GET['anno'], $city);
+
+
+        } else {
+
+            if (isset($_GET['template_name'])) {
+
+                $results_articoli = $data->getJoinedArticoli($_GET['template_name'], $_GET['version'], $_GET['fondo'], $city);
+                $results_formula = $data->getJoinedFormulas($_GET['template_name'], $city);
+                $results_joined = $data->getJoinedRecords($city);
+            }
         }
-
-        $results_joined = $data->getJoinedRecords($_GET['city']);
-
         foreach ($results_formula as $key => $value) {
             $results_formula[$key]["descrizione"] = str_replace('"', '\"', $value["descrizione"]);
         }
@@ -60,7 +79,14 @@ class FondoCompleto
                 const articoli = JSON.parse(`<?=json_encode($results_articoli);?>`);
                 const formulas = JSON.parse(`<?=json_encode($results_formula);?>`);
                 const joined = JSON.parse(`<?=json_encode($results_joined);?>`);
-                let city ='<?=($_GET['city']);?>';
+
+                let city = '<?=($_GET['city']);?>';
+
+                let anno = '';
+                <?php if (isset($_GET['anno'])): ?>
+                anno = <?=$_GET['anno'];?>
+                <?php endif; ?>
+
                 let joined_record = [
                     ...articoli,
                     ...formulas
