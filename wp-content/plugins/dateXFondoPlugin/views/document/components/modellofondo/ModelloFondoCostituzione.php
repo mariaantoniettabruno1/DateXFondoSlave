@@ -35,6 +35,7 @@ class ModelloFondoCostituzione
             function renderDataTable() {
                 let filteredDocArticoli = articoli;
                 let preventivo = '';
+                let style = '';
 
                 for (let i = 0; i < sezioni.length; i++) {
                     $('#dataCostituzioneDocumentTableBody' + i).html('');
@@ -43,9 +44,16 @@ class ModelloFondoCostituzione
                         if (art.preventivo !== undefined)
                             preventivo = art.preventivo;
 
+                        if(filteredDocArticoli[filteredDocArticoli.length-1] === art) {
+                            style = `"width: auto; padding: 10px 6px; border: 1px solid black; background-color: #ADD4C5; color: black;"`;
+                        }
+                        else{
+                            style = `"width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;"`;
+                        }
+
                         if (art.sezione !== 'Nota') {
                             $('#dataCostituzioneDocumentTableBody' + i).append(`
-                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
+                                 <tr style=${style}>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;"> ${art.sottosezione}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
@@ -72,8 +80,8 @@ class ModelloFondoCostituzione
             function renderDatiUtiliDataTable() {
                 let filteredDatiUtiliArticoli = articoli_dati_utili;
                 let nota = '';
-                let =
-                formula = '';
+                let style = '';
+                let formula = '';
 
                 for (let i = 0; i < sezioni_dati_utili.length; i++) {
                     $('#dataDatiUtiliDocumentTableBody' + i).html('');
@@ -83,7 +91,12 @@ class ModelloFondoCostituzione
                             formula = art.formula;
                         if (art.nota !== undefined)
                             nota = art.nota;
-
+                        if(filteredDatiUtiliArticoli[filteredDatiUtiliArticoli.length-1] === art) {
+                            style = `"width: auto; padding: 10px 6px; border: 1px solid black; background-color: #ADD4C5; color: black;"`;
+                        }
+                        else{
+                            style = `"width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;"`;
+                        }
                         $('#dataDatiUtiliDocumentTableBody' + i).append(`
                                  <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
@@ -108,6 +121,7 @@ class ModelloFondoCostituzione
                 let filteredUtilizzoArticoli = articoli_utilizzo;
                 let preventivo = '';
                 let consuntivo = '';
+                let style = '';
 
                 for (let i = 0; i < sezioni_utilizzo.length; i++) {
                     $('#dataUtilizzoDocumentTableBody' + i).html('');
@@ -118,9 +132,15 @@ class ModelloFondoCostituzione
                         if (art.consuntivo !== undefined)
                             consuntivo = art.consuntivo;
 
+                        if(filteredUtilizzoArticoli[filteredUtilizzoArticoli.length-1] === art) {
+                            style = `"width: auto; padding: 10px 6px; border: 1px solid black; background-color: #ADD4C5; color: black;"`;
+                        }
+                        else{
+                            style = `"width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;"`;
+                        }
                         if (art.sezione !== 'Nota') {
                             $('#dataUtilizzoDocumentTableBody' + i).append(`
-                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
+                                 <tr style=${style}>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${preventivo}</td>
