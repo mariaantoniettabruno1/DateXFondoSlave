@@ -43,14 +43,23 @@ class ModelloFondoCostituzione
                         if (art.preventivo !== undefined)
                             preventivo = art.preventivo;
 
-                        $('#dataCostituzioneDocumentTableBody' + i).append(`
-  <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
-      <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
-      <td style="padding: 10px 6px; border: 1px solid black;">${art.sottosezione}</td>
-      <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
-      <td style="padding: 10px 6px; border: 1px solid black;">${preventivo}</td>
-  </tr>
-  `);
+                        if (art.sezione !== 'Nota') {
+                            $('#dataCostituzioneDocumentTableBody' + i).append(`
+                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
+                                       <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
+                                       <td style="padding: 10px 6px; border: 1px solid black;"> ${art.sottosezione}</td>
+                                       <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
+                                       <td style="padding: 10px 6px; border: 1px solid black;">${preventivo}</td>
+                                 </tr>
+                             `);
+                        } else {
+                            $('#dataCostituzioneDocumentTableBody' + i).append(`
+                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
+                                       <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
+                                 </tr>
+                             `);
+                        }
+
 
                     });
                     filteredDocArticoli = articoli;
@@ -109,16 +118,22 @@ class ModelloFondoCostituzione
                         if (art.consuntivo !== undefined)
                             consuntivo = art.consuntivo;
 
-                        $('#dataUtilizzoDocumentTableBody' + i).append(`
+                        if (art.sezione !== 'Nota') {
+                            $('#dataUtilizzoDocumentTableBody' + i).append(`
                                  <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${preventivo}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${consuntivo}</td>
-
-
                                  </tr>
                              `);
+                        } else {
+                            $('#dataUtilizzoDocumentTableBody' + i).append(`
+                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
+                                       <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
+                                 </tr>
+                             `);
+                        }
 
                     });
                     filteredUtilizzoArticoli = articoli_utilizzo;
@@ -336,20 +351,29 @@ Content-Type: text/xml; charset="utf-8"
                                                            id="exportableTableCostituzione<?= $section_index ?>"
                                                     >
                                                         <thead style="position:relative; min-width: 100%;">
-                                                        <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
-                                                                Ordinamento
-                                                            </th>
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
-                                                                Sottosezione
-                                                            </th>
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
-                                                                Nome Articolo
-                                                            </th>
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
-                                                                Preventivo
-                                                            </th>
-                                                        </tr>
+                                                        <?php if ($sezione['sezione'] != 'Nota') { ?>
+                                                            <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Ordinamento
+                                                                </th>
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Sottosezione
+                                                                </th>
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Nome Articolo
+                                                                </th>
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Preventivo
+                                                                </th>
+                                                            </tr>
+                                                        <?php } else { ?>
+                                                            <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Nota
+                                                                </th>
+
+                                                            </tr>
+                                                        <?php } ?>
                                                         </thead>
                                                         <tbody id="dataCostituzioneDocumentTableBody<?= $section_index ?>">
                                                         </tbody>
@@ -395,13 +419,30 @@ Content-Type: text/xml; charset="utf-8"
                                                     <table class="table datatable_utilizzo"
                                                            id="exportableTableUtilizzo<?= $section_index ?>">
                                                         <thead style="position:relative; min-width: 100%;">
-                                                        <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Ordinamento</th>
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Nome Articolo</th>
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Preventivo</th>
-                                                            <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Consuntivo</th>
+                                                        <?php if ($sezione['sezione'] != 'Nota') { ?>
+                                                            <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Ordinamento
+                                                                </th>
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Nome Articolo
+                                                                </th>
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Preventivo
+                                                                </th>
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Consuntivo
+                                                                </th>
 
-                                                        </tr>
+                                                            </tr>
+                                                        <?php } else { ?>
+                                                            <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
+                                                                <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
+                                                                    Nota
+                                                                </th>
+
+                                                            </tr>
+                                                        <?php } ?>
                                                         </thead>
                                                         <tbody id="dataUtilizzoDocumentTableBody<?= $section_index ?>">
                                                         </tbody>
