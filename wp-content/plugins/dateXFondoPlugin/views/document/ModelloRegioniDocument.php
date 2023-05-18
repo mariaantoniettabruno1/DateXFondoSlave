@@ -7,8 +7,8 @@ class ModelloRegioniDocument
 public static function render(){
     $data = new RegioniDocumentRepository();
 
-       $results_articoli_costituzione = $data->getHistoryCostituzioneArticoli($_GET['editor_name'],$_GET['version']);
-       $results_articoli_destinazione = $data->getHistoryDestinazioneArticoli($_GET['editor_name'],$_GET['version']);
+       $results_articoli_costituzione = $data->getHistoryCostituzioneArticoli($_GET['editor_name'],$_GET['version'],$_GET['city']);
+       $results_articoli_destinazione = $data->getHistoryDestinazioneArticoli($_GET['editor_name'],$_GET['version'],$_GET['city']);
 
 
 
