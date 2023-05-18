@@ -44,7 +44,7 @@ class ModelloFondoCostituzione
                             preventivo = art.preventivo;
 
                         $('#dataCostituzioneDocumentTableBody' + i).append(`
-  <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #457FAF;">
+  <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
       <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
       <td style="padding: 10px 6px; border: 1px solid black;">${art.sottosezione}</td>
       <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
@@ -76,7 +76,7 @@ class ModelloFondoCostituzione
                             nota = art.nota;
 
                         $('#dataDatiUtiliDocumentTableBody' + i).append(`
-                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #457FAF;">
+                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.sottosezione}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
@@ -110,7 +110,7 @@ class ModelloFondoCostituzione
                             consuntivo = art.consuntivo;
 
                         $('#dataUtilizzoDocumentTableBody' + i).append(`
-                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #457FAF;">
+                                 <tr style="width: auto; padding: 10px 6px; border: 1px solid black; background-color: transparent; color: #427AA8;">
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.ordinamento}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${art.nome_articolo}</td>
                                        <td style="padding: 10px 6px; border: 1px solid black;">${preventivo}</td>
@@ -336,7 +336,7 @@ Content-Type: text/xml; charset="utf-8"
                                                            id="exportableTableCostituzione<?= $section_index ?>"
                                                     >
                                                         <thead style="position:relative; min-width: 100%;">
-                                                        <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #457FAF; color: #FFFFFF;">
+                                                        <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
                                                             <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
                                                                 Ordinamento
                                                             </th>
@@ -395,7 +395,7 @@ Content-Type: text/xml; charset="utf-8"
                                                     <table class="table datatable_utilizzo"
                                                            id="exportableTableUtilizzo<?= $section_index ?>">
                                                         <thead style="position:relative; min-width: 100%;">
-                                                        <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #457FAF; color: #FFFFFF;">
+                                                        <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
                                                             <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Ordinamento</th>
                                                             <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Nome Articolo</th>
                                                             <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">Preventivo</th>
@@ -452,7 +452,7 @@ Content-Type: text/xml; charset="utf-8"
                                                             <table class="table datatable_dati_utili"
                                                                    id="exportableTableDatiUtili<?= $section_index ?>">
                                                                 <thead style="position:relative; min-width: 100%;">
-                                                                <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #457FAF; color: #FFFFFF;">
+                                                                <tr style="position:relative; width: auto; padding: 10px 6px; border: 1px solid black; font-weight: 600; background-color: #427AA8; color: #FFFFFF;">
                                                                     <th style="position:relative; padding: 10px 6px; border: 1px solid black; font-weight: 600;">
                                                                         Ordinamento
                                                                     </th>
