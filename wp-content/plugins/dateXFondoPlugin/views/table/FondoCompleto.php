@@ -39,7 +39,6 @@ class FondoCompleto
         } else {
 
             if (isset($_GET['template_name'])) {
-
                 $results_articoli = $data->getJoinedArticoli($_GET['template_name'], $_GET['version'], $_GET['fondo'], $city);
                 $results_formula = $data->getJoinedFormulas($_GET['template_name'], $city);
                 $results_joined = $data->getJoinedRecords($city);

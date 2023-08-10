@@ -24,6 +24,8 @@ class FondoCompletoTable
                         element.formula = art.nome;
                         element.valore = descrizione;
                         array.push(element);
+                        if (isNaN(parseFloat(art.descrizione)))
+                            element.valore = 'Rivedere dati inseriti, formula non andata a buon fine';
                     }
                 });
                 const payload = {array, city};
@@ -50,7 +52,6 @@ class FondoCompletoTable
                     filteredRecord = filteredRecord.filter(art => art.sottosezione === subsection)
                 }
 
-                let ordinamento = '';
                 let nota = '';
                 let id_articolo = '';
                 let sottotitolo = '';
@@ -85,7 +86,7 @@ class FondoCompletoTable
                         id_articolo = art.id_articolo ?? "";
                         sottotitolo = art.sottotitolo_articolo ?? "";
                         link = art.link ?? "";
-                    let link_button = '';
+                        let link_button = '';
                         nome_articolo = art.nome_articolo ?? "";
                         descrizione = art.descrizione_articolo ?? ""
                         nota = art.nota ?? ""
@@ -115,9 +116,9 @@ class FondoCompletoTable
                             }
 
                         }
-                    if (art.link !== null) {
-                        link_button = ` <button class="btn btn-link btn-art-link" data-link='${art.link}'><i class="fa-solid fa-arrow-up-right-from-square"></i></button>`;
-                    }
+                        if (art.link !== null) {
+                            link_button = ` <button class="btn btn-link btn-art-link" data-link='${art.link}'><i class="fa-solid fa-arrow-up-right-from-square"></i></button>`;
+                        }
 
                         $('#dataTemplateTableBody' + index).append(`
                          <tr>
@@ -148,7 +149,7 @@ class FondoCompletoTable
                     $(this).next().attr("style", "display:block");
                 });
                 $('.btn-art-link').click(function () {
-                    var url =  '<?= DateXFondoCommon::get_website_url() ?>/date-doc/articoli/' + $(this).attr('data-link');
+                    var url = '<?= DateXFondoCommon::get_website_url() ?>/date-doc/articoli/' + $(this).attr('data-link');
                     window.open(url, '_blank');
                 });
             }
@@ -252,7 +253,6 @@ class FondoCompletoTable
                         }
                     });
                 });
-
             });
         </script>
         <?php
@@ -265,19 +265,18 @@ class FondoCompletoTable
         $results_articoli = [];
         $results_formula = [];
 
-        if(isset($_GET['city'])){
+        if (isset($_GET['city'])) {
             $city = $_GET['city'];
-        }
-        else {
+        } else {
             $city = '';
         }
 
         if (isset($_GET['fondo']) && isset($_GET['anno']) && isset($_GET['descrizione']) && isset($_GET['version']) && isset($_GET['template_name'])) {
-            If(!isset($_GET['descrizione']))
+            if (!isset($_GET['descrizione']))
                 $descrizione = '';
             else
                 $descrizione = $_GET['descrizione'];
-            $results_articoli = $data->getHistoryArticles($_GET['fondo'], $_GET['anno'], $descrizione, $_GET['version'], $_GET['template_name'] , $city);
+            $results_articoli = $data->getHistoryArticles($_GET['fondo'], $_GET['anno'], $descrizione, $_GET['version'], $_GET['template_name'], $city);
             $results_formula = $data->getHistoryFormulas($_GET['template_name'], $_GET['anno'], $city);
             $results_joined = $data->getHistoryJoinedRecords($_GET['anno'], $city);
 
