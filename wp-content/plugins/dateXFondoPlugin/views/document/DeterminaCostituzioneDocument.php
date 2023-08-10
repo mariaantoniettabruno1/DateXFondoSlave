@@ -8,18 +8,22 @@ class DeterminaCostituzioneDocument
 {
     private $infos = [];
     private $user_infos = [];
+    private $formulas = [];
+    private $articles = [];
     private $values = array();
 
 
     public function __construct()
     {
         $data = new DocumentRepository();
+
         $this->formule = $data->getFormulas($_GET['editor_name'],$_GET['city']);
+
         $this->articoli = $data->getIdsArticoli($_GET['editor_name'],$_GET['city']);
         $delibera_data = new DeliberaDocumentRepository();
         $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version'],$_GET['city']);
         $user_data = new UserRepository();
-        $this->user_infos = $user_data->getUserInfos();
+        $this->user_infos = $user_data->getUserInfos()[0];
 
 
         foreach ($this->infos as $row) {
@@ -27,7 +31,6 @@ class DeterminaCostituzioneDocument
         }
         foreach ($this->formule as $row) {
             $this->formulas[$row['nome']] = $row['valore'];
-
         }
         foreach ($this->articoli as $row) {
             $this->articles[$row['id_articolo']] = $row['valore'];
@@ -38,6 +41,7 @@ class DeterminaCostituzioneDocument
     private function getInput($key, $default, $color)
     {
         $value = $this->articles[$default] ?? $this->formulas[$default] ?? $this->values[$key] ?? $default;
+
         if ($value == 'titolo_ente') {
             $value = $this->user_infos['titolo_ente'];
         } else if ($value == 'nome_soggetto_deliberante') {
@@ -630,7 +634,7 @@ class DeterminaCostituzioneDocument
                         della <?php self::getInput('var43', 'nome_soggetto_deliberante', 'orange'); ?>, in attuazione dell’art. 33
                         c. 2 D.L.
                         34/2019 convertito nella L. 58/2019, viene aumentato anche il Fondo Posizioni organizzative per un importo
-                        pari a € <?php self::getInput('var44', 'f374', 'orange'); ?>;
+                        pari a € <?php self::getInput('var44', 'F374', 'orange'); ?>;
                     </li>
                 <?php endif; ?>
                 <?php if (self::checkOptionalValues('F330')): ?>
@@ -652,8 +656,8 @@ class DeterminaCostituzioneDocument
                 <li>Le risorse aventi carattere di certezza, stabilità e continuità determinate
                     nell’anno <?php self::getInput('var47', 'anno', 'orange'); ?> ai sensi
                     dell’art. 67 commi 1 e 2 del CCNL 21.5.2018, e adeguate alle disposizioni del D.L. 34/2019, risultano
-                    pertanto essere pari ad € <?php self::getInput('var48', 'f3', 'orange'); ?>, di cui
-                    € <?php self::getInput('var49', 'f317', 'orange'); ?> soggette ai vincoli;
+                    pertanto essere pari ad € <?php self::getInput('var48', 'F3', 'orange'); ?>, di cui
+                    € <?php self::getInput('var49', 'F317', 'orange'); ?> soggette ai vincoli;
                 </li>
             </ul>
 
@@ -860,8 +864,8 @@ class DeterminaCostituzioneDocument
             <ul class="d">
                 <li>l'importo totale del fondo delle risorse variabili per l’anno
                     .<?php self::getInput('var72', 'anno', 'orange'); ?> risulta pari ad
-                    € <?php self::getInput('var73', 'f5', 'orange'); ?>, di cui €
-                    <?php self::getInput('var74', 'f4', 'orange'); ?> soggette ai vincoli;
+                    € <?php self::getInput('var73', 'F5', 'orange'); ?>, di cui €
+                    <?php self::getInput('var74', 'F4', 'orange'); ?> soggette ai vincoli;
                 </li>
             </ul>
 
@@ -892,10 +896,10 @@ class DeterminaCostituzioneDocument
             decurtazioni per l'anno 2015;
             <br>
             <br>
-            <b>Tenuto conto</b> che nel periodo 2011-2014 <?php self::getInput('var74', 'f273', 'orange'); ?>risultano
+            <b>Tenuto conto</b> che nel periodo 2011-2014 <?php self::getInput('var74', 'F273', 'orange'); ?>risultano
             decurtazioni rispetto ai vincoli sul fondo 2010 e
             pertanto deve essere applicata la riduzione del fondo del 2022, pari a
-            € <?php self::getInput('var75', 'f263', 'red'); ?>;
+            € <?php self::getInput('var75', 'F263', 'red'); ?>;
             <br>
             <br>
             <b>Richiamato</b> l'art. 1 c. 236 della L. 208/2015 che aveva proposto dei nuovi limiti sui fondi delle
@@ -920,10 +924,10 @@ class DeterminaCostituzioneDocument
             <br>
             <br>
 
-            <b>Tenuto conto</b> che nell'anno 2016 <?php self::getInput('var76', 'f283', 'orange'); ?>non risultano
+            <b>Tenuto conto</b> che nell'anno 2016 <?php self::getInput('var76', 'F283', 'orange'); ?>non risultano
             decurtazioni rispetto ai vincoli sul fondo 2015 e pertanto
             non deve essere applicata la riduzione del fondo di
-            € <?php self::getInput('var77', 'f282', 'orange'); ?>;
+            € <?php self::getInput('var77', 'F282', 'orange'); ?>;
             <br>
             <br>
 
@@ -931,8 +935,8 @@ class DeterminaCostituzioneDocument
             <br>
             <ul class="d">
                 <li>l'importo del fondo complessivo anno da confrontare con il 2016 e da sottoporre alle decurtazioni di cui
-                    all'art. 23 del D.Lgs... 75/2017, risulta pari a € <?php self::getInput('var78', 'f33', 'orange'); ?> , di
-                    cui € <?php self::getInput('var79', 'f8', 'orange'); ?> soggette al limite 2016;
+                    all'art. 23 del D.Lgs... 75/2017, risulta pari a € <?php self::getInput('var78', 'F33', 'orange'); ?> , di
+                    cui € <?php self::getInput('var79', 'F8', 'orange'); ?> soggette al limite 2016;
                 </li>
             </ul>
 
@@ -942,7 +946,7 @@ class DeterminaCostituzioneDocument
             comma 3 lett. c CCNL 21.5.2018, importi di cui all’67 comma 3 lett. a, ove tale attività non risulti
             ordinariamente resa dall’Amministrazione precedentemente l’entrata in vigore del D.Lgs... 75/2017, economie
             del fondo dell’anno 2015 e economie del fondo straordinario anno 2015), pari a
-            € <?php self::getInput('var80', 'f331', 'orange'); ?>;
+            € <?php self::getInput('var80', 'F331', 'orange'); ?>;
             <br>
             <?php if (self::checkOptionalValues('F324')): ?>
                 e che lo stesso deve essere adeguato in riferimento alle disposizioni del D.L. 34/2019 e di quanto definito
@@ -950,7 +954,7 @@ class DeterminaCostituzioneDocument
                 garantire l'invarianza del valore medio pro-capite riferito all'anno 2018, per un importo pari ad
                 €<?php self::getInput('var81', 'R150', 'orange'); ?> ,
                 per un totale del nuovo limite complessivo di cui all'art. 23 del D.Lgs... 75/2017 pari ad
-                € <?php self::getInput('var82', 'f373', 'orange'); ?>;
+                € <?php self::getInput('var82', 'F373', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
@@ -959,7 +963,7 @@ class DeterminaCostituzioneDocument
                 definito DM attuativo del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019,
                 per garantire l'invarianza del valore medio pro-capite riferito all'anno 2018 e pertanto il totale del
                 limite di cui all'art. 23 del D.Lgs... 75/2017 è confermato pari ad
-                € <?php self::getInput('var83', 'f1', 'orange'); ?>;
+                € <?php self::getInput('var83', 'F1', 'orange'); ?>;
             <?php endif; ?>
             <br><br>
             <?php if (self::checkOptionalValues('F324')): ?>
@@ -974,7 +978,7 @@ class DeterminaCostituzioneDocument
                 del 17.3.2020 concordato in sede di Conferenza Unificata Stato Regioni del 11.12.2019, per garantire
                 l'invarianza del valore medio pro-capite riferito all'anno 2018, per un importo pari ad € R150, per un
                 totale del nuovo limite di cui all'art. 23 del D.Lgs... 75/2017 di
-                € <?php self::getInput('var85', 'f8', 'orange'); ?>;
+                € <?php self::getInput('var85', 'F8', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
@@ -986,7 +990,7 @@ class DeterminaCostituzioneDocument
                 resa dall’Amministrazione precedentemente l’entrata in vigore del D.Lgs... 75/2017 importi di cui all’art.
                 67 comma 2 lett. b., art. 79 c. 1 lett. b CCNL 16.11.2022, art. 79 c.1 lett. c CCNL 16.11.2022, art. 79 c.3
                 CCNL 16.11.2022, art. 79 c. 5 CCNL 16.11.2022, economie del fondo dell’anno precedente e economie del fondo
-                straordinario anno precedente), risulta pari a € <?php self::getInput('var87', 'f8', 'orange'); ?>;
+                straordinario anno precedente), risulta pari a € <?php self::getInput('var87', 'F8', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
@@ -1001,7 +1005,7 @@ class DeterminaCostituzioneDocument
                         <?php endif; ?>
                     </li>
                     <?php if (self::checkOptionalValues('F368')): ?>
-                        <li>Fondo Posizioni organizzative pari a € <?php self::getInput('var90', 'f374', 'orange'); ?>;
+                        <li>Fondo Posizioni organizzative pari a € <?php self::getInput('var90', 'F374', 'orange'); ?>;
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -1028,7 +1032,7 @@ class DeterminaCostituzioneDocument
                 <b> Preso atto che</b> il fondo anno (per le voci soggette al blocco del D.Lgs... 75/2017) deve essere
                 decurtato per
                 il superamento del limite del fondo 2016 per un valore pari ad
-                € <?php self::getInput('var91', 'f10', 'orange'); ?>;
+                € <?php self::getInput('var91', 'F10', 'orange'); ?>;
             <?php endif; ?>
             <br>
             <br>
@@ -1046,11 +1050,11 @@ class DeterminaCostituzioneDocument
             <ul class="d">
                 <li>il totale del fondo (incluse le sole voci soggette al blocco dell’art. 23 del D.Lgs... 75/2017) per l’anno
                     <?php self::getInput('var92', 'anno', 'orange'); ?> al netto delle decurtazioni per il superamento del
-                    valore del 2016 è pari ad €<?php self::getInput('var93', 'f253', 'orange'); ?> ;
+                    valore del 2016 è pari ad €<?php self::getInput('var93', 'F253', 'orange'); ?> ;
                 </li>
                 <li>Il totale del fondo complessivo (incluse le voci non soggette al blocco dell’art. 23 del D.Lgs... 75/2017)
                     per l’anno <?php self::getInput('var93', 'anno', 'orange'); ?> tolte le decurtazioni per il superamento del
-                    valore del 2016 è pari ad € <?php self::getInput('var94', 'f254', 'orange'); ?>;
+                    valore del 2016 è pari ad € <?php self::getInput('var94', 'F254', 'orange'); ?>;
                 </li>
                 <?php if (self::checkOptionalValues('F363')): ?>
                     <li>il tetto del salario accessorio di cui all’art. 23 c. 2 del D.Lgs... 75/2017 nel suo complesso (indennità
@@ -1094,8 +1098,8 @@ class DeterminaCostituzioneDocument
                 <tr>
 
                     <td>Fondo complessivo risorse decentrate soggette al limite</td>
-                    <td><?php self::getInput('var98', 'f370', 'orange'); ?></td>
-                    <td><?php self::getInput('var99', 'f253', 'orange'); ?></td
+                    <td><?php self::getInput('var98', 'F370', 'orange'); ?></td>
+                    <td><?php self::getInput('var99', 'F253', 'orange'); ?></td
                     </td>
                 </tr>
                 <?php if (self::checkOptionalValues('F376')): ?>
@@ -1142,8 +1146,8 @@ class DeterminaCostituzioneDocument
                 <?php if (self::checkOptionalValues('F376')): ?>
                     <tr>
                         <td><b> TOTALE TRATTAMENTO ACCESSORIO SOGGETTO AL LIMITE ART. 23 C. 2 D.LGS. 75/2017</b></td>
-                        <td> <?php self::getInput('var110', 'f354', 'orange'); ?></td>
-                        <td> <?php self::getInput('var111', 'f355', 'orange'); ?></td>
+                        <td> <?php self::getInput('var110', 'F354', 'orange'); ?></td>
+                        <td> <?php self::getInput('var111', 'F355', 'orange'); ?></td>
                     </tr>
                 <?php endif; ?>
                 <?php if (self::checkOptionalValues('F375')): ?>
@@ -1151,8 +1155,8 @@ class DeterminaCostituzioneDocument
                         <td><b>TOTALE TRATTAMENTO ACCESSORIO SOGGETTO AL LIMITE ART. 23 C. 2 D.LGS. 75/2017 COMPRESO Quota
                                 integrazione PO finanziate dalla rinuncia delle capacità assunzionali (Incremento Art.
                                 11-bis comma 2 D.L. 135/2018) e Quota art. 33 del DL 34/2019</b></td>
-                        <td> <?php self::getInput('var112', 'f354', 'orange'); ?></td>
-                        <td> <?php self::getInput('var113', 'f355', 'orange'); ?></td>
+                        <td> <?php self::getInput('var112', 'F354', 'orange'); ?></td>
+                        <td> <?php self::getInput('var113', 'F355', 'orange'); ?></td>
                     </tr>
                 <?php endif; ?>
                 <?php if (self::checkOptionalValues('F344')): ?>
@@ -1160,14 +1164,14 @@ class DeterminaCostituzioneDocument
                         <td><b>Quota integrazione PO finanziate dalla rinuncia delle capacità assunzionali (Incremento Art.
                                 11-bis comma 2 D.L. 135/2018)</b></td>
                         <td> <?php self::getInput('var114', '', 'orange'); ?></td>
-                        <td> <?php self::getInput('var115', 'f355', 'orange'); ?></td>
+                        <td> <?php self::getInput('var115', 'F355', 'orange'); ?></td>
                     </tr>
                 <?php endif; ?>
                 <?php if (self::checkOptionalValues('F376')): ?>
                     <tr>
                         <td><b>RISPETTO DEL LIMITE TRATTAMENTO ACCESSORIO</b></td>
                         <td> <?php self::getInput('var116', '', 'orange'); ?></td>
-                        <td> <?php self::getInput('var117', 'f358', 'orange'); ?></td>
+                        <td> <?php self::getInput('var117', 'F358', 'orange'); ?></td>
                     </tr>
                 <?php endif; ?>
                 <?php if (self::checkOptionalValues('F375')): ?>
@@ -1176,7 +1180,7 @@ class DeterminaCostituzioneDocument
                                 rinuncia delle capacità assunzionali (Incremento Art. 11-bis comma 2 D.L. 135/2018) e Quota
                                 art. 33 del DL 34/2019</b></td>
                         <td> <?php self::getInput('var118', '', 'orange'); ?></td>
-                        <td> <?php self::getInput('var119', 'f360', 'orange'); ?></td>
+                        <td> <?php self::getInput('var119', 'F360', 'orange'); ?></td>
                     </tr>
                 <?php endif; ?>
                 </tbody>
@@ -1198,13 +1202,13 @@ class DeterminaCostituzioneDocument
 
                     <td>Fondo stabile soggetto al limite</td>
                     <td><?php self::getInput('var121', 'R51', 'orange'); ?></td>
-                    <td><?php self::getInput('var122', 'f332', 'orange'); ?></td
+                    <td><?php self::getInput('var122', 'F332', 'orange'); ?></td
                     </td>
                 </tr>
                 <tr>
                     <td>Fondo variabile soggetta al limite</td>
                     <td> <?php self::getInput('var123', 'R52', 'orange'); ?></td>
-                    <td> <?php self::getInput('var124', 'f4', 'orange'); ?></td>
+                    <td> <?php self::getInput('var124', 'F4', 'orange'); ?></td>
                 </tr>
                 <tr>
                     <?php if (self::checkOptionalValues('F324')): ?>
@@ -1221,25 +1225,25 @@ class DeterminaCostituzioneDocument
                 </tr>
                 <tr>
                     <td>Risorse fondo prima delle decurtazioni</td>
-                    <td> <?php self::getInput('var129', 'f371', 'orange'); ?></td>
-                    <td> <?php self::getInput('var130', 'f318', 'orange'); ?></td>
+                    <td> <?php self::getInput('var129', 'F371', 'orange'); ?></td>
+                    <td> <?php self::getInput('var130', 'F318', 'orange'); ?></td>
                 </tr>
                 <tr>
                     <td>Risorse fondo prima delle decurtazioni
                     </td>
-                    <td> <?php self::getInput('var131', 'f371', 'orange'); ?></td>
-                    <td> <?php self::getInput('var132', 'f318', 'orange'); ?></td>
+                    <td> <?php self::getInput('var131', 'F371', 'orange'); ?></td>
+                    <td> <?php self::getInput('var132', 'F318', 'orange'); ?></td>
                 </tr>
                 <tr>
                     <td>Decurtazioni 2011/2014
                     </td>
-                    <td> <?php self::getInput('var133', 'f263', 'orange'); ?></td>
-                    <td> <?php self::getInput('var134', 'f263', 'orange'); ?></td>
+                    <td> <?php self::getInput('var133', 'F263', 'orange'); ?></td>
+                    <td> <?php self::getInput('var134', 'F263', 'orange'); ?></td>
                 </tr>
                 <tr>
                     <td>Decurtazioni operate nel 2016 per cessazioni e rispetto limite 2015</td>
-                    <td> <?php self::getInput('var135', 'f282', 'orange'); ?></td>
-                    <td> <?php self::getInput('var136', 'f282', 'orange'); ?></td>
+                    <td> <?php self::getInput('var135', 'F282', 'orange'); ?></td>
+                    <td> <?php self::getInput('var136', 'F282', 'orange'); ?></td>
                 </tr>
                 <tr>
                     <td><b>TOTALE FONDO DELL'ANNO PER RISPETTO LIMITE</b></td>
@@ -1249,12 +1253,12 @@ class DeterminaCostituzioneDocument
                 <tr>
                     <td>Decurtazioni per rispetto 2016</td>
                     <td> <?php self::getInput('var139', '', 'orange'); ?></td>
-                    <td> <?php self::getInput('var140', 'f31', 'orange'); ?></td>
+                    <td> <?php self::getInput('var140', 'F31', 'orange'); ?></td>
                 </tr>
                 <tr>
                     <td><b>RISORSE FONDO DOPO LE DECURTAZIONI</b></td>
                     <td> <?php self::getInput('var141', '', 'orange'); ?></td>
-                    <td> <?php self::getInput('var142', 'f253', 'orange'); ?></td>
+                    <td> <?php self::getInput('var142', 'F253', 'orange'); ?></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -1275,14 +1279,14 @@ class DeterminaCostituzioneDocument
                 <tr>
                     <td>TOTALE FONDO DECURTATO, INCLUSE LE SOMME NON SOTTOPOSTE AL LIMITE</td>
                     <td> <?php self::getInput('var149', '', 'orange'); ?></td>
-                    <td> <?php self::getInput('var150', 'f254', 'orange'); ?></td>
+                    <td> <?php self::getInput('var150', 'F254', 'orange'); ?></td>
                 </tr>
                 </tbody>
             </table>
             <br>
             <br>
             <b>Preso atto che</b> risulta indisponibile alla contrattazione una quota di
-            € <?php self::getInput('var151', 'f93', 'orange'); ?> in quanto relativa alla
+            € <?php self::getInput('var151', 'F93', 'orange'); ?> in quanto relativa alla
             remunerazione di istituti erogabili in forma automatica e già precedentemente contrattati e assegnati
             (es. indennità di comparto e progressione orizzontale);
             <br>
@@ -1315,7 +1319,7 @@ class DeterminaCostituzioneDocument
                     rispetto ai presenti al 31.12.2018;
                 </li>
                 <li>di costituire il fondo complessivo a seguito della decurtazione di cui all'art. 23 del D.Lgs. 75/2017 per
-                    un importo pari ad € <?php self::getInput('var155', 'f254', 'orange'); ?>;
+                    un importo pari ad € <?php self::getInput('var155', 'F254', 'orange'); ?>;
                 </li>
                 <li>di prendere atto che la somma totale risulta stanziata così come segue:
                     <?php self::getTextArea('area10', ' per €. XXX Cap. XXX;
@@ -1324,7 +1328,7 @@ class DeterminaCostituzioneDocument
                 </li>
                 <li>di sottrarre dalle risorse contrattabili i compensi gravanti sul fondo (indennità di comparto, incrementi
                     per la progressione economica, ecc.) che, ai sensi delle vigenti disposizioni contrattuali, sono già stati
-                    erogati in corso d’anno per un importo pari ad € <?php self::getInput('var156', 'f93', 'orange'); ?>;
+                    erogati in corso d’anno per un importo pari ad € <?php self::getInput('var156', 'F93', 'orange'); ?>;
                     <?php if (self::checkOptionalValues('F345')): ?>
                 <li>di confermare il Fondo per il Lavoro Straordinario, ai sensi dell'art. 14 CCNL 1.4.1999, per
                     l’anno <?php self::getInput('var157', 'anno', 'orange'); ?>
