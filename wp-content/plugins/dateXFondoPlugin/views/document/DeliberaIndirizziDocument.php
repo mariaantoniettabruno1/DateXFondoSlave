@@ -22,7 +22,8 @@ class DeliberaIndirizziDocument
         $delibera_data = new DeliberaDocumentRepository();
         $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version'],$_GET['city']);
         $user_data = new UserRepository();
-        $this->user_infos = $user_data->getUserInfos();
+        $this->user_infos = $user_data->getUserInfos()[0];
+
 
 
         foreach ($this->infos as $row) {

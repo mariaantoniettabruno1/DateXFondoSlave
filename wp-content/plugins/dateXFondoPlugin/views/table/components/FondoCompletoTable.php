@@ -82,7 +82,6 @@ class FondoCompletoTable
 
                 filteredRecord.forEach(art => {
                         nota = art.nota ?? "";
-                        ordinamento = art.ordinamento ?? "";
                         id_articolo = art.id_articolo ?? "";
                         sottotitolo = art.sottotitolo_articolo ?? "";
                         link = art.link ?? "";
