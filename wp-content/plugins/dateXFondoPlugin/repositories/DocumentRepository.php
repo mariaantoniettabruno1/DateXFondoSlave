@@ -5,6 +5,7 @@ use dateXFondoPlugin\ConnectionFirstCity;
 
 class DocumentRepository
 {
+
     public static function getDataDocument($table_name, $city)
     {
 

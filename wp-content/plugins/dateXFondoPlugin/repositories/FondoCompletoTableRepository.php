@@ -7,15 +7,16 @@ use PHPMailer\PHPMailer\Exception;
 
 class FondoCompletoTableRepository
 {
-    public static function getJoinedArticoli($template_name, $version,$fondo,$city)
+    public static function getJoinedArticoli($template_name,$version,$fondo,$city)
     {
+
         if (isset($city) && $city!= '') {
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
             $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            $sql = "SELECT * FROM DATE_template_fondo  WHERE attivo =1 AND template_name=? AND fondo=? AND version=?";
+            $sql = "SELECT * FROM DATE_template_fondo  WHERE attivo=1 AND template_name=? AND fondo=? AND version=?";
             $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("ssi", $template_name, $fondo, $version);
             $res = $stmt->execute();

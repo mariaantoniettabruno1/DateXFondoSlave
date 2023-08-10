@@ -73,7 +73,7 @@ class CitiesRepository
                 return $doc;
             }, $document_repository->getDataDocument('DATE_documento_modello_fondo_storico', $params['citySelected'])),
             array_map(function ($doc) {
-                $doc['page'] = 'regioni_autonomie_locali_storico';
+                $doc['page'] = 'regioni_autonomie_locali';
 
                 return $doc;
             }, $document_repository->getDataDocument('DATE_documento_regioni_autonomie_locali_storico', $params['citySelected'])),
