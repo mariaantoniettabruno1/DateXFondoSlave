@@ -22,7 +22,7 @@ class TemplateRowRepository
             $url = DB_HOST . ":" . DB_PORT . "/";
             $username = DB_USER;
             $password = DB_PASSWORD;
-            $dbname = 'c1date_custom';
+            $dbname = 'c1date_'.$request['city'];
             $mysqli = new mysqli($url, $username, $password, $dbname);
             $sql = "UPDATE DATE_template_fondo SET attivo=0  WHERE id=?";
             $stmt = $mysqli->prepare($sql);

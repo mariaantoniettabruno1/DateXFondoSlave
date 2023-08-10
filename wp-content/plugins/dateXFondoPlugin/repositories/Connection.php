@@ -30,6 +30,7 @@ class Connection
         $this->username = DB_USER;
         $this->password = DB_PASSWORD;
         $this->dbname = DB_NAME;
+
     }
 
     function connect()

@@ -4,12 +4,13 @@ namespace dateXFondoPlugin;
 
 use mysqli;
 
+
 class DeliberaDocumentRepository
 {
 
     public static function getAllHistoryValues($document_name, $editor_name,$version,$city)
     {
-        if (!isset($city)) {
+        if (!isset($city)  || $city == null ) {
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT chiave, valore, document_name, editor_name, anno, editable FROM DATE_documenti_odt_storico WHERE document_name=? AND editor_name=? AND version=?";

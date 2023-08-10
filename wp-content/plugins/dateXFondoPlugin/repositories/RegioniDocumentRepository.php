@@ -43,7 +43,7 @@ class RegioniDocumentRepository
 
     public static function getHistoryDestinazioneArticoli($template_name,$version,$city)
     {
-        if(!isset($city)) {
+        if(!isset($city)  || $city == null) {
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
             $sql = "SELECT * FROM DATE_documento_regioni_autonomie_locali_storico WHERE titolo_tabella='Destinazione fondi per il trattamento accessorio'AND attivo=1 and editor_name=? and version=? ORDER BY ordinamento ASC";
