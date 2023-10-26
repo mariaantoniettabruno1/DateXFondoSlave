@@ -103,13 +103,24 @@ class FondoCompleto
 
                 const sezioni = {}
                 articoli.forEach(a => {
-                    if (!sezioni[a.sezione]) {
+                    if (!sezioni[a.sezione] && a.sezione !== '') {
                         sezioni[a.sezione] = [];
                     }
                     if (!sezioni[a.sezione].includes(a.sottosezione)) {
                         sezioni[a.sezione].push(a.sottosezione);
                     }
                 });
+                formulas.forEach(f => {
+                        if (!sezioni[f.sezione] && f.sezione !== '') {
+                            sezioni[f.sezione] = [];
+                            if (!sezioni[f.sezione].includes(f.sottosezione)) {
+                                sezioni[f.sezione].push(f.sottosezione);
+                            }
+                        }
+
+                    }
+                );
+                console.log(sezioni);
 
             </script>
         </head>

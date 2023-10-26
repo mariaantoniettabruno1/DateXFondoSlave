@@ -294,25 +294,32 @@ class FondoCompletoTable
         $tot_array = [];
         foreach ($results_articoli as $articolo) {
             if (!in_array($articolo['sezione'], $sezioni)) {
-                array_push($sezioni, $articolo['sezione']);
-                $tot_array = array_fill_keys($sezioni, []);
+                if ($articolo['sezione'] != '') {
+                    array_push($sezioni, $articolo['sezione']);
+                    $tot_array = array_fill_keys($sezioni, []);
+                }
+                
             }
         }
         foreach ($results_formula as $formula) {
             if (!in_array($formula['sezione'], $sezioni)) {
-                array_push($sezioni, $formula['sezione']);
-                $tot_array = array_fill_keys($sezioni, []);
+                if ($formula['sezione'] != '') {
+                    array_push($sezioni, $formula['sezione']);
+                    $tot_array = array_fill_keys($sezioni, []);
+                }
             }
         }
 
         foreach ($tot_array as $key => $value) {
             foreach ($results_articoli as $articolo) {
                 if ($key === $articolo['sezione'] && array_search($articolo['sottosezione'], $tot_array[$key]) === false) {
-                    array_push($tot_array[$key], $articolo['sottosezione']);
+                    if ($formula['sottosezione'] != "")
+                        array_push($tot_array[$key], $articolo['sottosezione']);
                 }
                 foreach ($results_formula as $formula) {
                     if ($key === $formula['sezione'] && array_search($formula['sottosezione'], $tot_array[$key]) === false) {
-                        array_push($tot_array[$key], $formula['sottosezione']);
+                        if ($formula['sottosezione'] != "")
+                            array_push($tot_array[$key], $formula['sottosezione']);
                     }
                 }
             }

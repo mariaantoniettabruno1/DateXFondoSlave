@@ -6,7 +6,7 @@ use mysqli;
 
 class UserRepository
 {
- 
+
 public static function getUserInfos(){
     $conn = new ConnectionFirstCity();
     $mysqli = $conn->connect();
