@@ -60,7 +60,7 @@ function create_endpoint_datefondo_duplicate_template()
 
 function esegui_duplicazione_template($params)
 {
-    $bool_res = \dateXFondoPlugin\MasterTemplateRepository::duplicate_template($params);
+    $bool_res = (new dateXFondoPlugin\MasterTemplateRepository)->duplicate_template($params);
     $data = ['duplicated template' => $bool_res, 'message' => 'TemplateFondo duplicato correttamente'];
     $response = new WP_REST_Response($data);
     $response->set_status(201);

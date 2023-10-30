@@ -183,7 +183,7 @@ WHERE id=?";
 
     }
 
-    public static function duplicate_template($request)
+    public function duplicate_template($request)
     {
         if (isset($request['citySelected']) && $request['citySelected'] != '') {
             $url = DB_HOST . ":" . DB_PORT . "/";
@@ -244,11 +244,11 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
         }
         mysqli_close($mysqli);
 
-        self::getTemplateFormulas($template_name, $request['anno'], $request['citySelected']);
+        $this->getTemplateFormulas($template_name, $request['anno'], $request['citySelected']);
         return $res;
     }
 
-    public static function getTemplateFormulas($template_name, $year,$city)
+    public function getTemplateFormulas($template_name, $year,$city)
     {
 
         if (isset($city) && $city != '') {
