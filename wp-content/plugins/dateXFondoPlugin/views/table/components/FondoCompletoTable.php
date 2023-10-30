@@ -298,7 +298,7 @@ class FondoCompletoTable
                     array_push($sezioni, $articolo['sezione']);
                     $tot_array = array_fill_keys($sezioni, []);
                 }
-                
+
             }
         }
         foreach ($results_formula as $formula) {

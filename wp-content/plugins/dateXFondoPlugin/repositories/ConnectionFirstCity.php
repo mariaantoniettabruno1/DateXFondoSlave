@@ -26,6 +26,7 @@ class ConnectionFirstCity
 
     public function __construct()
     {
+
         $id = my_get_current_user_id()[0];
         $conn = new Connection();
         $mysqli = $conn->connect();
