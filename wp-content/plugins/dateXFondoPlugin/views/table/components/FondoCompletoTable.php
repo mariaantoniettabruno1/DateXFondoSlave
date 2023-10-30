@@ -24,8 +24,10 @@ class FondoCompletoTable
                         element.formula = art.nome;
                         element.valore = descrizione;
                         array.push(element);
-                        if (isNaN(parseFloat(art.descrizione)))
+                        if (isNaN(parseFloat(descrizione))) {
                             element.valore = 'Rivedere dati inseriti, formula non andata a buon fine';
+                        }
+
                     }
                 });
                 const payload = {array, city};
@@ -44,14 +46,13 @@ class FondoCompletoTable
 
             function renderDataTable(section, subsection) {
 
-                let index = Object.keys(sezioni).indexOf(section);
+                let index = Object.keys(sortedSections).indexOf(section);
                 $('#dataTemplateTableBody' + index).html('');
                 filteredRecord = joined_record;
                 filteredRecord = filteredRecord.filter(art => art.sezione === section)
                 if (subsection) {
                     filteredRecord = filteredRecord.filter(art => art.sottosezione === subsection)
                 }
-
                 let nota = '';
                 let id_articolo = '';
                 let sottotitolo = '';
@@ -324,13 +325,36 @@ class FondoCompletoTable
                 }
             }
         }
+        $customOrder = array(
+            'Risorse fisse aventi carattere di certezza e stabilità',
+            'Risorse variabili',
+            'Decurtazioni rispetto anni precedenti',
+            'Informazioni utili per calcolare le decurtazioni',
+            'Totale salario accessorio per rispetto tetto art. 23 c. 2 del D.Lgs 75/2017',
+            'Utilizzo del fondo',
+            'Fondo Straordinario'
+        );
+        $sortedArray = array();
 
+        // Ordina l'array in base all'ordine personalizzato
+        foreach ($customOrder as $key) {
+            if (array_key_exists($key, $tot_array)) {
+                $sortedArray[$key] = $tot_array[$key];
+            }
+        }
 
+        // Aggiungi chiavi mancanti nell'array originale
+        foreach ($tot_array as $key => $value) {
+            if (!array_key_exists($key, $sortedArray)) {
+                $sortedArray[$key] = $value;
+            }
+        }
         ?>
         <div class="accordion mt-2 col" id="accordionTemplateTable">
             <?php
             $section_index = 0;
-            foreach ($tot_array as $sezione => $sottosezioni) {
+
+            foreach ($sortedArray as $sezione => $sottosezioni) {
                 ?>
                 <div class="card" id="templateCard">
                     <div class="card-header" id="headingTemplateTable<?= $section_index ?>">
