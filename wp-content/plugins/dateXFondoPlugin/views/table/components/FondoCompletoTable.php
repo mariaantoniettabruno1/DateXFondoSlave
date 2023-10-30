@@ -95,8 +95,8 @@ class FondoCompletoTable
                         valore_precedente = art.valore_anno_precedente ?? "";
 
                         if (art.formula !== undefined) {
-
                             id_articolo = art.nome ?? "";
+                            console.log(id_articolo)
 
                             if (art.text_type === '10') {
                                 id_articolo = '<span class="span-bold">' + art.nome + '</span>';
@@ -109,8 +109,6 @@ class FondoCompletoTable
                             } else if (art.text_type === '00') {
                                 id_articolo = '<span>' + art.nome + '</span>';
 
-                            } else {
-                                id_articolo = '';
                             }
                             if (art.descrizione !== undefined) {
                                 sottotitolo = art.descrizione;
