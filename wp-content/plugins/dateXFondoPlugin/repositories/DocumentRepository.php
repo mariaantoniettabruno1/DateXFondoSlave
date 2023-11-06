@@ -213,14 +213,14 @@ class DocumentRepository
         return $rows;
     }
 
-    public static function getIdsArticoli($editor_name,$city)
+    public static function getIdsArticoli($editor_name,$city,$version)
     {
         if (!isset($city) || $city == null || $city == 'undefined') {
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
-            $sql = "SELECT id_articolo,valore FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=?";
+            $sql = "SELECT id_articolo,valore FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("s", $editor_name);
+            $stmt->bind_param("si", $editor_name,$version);
             $res = $stmt->execute();
             if ($res = $stmt->get_result()) {
                 $rows = $res->fetch_all(MYSQLI_ASSOC);
@@ -234,9 +234,9 @@ class DocumentRepository
             $password = DB_PASSWORD;
             $dbname = 'c1date_'.$city;
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            $sql = "SELECT id_articolo,valore FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=?";
+            $sql = "SELECT id_articolo,valore FROM DATE_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 and template_name=? and version=?";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("s", $editor_name);
+            $stmt->bind_param("si", $editor_name,$version);
             $res = $stmt->execute();
             if ($res = $stmt->get_result()) {
                 $rows = $res->fetch_all(MYSQLI_ASSOC);

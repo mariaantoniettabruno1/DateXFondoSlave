@@ -112,7 +112,7 @@ class ModelloRegioniDestinazioneTable
         $data_document = new DocumentRepository();
         $results_articoli = $data->getHistoryDestinazioneArticoli($_GET['editor_name'],$_GET['version'],$_GET['city']);
         $formulas = $data_document->getFormulas($_GET['editor_name'],$_GET['city']);
-        $ids_articolo = $data_document->getIdsArticoli($_GET['editor_name'],$_GET['city']);
+        $ids_articolo = $data_document->getIdsArticoli($_GET['editor_name'],$_GET['city'],$_GET['version']);
         $array = $formulas + $ids_articolo;
         $sezioni = [];
         $tot_array = [];

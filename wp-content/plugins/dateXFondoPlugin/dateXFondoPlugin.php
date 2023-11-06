@@ -54,10 +54,7 @@ require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoNewCostituzioneRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoNewUtilizzoRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/MasterModelloFondoDatiUtiliRow.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoDocumentTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoCostituzione.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoDatiUtili.php');
-require_once(plugin_dir_path(__FILE__) . 'views/document/components/modellofondo/ModelloFondoUtilizzo.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/DeliberaIndirizziDocument.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/DeterminaCostituzioneDocument.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/RelazioneIllustrativaDocument.php');

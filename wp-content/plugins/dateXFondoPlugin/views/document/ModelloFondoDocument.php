@@ -13,11 +13,13 @@ class ModelloFondoDocument
     public static function render()
     {
         $data = new DocumentRepository();
-    
-            $results_articoli = $data->getHistoryArticoli($_GET['editor_name'],$_GET['version'],$_GET['city']);
-            $results_articoli_utilizzo = $data->getHistoryArticoliUtilizzo($_GET['editor_name'],$_GET['version'],$_GET['city']);
-            $results_articoli_dati_utili = $data->getHistoryArticoliDatiUtili($_GET['editor_name'],$_GET['version'],$_GET['city']);
 
+        $results_articoli = $data->getHistoryArticoli($_GET['editor_name'], $_GET['version'], $_GET['city']);
+        $results_articoli_utilizzo = $data->getHistoryArticoliUtilizzo($_GET['editor_name'], $_GET['version'], $_GET['city']);
+        $results_articoli_dati_utili = $data->getHistoryArticoliDatiUtili($_GET['editor_name'], $_GET['version'], $_GET['city']);
+        $formulas = $data->getFormulas($_GET['editor_name'], $_GET['city']);
+        $ids_articolo = $data->getIdsArticoli($_GET['editor_name'], $_GET['city'], $_GET['version']);
+        $array = $formulas + $ids_articolo;
         ?>
         <!DOCTYPE html>
 
@@ -44,6 +46,7 @@ class ModelloFondoDocument
             let articoli = JSON.parse((`<?=json_encode($results_articoli);?>`));
             let articoli_utilizzo = JSON.parse((`<?=json_encode($results_articoli_utilizzo);?>`));
             let articoli_dati_utili = JSON.parse((`<?=json_encode($results_articoli_dati_utili);?>`));
+            let articoli_formulas_values = JSON.parse((`<?=json_encode($array);?>`));
             const sezioni = []
             const sezioni_utilizzo = []
             const sezioni_dati_utili = []
@@ -91,6 +94,7 @@ class ModelloFondoDocument
                 }
             });
             window.onbeforeunload = confirmExit;
+
             function confirmExit() {
                 return "You have attempted to leave this page. Are you sure?";
             }

@@ -12,19 +12,19 @@ class FondoCompletoTable
 
             let id = 0;
             let filteredRecord = joined_record;
-            let descrizione = '';
+            let valore = '';
             let array = [];
 
             function getFormulaValues() {
                 filteredRecord.forEach(art => {
                     if (art.formula !== undefined) {
-                        descrizione = evaluateFormula(art.formula);
+                        valore = evaluateFormula(art.formula);
 
                         let element = {};
                         element.formula = art.nome;
-                        element.valore = descrizione;
+                        element.valore = valore;
                         array.push(element);
-                        if (isNaN(parseFloat(descrizione))) {
+                        if (isNaN(parseFloat(valore))) {
                             element.valore = 'Rivedere dati inseriti, formula non andata a buon fine';
                         }
 
@@ -55,9 +55,8 @@ class FondoCompletoTable
                 }
                 let nota = '';
                 let id_articolo = '';
-                let sottotitolo = '';
+                let descrizione = '';
                 let link = '';
-                let valore = '';
                 let valore_precedente = '';
                 let nome_articolo = '';
 
@@ -85,7 +84,6 @@ class FondoCompletoTable
                 filteredRecord.forEach(art => {
                         nota = art.nota ?? "";
                         id_articolo = art.id_articolo ?? "";
-                        sottotitolo = art.sottotitolo_articolo ?? "";
                         link = art.link ?? "";
                         let link_button = '';
                         nome_articolo = art.nome_articolo ?? "";
@@ -96,7 +94,6 @@ class FondoCompletoTable
 
                         if (art.formula !== undefined) {
                             id_articolo = art.nome ?? "";
-                            console.log(id_articolo)
 
                             if (art.text_type === '10') {
                                 id_articolo = '<span class="span-bold">' + art.nome + '</span>';
@@ -111,7 +108,7 @@ class FondoCompletoTable
 
                             }
                             if (art.descrizione !== undefined) {
-                                sottotitolo = art.descrizione;
+                                descrizione = art.descrizione;
                             }
 
                         }
@@ -124,9 +121,9 @@ class FondoCompletoTable
                            <td>${id_articolo}</td>
                            <td>${nome_articolo}</td>
                             <td> ${descrizione}</td>
-                           <td>${nota}</td>
                            <td>${valore}</td>
                            <td>${valore_precedente}</td>
+                           <td>${nota}</td>
                              <td>
                                        <div class="row pr-3">
                                        <div class="col-8">${link}</div>

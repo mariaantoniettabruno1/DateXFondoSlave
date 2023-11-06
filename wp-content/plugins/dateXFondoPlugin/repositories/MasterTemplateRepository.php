@@ -73,7 +73,7 @@ class MasterTemplateRepository
     }
 
 
-    public static function edit_row($request)
+    public function edit_row($request)
     {
         if ($request['city'] == '') {
             $conn = new ConnectionFirstCity();

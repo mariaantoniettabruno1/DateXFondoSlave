@@ -19,7 +19,7 @@ class DeterminaCostituzioneDocument
 
         $this->formule = $data->getFormulas($_GET['editor_name'],$_GET['city']);
 
-        $this->articoli = $data->getIdsArticoli($_GET['editor_name'],$_GET['city']);
+        $this->articoli = $data->getIdsArticoli($_GET['editor_name'],$_GET['city'],$_GET['version']);
         $delibera_data = new DeliberaDocumentRepository();
         $this->infos = $delibera_data->getAllHistoryValues($_GET['document_name'], $_GET['editor_name'], $_GET['version'],$_GET['city']);
         $user_data = new UserRepository();

@@ -14,7 +14,7 @@ function create_endpoint_datefondo_edit_row()
 
 function esegui_modifica_riga($params)
 {
-    $bool_res = \dateXFondoPlugin\MasterTemplateRepository::edit_row($params);
+    $bool_res = (new dateXFondoPlugin\MasterTemplateRepository)->edit_row($params);
     $data = ['update' => $bool_res, 'message' => 'Modifica riga effettuata correttamente'];
     $response = new WP_REST_Response($data);
     $response->set_status(201);
