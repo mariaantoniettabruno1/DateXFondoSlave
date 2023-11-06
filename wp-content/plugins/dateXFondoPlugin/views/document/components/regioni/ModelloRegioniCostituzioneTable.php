@@ -28,10 +28,13 @@ class ModelloRegioniCostituzioneTable
                     importo = art.importo ?? '';
                     codice = art.codice ?? '';
                     nome_articolo = art.nome_articolo ?? '';
-
-
-
-
+                    if (art.importo !== undefined) {
+                        regioni_articoli_formulas_values.forEach(prev => {
+                            if(prev.nome === art.importo || prev.id_articolo === art.importo){
+                                importo = prev.valore;
+                            }
+                        })
+                    }
 
                     $('#dataRegioniDocumentTableBody' + index).append(`
                                  <tr>
