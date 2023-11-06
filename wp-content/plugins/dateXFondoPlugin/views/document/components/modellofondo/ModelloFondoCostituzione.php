@@ -42,9 +42,9 @@ class ModelloFondoCostituzione
                     filteredDocArticoli = filteredDocArticoli.filter(art => art.sezione === sezioni[i])
                     filteredDocArticoli.forEach(art => {
                         if (art.preventivo !== undefined) {
-                         articoli_formulas_values.forEach(value => {
-                             if(value.nome === art.preventivo){
-                                 preventivo = value.valore;
+                         articoli_formulas_values.forEach(prev => {
+                             if(prev.nome === art.preventivo || prev.id_articolo === art.preventivo){
+                                 preventivo = prev.valore;
                              }
                          })
                         }
@@ -131,10 +131,16 @@ class ModelloFondoCostituzione
                     $('#dataUtilizzoDocumentTableBody' + i).html('');
                     filteredUtilizzoArticoli = filteredUtilizzoArticoli.filter(art => art.sezione === sezioni_utilizzo[i])
                     filteredUtilizzoArticoli.forEach(art => {
-                        if (art.preventivo !== undefined)
-                            preventivo = art.preventivo;
-                        if (art.consuntivo !== undefined)
-                            consuntivo = art.consuntivo;
+                        if (art.preventivo !== undefined || art.consuntivo !== undefined) {
+                            articoli_formulas_values.forEach(prev => {
+                                if(prev.nome === art.preventivo || prev.id_articolo === art.preventivo){
+                                    preventivo = prev.valore;
+                                }
+                                if(prev.nome === art.consuntivo || prev.id_articolo === art.consuntivo){
+                                    consuntivo = prev.valore;
+                                }
+                            })
+                        }
 
                         if (filteredUtilizzoArticoli[filteredUtilizzoArticoli.length - 1] === art) {
                             style = `"width: auto; padding: 10px 6px; border: 1px solid black; background-color: #ADD4C5; color: black;"`;

@@ -36,7 +36,6 @@ require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateHist
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFondoToActiveRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/ShortCodeDisabledTemplateRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/Formula.php');
-require_once(plugin_dir_path(__FILE__) . 'views/formula/SlaveShortCodeFormulaTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/AllDocument.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/DocumentHistory.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/components/AllDocumentTable.php');
