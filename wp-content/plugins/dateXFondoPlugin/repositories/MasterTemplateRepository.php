@@ -65,7 +65,7 @@ class MasterTemplateRepository
     {
         $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version FROM DATE_template_fondo  ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version,principale FROM DATE_template_fondo  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);

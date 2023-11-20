@@ -14,7 +14,7 @@ class CitiesRepository
         $password = DB_PASSWORD;
         $dbname = 'c1date_'.$params['citySelected'];
         $mysqli = new mysqli($url, $username, $password, $dbname);
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version FROM DATE_template_fondo  ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version,principale FROM DATE_template_fondo  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
