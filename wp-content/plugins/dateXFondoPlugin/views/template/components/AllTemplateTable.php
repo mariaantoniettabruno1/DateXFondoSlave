@@ -36,6 +36,12 @@ class AllTemplateTable
             let id_db = '';
             let check_variable = false;
 
+            function renderFondoSelectForDuplicate() {
+                $('#selectTemplateFondo').html('<option>Seleziona Fondo</option>');
+                template_fondo.forEach(fondo => {
+                    $('#selectTemplateFondo').append(`<option>${fondo.fondo} anno: ${fondo.anno} versione: ${fondo.versione}</option>`);
+                });
+            }
 
             function renderDataTableAllTemplate() {
                 $('#dataAllTemplateTableBody').html('');
@@ -136,6 +142,7 @@ class AllTemplateTable
 
                 let check = 0;
                 renderDataTableAllTemplate();
+                renderFondoSelectForDuplicate();
 
 
                 $('#mainTemplateButton').click(function () {
@@ -196,6 +203,14 @@ class AllTemplateTable
                     });
                 })
                 $('#duplicateTemplateButton').click(function () {
+                    //prendo il fondo selezionato dall'utente, eliminando dalla stringa l'anno
+                    let fondo_dati = $('#selectTemplateFondo').val();
+                    fondo_dati = fondo_dati.split(",");
+                    let nome_fondo = fondo_dati[0];
+                    let anno_fondo = fondo_dati[1].split("anno:")[1];
+                    //TODO aggiungere altri campi per la ricerca del fondo
+                    let fondo_found = template_fondo.find(fondo => fondo.fondo === nome_fondo && fondo.anno === anno_fondo);
+                    console.log("Ho stampato il fondo");
                     const payload = {
                         fondo,
                         anno,
@@ -206,7 +221,7 @@ class AllTemplateTable
                     }
                     console.log(payload)
                     $.ajax({
-                        url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
+                        // url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
                         data: payload,
                         type: "POST",
                         success: function (response) {
@@ -214,7 +229,7 @@ class AllTemplateTable
                             $("#duplicateModal").modal('hide');
                             template_name = template_name + ' - ipotesi';
                             console.log(template_name);
-                            location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
+                            // location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
                         },
                         error: function (response) {
                             console.error(response);
@@ -258,6 +273,11 @@ class AllTemplateTable
                     </div>
                     <div class="modal-body">
                         Vuoi duplicare questo template?
+                    </div>
+                    <div class="form-group">
+                        <label for="selectFondo"><b>Seleziona Fondo dal quale prendere i valori:</b></label>
+                        <select class="custom-select" id="selectTemplateFondo">
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>

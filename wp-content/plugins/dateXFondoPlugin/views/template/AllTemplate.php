@@ -10,6 +10,9 @@ class AllTemplate
         $data = new MasterTemplateRepository();
 
         $results_articoli = $data->getAllTemplate();
+        $results_old_articoli = $data->getStoredArticoli();
+        $results_all_articoli = array_merge($results_articoli,$results_old_articoli);
+
 
 
         ?>
@@ -62,7 +65,11 @@ class AllTemplate
 
         </body>
         <script>
+            //dati del template del fondo attualmente in corso con le sue varie ipotesi/prove
             let articoli = JSON.parse((`<?=json_encode($results_articoli);?>`));
+            //merge dei template del fondo in corso + quelli presenti nello storico
+            let template_fondo = JSON.parse((`<?=json_encode($results_all_articoli);?>`));
+            console.log(template_fondo);
             let citySelected = '';
 
             function getDataByCitySelected() {
