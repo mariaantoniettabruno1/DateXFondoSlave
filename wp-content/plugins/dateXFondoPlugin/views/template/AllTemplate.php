@@ -64,37 +64,41 @@ class AllTemplate
         <script>
             let articoli = JSON.parse((`<?=json_encode($results_articoli);?>`));
             let citySelected = '';
-            $('#selectedCity').click(function () {
-                citySelected = $("#idComune").val();
-                const payload = {
-                    citySelected
-                }
-                console.log(payload)
 
-                $.ajax({
-                    url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/citydata',
-                    data: payload,
-                    type: "POST",
-                    success: function (response) {
-                        console.log(response);
-                        articoli = response['data'];
-                        renderDataTableAllTemplate();
-                        $(".alert-data-success").show();
-                        $(".alert-data-success").fadeTo(2000, 500).slideUp(500, function () {
-                            $(".alert-data-success").slideUp(500);
-                        });
-                    },
-                    error: function (response) {
-                        console.error(response);
-                        console.log(response);
-                        $(".alert-data-wrong").show();
-                        $(".alert-data-wrong").fadeTo(2000, 500).slideUp(500, function () {
-                            $(".alert-data-wrong").slideUp(500);
-                        });
+            function getDataByCitySelected() {
+                $('#selectedCity').click(function () {
+                    citySelected = $("#idComune").val();
+                    const payload = {
+                        citySelected
                     }
-                });
-            });
+                    console.log(payload)
 
+                    $.ajax({
+                        url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/citydata',
+                        data: payload,
+                        type: "POST",
+                        success: function (response) {
+                            console.log(response);
+                            articoli = response['data'];
+                            renderDataTableAllTemplate();
+                            $(".alert-data-success").show();
+                            $(".alert-data-success").fadeTo(2000, 500).slideUp(500, function () {
+                                $(".alert-data-success").slideUp(500);
+                            });
+                        },
+                        error: function (response) {
+                            console.error(response);
+                            console.log(response);
+                            $(".alert-data-wrong").show();
+                            $(".alert-data-wrong").fadeTo(2000, 500).slideUp(500, function () {
+                                $(".alert-data-wrong").slideUp(500);
+                            });
+                        }
+                    });
+                });
+            }
+
+            getDataByCitySelected();
         </script>
         <div class="alert alert-success alert-data-success" role="alert"
              style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">

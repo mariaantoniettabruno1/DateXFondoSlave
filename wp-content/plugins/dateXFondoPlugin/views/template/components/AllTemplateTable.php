@@ -21,41 +21,37 @@ class AllTemplateTable
                 color: #26282f;
             }
 
-            #duplicateTemplateButton, #mainTemplateButton {
+            #duplicateTemplateButton, #mainTemplateButton, #notMainTemplateButton {
                 border-color: #26282f;
                 background-color: #26282f;
             }
 
-            #duplicateTemplateButton:hover, #mainTemplateButton:hover {
+            #duplicateTemplateButton:hover, #mainTemplateButton:hover, #notMainTemplateButton:hover {
                 border-color: #870e12;
                 background-color: #870e12;
             }
         </style>
         <script>
             let template_name = '';
+            let id_db = '';
+            let check_variable = false;
+
 
             function renderDataTableAllTemplate() {
                 $('#dataAllTemplateTableBody').html('');
-                let control_variable = false;
+                id_db = Object.keys(articoli).length;
                 articoli.forEach(art => {
                     let principale_radio = '';
-                    if(art.principale === '0'){
-                         principale_radio = `
-                            <form><label>
-                            <input type="checkbox" disabled name="opzione" id="principaleRadio${art.template_name}" value='0' data-toggle="modal" data-target="#mainTemplateModal" data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' class="radio-check-principal-tmpl">
-                            Principale
-                            </label></form>`;
-
+                    if (art.principale === '0') {
+                        principale_radio = `
+                                   <button  id='${id_db}' type="button" disabled class="btn btn-outline-dark btn-main-template" data-id='${id_db}' data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' data-toggle="modal" data-target="#mainTemplateModal"> Non Principale</button>
+`;
+                    } else {
+                        principale_radio = `
+                            <button type="button" id='${id_db}' class="btn btn-success btn-not-main-template" data-id='${id_db}' data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' data-toggle="modal" data-target="#notMainTemplateModal">Principale</button>
+                           `;
+                        check_variable = true;
                     }
-                    else {
-                         principale_radio = `
-                            <form><label>
-                            <input type="checkbox" checked name="opzione" id="principaleRadio${art.template_name}" value='0' data-toggle="modal" data-target="#mainTemplateModal" data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' class="radio-check-principal-tmpl">
-                            Principale
-                            </label></form>`;
-                         control_variable = true;
-                    }
-
                     $('#dataAllTemplateTableBody').append(`
                                  <tr>
                                     <td>${principale_radio}</td>
@@ -71,38 +67,38 @@ class AllTemplateTable
                 </td>
                 </tr>
                              `);
+                    id_db--;
+                });
+                id_db = Object.keys(articoli).length;
+                articoli.forEach(art => {
+                    if (!check_variable) {
+                        let checkButton = document.getElementById(id_db);
+                        checkButton.disabled = false;
+                        id_db--;
+                    }
+                });
+                check_variable = false;
+
+                $('.btn-main-template').click(function () {
+
+                    template_name = $(this).attr('data-name');
+                    id_db_articolo = $(this).attr('data-id');
+                    fondo = $(this).attr('data-fondo');
+                    anno = $(this).attr('data-anno');
+                    version = $(this).attr('data-version');
+                    descrizione = $(this).attr('data-descrizione');
 
                 });
-                if(!control_variable){
-                    let radioButtons = document.querySelectorAll('input[type="checkbox"]');
-                    radioButtons.forEach(function (radioButton) {
-                        radioButton.disabled = false;
-                    })
-                    }
-                $('.radio-check-principal-tmpl').click(function () {
-
+                $('.btn-not-main-template').click(function () {
+                    id_db_articolo = $(this).attr('data-id');
                     template_name = $(this).attr('data-name');
                     fondo = $(this).attr('data-fondo');
                     anno = $(this).attr('data-anno');
                     version = $(this).attr('data-version');
                     descrizione = $(this).attr('data-descrizione');
 
-                    let radioButtons = document.querySelectorAll('input[type="checkbox"]');
-                    radioButtons.forEach(function (radioButton) {
-                        radioButton.addEventListener('click', function () {
-
-                            // Disabilita gli altri radio button quando uno viene selezionato
-                            radioButtons.forEach(function (otherRadioButton) {
-                                if (otherRadioButton !== radioButton) {
-                                    console.log("Sono nell'if");
-                                    otherRadioButton.disabled = true;
-
-                                }
-                            });
-                        });
-                    });
-
                 });
+
                 $('.btn-duplicate-template').click(function () {
                     template_name = $(this).attr('data-name');
                     fondo = $(this).attr('data-fondo');
@@ -134,21 +130,24 @@ class AllTemplateTable
                 $('.btn-visualize-complete-template').click(function () {
                     location.href = '<?= DateXFondoCommon::get_website_url()?>/tabella-join-template-formula/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
                 });
-
             }
 
             $(document).ready(function () {
 
+                let check = 0;
                 renderDataTableAllTemplate();
 
+
                 $('#mainTemplateButton').click(function () {
+                    check = 1;
                     const payload = {
                         fondo,
                         anno,
                         descrizione,
                         version,
                         template_name,
-                        citySelected
+                        citySelected,
+                        check
                     }
                     console.log(payload)
                     $.ajax({
@@ -158,6 +157,9 @@ class AllTemplateTable
                         success: function (response) {
                             $("#mainTemplateModal").modal('hide');
                             console.log(response);
+                            //capire perchè non funziona
+                            //getDataByCitySelected();
+
                         },
                         error: function (response) {
                             $("#mainTemplateModal").modal('hide');
@@ -165,7 +167,35 @@ class AllTemplateTable
                         }
                     });
                 })
-                    $('#duplicateTemplateButton').click(function () {
+                $('#notMainTemplateButton').click(function () {
+                    check = 0;
+                    const payload = {
+                        fondo,
+                        anno,
+                        descrizione,
+                        version,
+                        template_name,
+                        citySelected,
+                        check
+                    }
+                    console.log(payload)
+                    $.ajax({
+                        url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/checkmaintmpl',
+                        data: payload,
+                        type: "POST",
+                        success: function (response) {
+                            $("#notMainTemplateModal").modal('hide');
+                            console.log(response);
+                            location.reload();
+
+                        },
+                        error: function (response) {
+                            $("#notMainTemplateModal").modal('hide');
+                            console.error(response);
+                        }
+                    });
+                })
+                $('#duplicateTemplateButton').click(function () {
                     const payload = {
                         fondo,
                         anno,
@@ -236,7 +266,8 @@ class AllTemplateTable
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="mainTemplateModal" tabindex="-1" role="dialog" aria-labelledby="mainTemplateModalLabel"
+        <div class="modal fade" id="mainTemplateModal" tabindex="-1" role="dialog"
+             aria-labelledby="mainTemplateModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -252,6 +283,27 @@ class AllTemplateTable
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
                         <button type="button" class="btn btn-primary" id="mainTemplateButton">Conferma</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="notMainTemplateModal" tabindex="-1" role="dialog"
+             aria-labelledby="notMainTemplateModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notMainTemplateModal">Cancella template da principale </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Vuoi che il template selezionato venga rimosso da quelli principali?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                        <button type="button" class="btn btn-primary" id="notMainTemplateButton">Conferma</button>
                     </div>
                 </div>
             </div>

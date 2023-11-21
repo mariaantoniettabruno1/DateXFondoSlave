@@ -38,7 +38,14 @@ class TemplateRowRepository
         if($request['citySelected'] == ''){
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
-            $sql = "UPDATE DATE_template_fondo SET principale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+            print_r($request['check']);
+            if($request['check'] ==='1'){
+                $sql = "UPDATE DATE_template_fondo SET principale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+
+            }
+            else{
+                $sql = "UPDATE DATE_template_fondo SET principale=0  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+            }
             $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("sissi", $request['fondo'], $request['anno'],$request['descrizione'],$request['template_name'],$request['version']);
             $res = $stmt->execute();
@@ -49,8 +56,12 @@ class TemplateRowRepository
             $password = DB_PASSWORD;
             $dbname = 'c1date_'.$request['citySelected'];
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            $sql = "UPDATE DATE_template_fondo SET principale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
-            $stmt = $mysqli->prepare($sql);
+            if($request['check'] ==='1'){
+                $sql = "UPDATE DATE_template_fondo SET principale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+            }
+            else{
+                $sql = "UPDATE DATE_template_fondo SET principale=0  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+            }            $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("sissi", $request['fondo'], $request['anno'],$request['descrizione'],$request['template_name'],$request['version']);
             $res = $stmt->execute();
         }
