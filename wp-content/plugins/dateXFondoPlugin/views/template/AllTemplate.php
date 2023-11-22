@@ -86,8 +86,12 @@ class AllTemplate
                         type: "POST",
                         success: function (response) {
                             console.log(response);
-                            articoli = response['data'];
+                            articoli = response['data'][0];
+                            template_fondo = response['data'][1];
+                            //per aggiornare i dati in tabella
                             renderDataTableAllTemplate();
+                            //per aggiornare i dati nella dropdown dei fondi
+                            renderFondoSelectForDuplicate();
                             $(".alert-data-success").show();
                             $(".alert-data-success").fadeTo(2000, 500).slideUp(500, function () {
                                 $(".alert-data-success").slideUp(500);

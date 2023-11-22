@@ -37,9 +37,10 @@ class AllTemplateTable
             let check_variable = false;
 
             function renderFondoSelectForDuplicate() {
-                $('#selectTemplateFondo').html('<option>Seleziona Fondo</option>');
+                $('#selectTemplateFondo').html('<option >Seleziona Fondo</option>');
                 template_fondo.forEach(fondo => {
-                    $('#selectTemplateFondo').append(`<option>${fondo.fondo} anno: ${fondo.anno} versione: ${fondo.versione}</option>`);
+                    $('#selectTemplateFondo').append(`<option>${fondo.fondo}, anno: ${fondo.anno}, versione: ${fondo.version}</option>`);
+
                 });
             }
 
@@ -205,23 +206,25 @@ class AllTemplateTable
                 $('#duplicateTemplateButton').click(function () {
                     //prendo il fondo selezionato dall'utente, eliminando dalla stringa l'anno
                     let fondo_dati = $('#selectTemplateFondo').val();
-                    fondo_dati = fondo_dati.split(",");
-                    let nome_fondo = fondo_dati[0];
-                    let anno_fondo = fondo_dati[1].split("anno:")[1];
-                    //TODO aggiungere altri campi per la ricerca del fondo
-                    let fondo_found = template_fondo.find(fondo => fondo.fondo === nome_fondo && fondo.anno === anno_fondo);
-                    console.log("Ho stampato il fondo");
+
+                    let nome_fondo = fondo_dati.split(",")[0];
+                    let anno_fondo = fondo_dati.split(",")[1].split("anno:")[1];
+                    let versione_fondo = fondo_dati.split(",")[2].split("versione:")[1];
+
                     const payload = {
                         fondo,
                         anno,
                         descrizione,
                         version,
                         template_name,
-                        citySelected
+                        citySelected,
+                        nome_fondo,
+                        anno_fondo,
+                        versione_fondo
                     }
                     console.log(payload)
                     $.ajax({
-                        // url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
+                         url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
                         data: payload,
                         type: "POST",
                         success: function (response) {
@@ -274,7 +277,7 @@ class AllTemplateTable
                     <div class="modal-body">
                         Vuoi duplicare questo template?
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="width: 90%;padding-left: 40px">
                         <label for="selectFondo"><b>Seleziona Fondo dal quale prendere i valori:</b></label>
                         <select class="custom-select" id="selectTemplateFondo">
                         </select>
