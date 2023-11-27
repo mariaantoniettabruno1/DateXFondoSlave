@@ -204,12 +204,41 @@ class AllTemplateTable
                     });
                 })
                 $('#duplicateTemplateButton').click(function () {
+
+                    const payload = {
+                        fondo,
+                        anno,
+                        descrizione,
+                        version,
+                        template_name,
+                        citySelected
+                    }
+                    console.log(payload)
+                    $.ajax({
+                         url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
+                        data: payload,
+                        type: "POST",
+                        success: function (response) {
+                            console.log(response);
+                            template_name = template_name + ' - ipotesi';
+                            console.log(template_name);
+                            $("#duplicateModal").modal('hide');
+                            location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
+                        },
+                        error: function (response) {
+                            $("#duplicateModal").modal('hide');
+                            console.error(response);
+                        }
+                    });
+                });
+
+                $('#createTemplateButton').click(function () {
                     //prendo il fondo selezionato dall'utente, eliminando dalla stringa l'anno
                     let fondo_dati = $('#selectTemplateFondo').val();
 
                     let nome_fondo = fondo_dati.split(",")[0];
-                    let anno_fondo = fondo_dati.split(",")[1].split("anno:")[1];
-                    let versione_fondo = fondo_dati.split(",")[2].split("versione:")[1];
+                    let anno_fondo = fondo_dati.split(",")[1].split("anno: ")[1];
+                    let versione_fondo = fondo_dati.split(",")[2].split("versione: ")[1];
 
                     const payload = {
                         fondo,
@@ -224,19 +253,19 @@ class AllTemplateTable
                     }
                     console.log(payload)
                     $.ajax({
-                         url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
+                        url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
                         data: payload,
                         type: "POST",
                         success: function (response) {
                             console.log(response);
-                            $("#duplicateModal").modal('hide');
+                            $("#createModal").modal('hide');
                             template_name = template_name + ' - ipotesi';
                             console.log(template_name);
                             // location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
                         },
                         error: function (response) {
                             console.error(response);
-                            $("#duplicateModal").modal('hide');
+                            $("#createModal").modal('hide');
                         }
                     });
                 });
@@ -264,6 +293,31 @@ class AllTemplateTable
             <tbody id="dataAllTemplateTableBody">
             </tbody>
         </table>
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createModalLabel">Crea Template </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Vuoi creare questo template?
+                    </div>
+                    <div class="form-group" style="width: 90%;padding-left: 40px">
+                        <label for="selectFondo"><b>Seleziona Fondo dal quale prendere i valori:</b></label>
+                        <select class="custom-select" id="selectTemplateFondo">
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                        <button type="button" class="btn btn-primary" id="createTemplateButton">Crea</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="duplicateModal" tabindex="-1" role="dialog" aria-labelledby="duplicateModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -276,11 +330,6 @@ class AllTemplateTable
                     </div>
                     <div class="modal-body">
                         Vuoi duplicare questo template?
-                    </div>
-                    <div class="form-group" style="width: 90%;padding-left: 40px">
-                        <label for="selectFondo"><b>Seleziona Fondo dal quale prendere i valori:</b></label>
-                        <select class="custom-select" id="selectTemplateFondo">
-                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
