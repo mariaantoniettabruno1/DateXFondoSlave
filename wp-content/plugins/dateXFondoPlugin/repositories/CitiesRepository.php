@@ -30,7 +30,7 @@ class CitiesRepository
         $password = DB_PASSWORD;
         $dbname = 'c1date_' . $params['citySelected'];
         $mysqli = new mysqli($url, $username, $password, $dbname);
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name,principale FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);

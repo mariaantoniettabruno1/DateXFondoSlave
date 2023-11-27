@@ -69,6 +69,72 @@ function esegui_duplicazione_template($params)
 
 add_action('rest_api_init', 'create_endpoint_datefondo_duplicate_template');
 
+function create_endpoint_datefondo_duplicate_history_template()
+{
+
+    register_rest_route('datexfondoplugin/v1', 'duplicatehistorytemplate', array(
+        'methods' => 'POST',
+        'callback' => 'esegui_duplicazione_history_template'
+    ));
+
+
+}
+
+function esegui_duplicazione_history_template($params)
+{
+    $bool_res = (new dateXFondoPlugin\MasterTemplateRepository)->duplicate_history_template($params);
+    $data = ['duplicated template' => $bool_res, 'message' => 'TemplateFondo duplicato correttamente'];
+    $response = new WP_REST_Response($data);
+    $response->set_status(201);
+    return $response;
+}
+
+add_action('rest_api_init', 'create_endpoint_datefondo_duplicate_history_template');
+
+function create_endpoint_datefondo_create_template()
+{
+
+    register_rest_route('datexfondoplugin/v1', 'createtemplate', array(
+        'methods' => 'POST',
+        'callback' => 'esegui_creazione_template'
+    ));
+
+
+}
+
+function esegui_creazione_template($params)
+{
+    $bool_res = (new dateXFondoPlugin\MasterTemplateRepository)->create_template($params);
+    $data = ['created template' => $bool_res, 'message' => 'TemplateFondo creato correttamente'];
+    $response = new WP_REST_Response($data);
+    $response->set_status(201);
+    return $response;
+}
+
+add_action('rest_api_init', 'create_endpoint_datefondo_create_template');
+
+function create_endpoint_datefondo_create_history_template()
+{
+
+    register_rest_route('datexfondoplugin/v1', 'createhistorytemplate', array(
+        'methods' => 'POST',
+        'callback' => 'esegui_creazione_history_template'
+    ));
+
+
+}
+
+function esegui_creazione_history_template($params)
+{
+    $bool_res = (new dateXFondoPlugin\MasterTemplateRepository)->create_history_template($params);
+    $data = ['created template' => $bool_res, 'message' => 'TemplateFondo creato correttamente'];
+    $response = new WP_REST_Response($data);
+    $response->set_status(201);
+    return $response;
+}
+
+add_action('rest_api_init', 'create_endpoint_datefondo_create_history_template');
+
 function create_endpoint_datefondo_principal_template()
 {
 

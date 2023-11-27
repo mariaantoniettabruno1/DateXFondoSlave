@@ -11,10 +11,18 @@ class AllTemplate
 
         $results_articoli = $data->getAllTemplate();
         $results_old_articoli = $data->getStoredArticoli();
-        $results_all_articoli = array_merge($results_articoli,$results_old_articoli);
+        $results_all_articoli = array_merge($results_articoli, $results_old_articoli);
 
-
-
+        $filteredArray = array();
+        $allArticoli = array();
+        foreach ($results_all_articoli as $articoli) {
+            if ($articoli['principale'] === '1')
+                array_push($filteredArray, $articoli);
+        }
+        if (count($filteredArray) != 0)
+            $allArticoli = array_merge($allArticoli, $filteredArray);
+        else
+            $allArticoli =   array_merge($allArticoli, $results_all_articoli);
         ?>
 
         <!DOCTYPE html>
@@ -68,7 +76,7 @@ class AllTemplate
             //dati del template del fondo attualmente in corso con le sue varie ipotesi/prove
             let articoli = JSON.parse((`<?=json_encode($results_articoli);?>`));
             //merge dei template del fondo in corso + quelli presenti nello storico
-            let template_fondo = JSON.parse((`<?=json_encode($results_all_articoli);?>`));
+            let template_fondo = JSON.parse((`<?=json_encode($allArticoli);?>`));
             console.log(template_fondo);
             let citySelected = '';
 
@@ -87,7 +95,10 @@ class AllTemplate
                         success: function (response) {
                             console.log(response);
                             articoli = response['data'][0];
-                            template_fondo = response['data'][1];
+                            template_fondo = [...articoli, ...response['data'][1]];
+                            template_fondo = template_fondo.filter(art => art.principale === '1');
+                            if (Object.keys(template_fondo).length === 0)
+                                template_fondo = [...articoli, ...response['data'][1]];
                             //per aggiornare i dati in tabella
                             renderDataTableAllTemplate();
                             //per aggiornare i dati nella dropdown dei fondi

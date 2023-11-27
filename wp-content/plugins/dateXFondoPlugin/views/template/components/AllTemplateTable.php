@@ -21,12 +21,16 @@ class AllTemplateTable
                 color: #26282f;
             }
 
-            #duplicateTemplateButton, #mainTemplateButton, #notMainTemplateButton {
+            .btn-create-template, .btn-create-template:hover {
+                color: #26282f;
+            }
+
+            #duplicateTemplateButton, #mainTemplateButton, #notMainTemplateButton, #createTemplateButton {
                 border-color: #26282f;
                 background-color: #26282f;
             }
 
-            #duplicateTemplateButton:hover, #mainTemplateButton:hover, #notMainTemplateButton:hover {
+            #duplicateTemplateButton:hover, #mainTemplateButton:hover, #notMainTemplateButton:hover, #createTemplateButton:hover {
                 border-color: #870e12;
                 background-color: #870e12;
             }
@@ -39,8 +43,10 @@ class AllTemplateTable
             function renderFondoSelectForDuplicate() {
                 $('#selectTemplateFondo').html('<option >Seleziona Fondo</option>');
                 template_fondo.forEach(fondo => {
-                    $('#selectTemplateFondo').append(`<option>${fondo.fondo}, anno: ${fondo.anno}, versione: ${fondo.version}</option>`);
-
+                    if (fondo.principale === '1')
+                        $('#selectTemplateFondo').append(`<option style='color:green'>${fondo.fondo}, anno: ${fondo.anno}, versione: ${fondo.version}</option>`);
+                    else
+                        $('#selectTemplateFondo').append(`<option>${fondo.fondo}, anno: ${fondo.anno}, versione: ${fondo.version}</option>`);
                 });
             }
 
@@ -70,6 +76,7 @@ class AllTemplateTable
                                            <td>
                 <button class="btn btn-link btn-vis-templ" data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' data-toggle="tooltip" title="Visualizza e modifica template"><i class="fa-solid fa-eye"></i></button>
                 <button class="btn btn-link btn-duplicate-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#duplicateModal" data-toggle="tooltip" title="Duplica template"><i class="fa-regular fa-copy"></i></button>
+                <button class="btn btn-link btn-create-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#createModal" data-toggle="tooltip" title="Crea nuovo"><i class="fa-solid fa-plus"></i></button>
                 <button class="btn btn-link btn-visualize-complete-template" data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}'  data-descrizione='${art.descrizione_fondo}'>Fondo Completo <i class="fa-solid fa-chevron-right"></i></button>
                 </td>
                 </tr>
@@ -107,6 +114,14 @@ class AllTemplateTable
                 });
 
                 $('.btn-duplicate-template').click(function () {
+                    template_name = $(this).attr('data-name');
+                    fondo = $(this).attr('data-fondo');
+                    anno = $(this).attr('data-anno');
+                    version = $(this).attr('data-version');
+                    descrizione = $(this).attr('data-descrizione');
+
+                });
+                $('.btn-create-template').click(function () {
                     template_name = $(this).attr('data-name');
                     fondo = $(this).attr('data-fondo');
                     anno = $(this).attr('data-anno');
@@ -215,7 +230,7 @@ class AllTemplateTable
                     }
                     console.log(payload)
                     $.ajax({
-                         url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
+                        url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
                         data: payload,
                         type: "POST",
                         success: function (response) {
@@ -253,7 +268,7 @@ class AllTemplateTable
                     }
                     console.log(payload)
                     $.ajax({
-                        url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/duplicatetemplate',
+                        url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/createtemplate',
                         data: payload,
                         type: "POST",
                         success: function (response) {
@@ -261,7 +276,7 @@ class AllTemplateTable
                             $("#createModal").modal('hide');
                             template_name = template_name + ' - ipotesi';
                             console.log(template_name);
-                            // location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
+                            location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
                         },
                         error: function (response) {
                             console.error(response);

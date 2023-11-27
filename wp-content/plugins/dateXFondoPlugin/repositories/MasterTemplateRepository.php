@@ -45,7 +45,7 @@ class MasterTemplateRepository
     {
         $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name,principale FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
@@ -249,6 +249,70 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
         $this->getTemplateFormulas($template_name, $request['anno'], $request['citySelected']);
         return array($res);
     }
+    public function duplicate_history_template($request)
+    {
+        if (isset($request['citySelected']) && $request['citySelected'] != '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $request['citySelected'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,nota,link,attivo,version,row_type,heredity,template_name,valore,valore_anno_precedente
+FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL AND attivo=1";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $request['fondo'], $request['anno'], $request['descrizione'], $request['version'], $request['template_name']);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+            $sql = "INSERT INTO DATE_template_fondo 
+                    (fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,heredity,template_name) 
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $version = $rows[0]['version'];
+            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            foreach ($rows as $entry) {
+                $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
+                    $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
+                    $entry['nota'], $entry['link'], $entry['attivo'], $version, $entry['row_type'], $entry['heredity'], $template_name);
+                $res = $stmt->execute();
+            }
+
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,nota,link,attivo,version,row_type,heredity,template_name,valore,valore_anno_precedente
+FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL AND attivo=1";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $request['fondo'], $request['anno'], $request['descrizione'], $request['version'], $request['template_name']);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+            $sql = "INSERT INTO DATE_template_fondo 
+                    (fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,heredity,template_name) 
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $version = $rows[0]['version'];
+            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            foreach ($rows as $entry) {
+                $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
+                    $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
+                    $entry['nota'], $entry['link'], $entry['attivo'], $version, $entry['row_type'], $entry['heredity'], $template_name);
+                $res = $stmt->execute();
+            }
+        }
+        mysqli_close($mysqli);
+
+        $this->getTemplateFormulas($template_name, $request['anno'], $request['citySelected']);
+        return array($res);
+    }
 
     public function getTemplateFormulas($template_name, $year, $city)
     {
@@ -279,6 +343,144 @@ FROM DATE_formula WHERE formula_template_name=? AND anno=?";
         }
         mysqli_close($mysqli);
         return $res;
+    }
+
+    public function create_template($request){
+        if (isset($request['citySelected']) && $request['citySelected'] != '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $request['citySelected'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,nota,link,attivo,version,row_type,heredity,template_name,valore,valore_anno_precedente
+FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL AND attivo=1";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $request['fondo'], $request['anno'], $request['descrizione'], $request['version'], $request['template_name']);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+            $sql = "INSERT INTO DATE_template_fondo 
+                    (fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,heredity,template_name) 
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $version = $rows[0]['version'];
+            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $fondo = $rows[0]['fondo'];
+            $anno = $rows[0]['anno'];
+            foreach ($rows as $entry) {
+                $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
+                    $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
+                    $entry['nota'], $entry['link'], $entry['attivo'], $version, $entry['row_type'], $entry['heredity'], $template_name);
+                $res = $stmt->execute();
+            }
+
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,nota,link,attivo,version,row_type,heredity,template_name,valore,valore_anno_precedente
+FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL AND attivo=1";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $request['fondo'], $request['anno'], $request['descrizione'], $request['version'], $request['template_name']);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+            $sql = "INSERT INTO DATE_template_fondo 
+                    (fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,heredity,template_name) 
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $version = $rows[0]['version'];
+            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $fondo = $rows[0]['fondo'];
+            $anno = $rows[0]['anno'];
+            foreach ($rows as $entry) {
+                $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
+                    $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
+                    $entry['nota'], $entry['link'], $entry['attivo'], $version, $entry['row_type'], $entry['heredity'], $template_name);
+                $res = $stmt->execute();
+            }
+        }
+        mysqli_close($mysqli);
+
+        $this->getTemplateFormulas($template_name, $request['anno'], $request['citySelected']);
+        $result_data =  $this->duplicateValuesOnTemplate($request['nome_fondo'],$request['anno_fondo'],$request['versione_fondo'],$request['citySelected'],$template_name,$fondo,$anno,$version);
+        return array($res);
+    }
+
+ public function create_history_template($request){
+        if (isset($request['citySelected']) && $request['citySelected'] != '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $request['citySelected'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,nota,link,attivo,version,row_type,heredity,template_name,valore,valore_anno_precedente
+FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL AND attivo=1";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $request['fondo'], $request['anno'], $request['descrizione'], $request['version'], $request['template_name']);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+            $sql = "INSERT INTO DATE_template_fondo 
+                    (fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,heredity,template_name) 
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $version = $rows[0]['version'];
+            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $fondo = $rows[0]['fondo'];
+            $anno = $rows[0]['anno'];
+            foreach ($rows as $entry) {
+                $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
+                    $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
+                    $entry['nota'], $entry['link'], $entry['attivo'], $version, $entry['row_type'], $entry['heredity'], $template_name);
+                $res = $stmt->execute();
+            }
+
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,nota,link,attivo,version,row_type,heredity,template_name,valore,valore_anno_precedente
+FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL AND attivo=1";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sisis", $request['fondo'], $request['anno'], $request['descrizione'], $request['version'], $request['template_name']);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+            $sql = "INSERT INTO DATE_template_fondo 
+                    (fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
+                     nome_articolo,descrizione_articolo,sottotitolo_articolo,valore,valore_anno_precedente,nota,link,attivo,version,row_type,heredity,template_name) 
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $version = $rows[0]['version'];
+            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $fondo = $rows[0]['fondo'];
+            $anno = $rows[0]['anno'];
+            foreach ($rows as $entry) {
+                $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
+                    $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
+                    $entry['nota'], $entry['link'], $entry['attivo'], $version, $entry['row_type'], $entry['heredity'], $template_name);
+                $res = $stmt->execute();
+            }
+        }
+        mysqli_close($mysqli);
+
+        $this->getTemplateFormulas($template_name, $request['anno'], $request['citySelected']);
+        $result_data =  $this->duplicateValuesOnTemplate($request['nome_fondo'],$request['anno_fondo'],$request['versione_fondo'],$request['citySelected'],$template_name,$fondo,$anno,$version);
+        return array($res);
     }
 
     public function duplicateValuesOnTemplate($fondo, $year, $version, $citySelected, $template_name, $fondo_template, $anno_template, $version_template)
