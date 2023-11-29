@@ -2,7 +2,6 @@
 
 namespace dateXFondoPlugin;
 
-use MongoDB\Driver\Exception\CommandException;
 use mysqli;
 use PHPMailer\PHPMailer\Exception;
 
@@ -45,7 +44,7 @@ class MasterTemplateRepository
     {
         $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name,principale FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name,ufficiale FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
@@ -67,7 +66,7 @@ class MasterTemplateRepository
     {
         $conn = new ConnectionFirstCity();
         $mysqli = $conn->connect();
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version,principale FROM DATE_template_fondo  ORDER BY ordinamento ASC";
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version,ufficiale FROM DATE_template_fondo  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         mysqli_close($mysqli);
@@ -149,6 +148,32 @@ WHERE id=?";
         mysqli_close($mysqli);
         return $res;
     }
+    public static function edit_header($request)
+    {
+        if (!isset($request['city']) || $request['city'] == '') {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+        } else {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $request['city'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+
+        }
+        $sql = "UPDATE DATE_template_fondo SET fondo=?,anno=?,descrizione_fondo=?,template_name=? WHERE template_name=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("sisss", $request['fondo'], $request['anno'], $request['descrizione_fondo'], $request['template_name'], $request['old_template_name']);
+        $res = $stmt->execute();
+
+
+        $sql = "UPDATE DATE_formula SET formula_template_name=? WHERE formula_template_name=? AND anno=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("ssi",  $request['template_name'], $request['old_template_name'], $request['anno']);
+        $res = $stmt->execute();
+        mysqli_close($mysqli);
+        return $res;
+    }
 
 
     public static function visualize_template($fondo, $anno, $descrizione, $version, $template_name, $city)
@@ -209,7 +234,7 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - duplicato';
             foreach ($rows as $entry) {
                 $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
                     $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
@@ -236,7 +261,7 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - duplicato';
             foreach ($rows as $entry) {
                 $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
                     $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
@@ -273,7 +298,7 @@ FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - duplicato';
             foreach ($rows as $entry) {
                 $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
                     $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
@@ -300,7 +325,7 @@ FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - duplicato';
             foreach ($rows as $entry) {
                 $stmt->bind_param("sisissssssssssiisis", $entry['fondo'], $entry['anno'], $entry['descrizione_fondo'], $entry['ordinamento'], $entry['id_articolo'],
                     $entry['sezione'], $entry['sottosezione'], $entry['nome_articolo'], $entry['descrizione_articolo'], $entry['sottotitolo_articolo'],$entry['valore'],$entry['valore_anno_precedente'],
@@ -368,7 +393,7 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - nuovo';
             $fondo = $rows[0]['fondo'];
             $anno = $rows[0]['anno'];
             foreach ($rows as $entry) {
@@ -397,7 +422,7 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - nuovo';
             $fondo = $rows[0]['fondo'];
             $anno = $rows[0]['anno'];
             foreach ($rows as $entry) {
@@ -407,11 +432,12 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
                 $res = $stmt->execute();
             }
         }
+
         mysqli_close($mysqli);
 
         $this->getTemplateFormulas($template_name, $request['anno'], $request['citySelected']);
         $result_data =  $this->duplicateValuesOnTemplate($request['nome_fondo'],$request['anno_fondo'],$request['versione_fondo'],$request['citySelected'],$template_name,$fondo,$anno,$version);
-        return array($res);
+        return array($res,$result_data);
     }
 
  public function create_history_template($request){
@@ -437,7 +463,7 @@ FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - nuovo';
             $fondo = $rows[0]['fondo'];
             $anno = $rows[0]['anno'];
             foreach ($rows as $entry) {
@@ -466,7 +492,7 @@ FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=
                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             $version = $rows[0]['version'];
-            $template_name = $rows[0]['template_name'] . ' - ipotesi';
+            $template_name = $rows[0]['template_name'] . ' - nuovo';
             $fondo = $rows[0]['fondo'];
             $anno = $rows[0]['anno'];
             foreach ($rows as $entry) {
@@ -485,36 +511,66 @@ FROM DATE_storico_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=
 
     public function duplicateValuesOnTemplate($fondo, $year, $version, $citySelected, $template_name, $fondo_template, $anno_template, $version_template)
     {
-        $url = DB_HOST . ":" . DB_PORT . "/";
-        $username = DB_USER;
-        $password = DB_PASSWORD;
-        $dbname = 'c1date_' . $citySelected;
-        $mysqli = new mysqli($url, $username, $password, $dbname);
-        $sql = "SELECT id_articolo,nome_articolo,valore,valore_anno_precedente
+        if (isset($request['citySelected']) && $request['citySelected'] != '') {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $citySelected;
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+            $sql = "SELECT id_articolo,nome_articolo,valore,valore_anno_precedente,nota
 FROM DATE_template_fondo WHERE fondo=? AND anno=? AND version=? AND id_articolo IS NOT NULL";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("sii", $fondo, $year, $version);
-        $res = $stmt->execute();
-        if ($res = $stmt->get_result()) {
-            $rows = $res->fetch_all(MYSQLI_ASSOC);
-        } else
-            $rows = [];
-
-        $sql = 'UPDATE DATE_template_fondo SET valore=?, valore_anno_precedente=? WHERE id_articolo=? AND nome_articolo=? AND fondo=? AND anno=? AND version=? AND template_name=?';
-        $stmt = $mysqli->prepare($sql);
-        foreach ($rows as $entry) {
-            print_r($entry['valore']);
-            print_r($entry['valore_anno_precedente']);
-            $stmt->bind_param("sssssiis",
-                $entry['valore'],
-                $entry['valore_anno_precedente'],
-                $entry['id_articolo'],
-                $entry['nome_articolo'],
-                $fondo_template,
-                $anno_template,
-                $version_template,
-                $template_name);
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sii", $fondo, $year, $version);
             $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+
+            $sql = 'UPDATE DATE_template_fondo SET valore=?, valore_anno_precedente=?,nota=? WHERE id_articolo=? AND nome_articolo=? AND fondo=? AND anno=? AND version=? AND template_name=?';
+            $stmt = $mysqli->prepare($sql);
+            foreach ($rows as $entry) {
+                $stmt->bind_param("ssssssiis",
+                    $entry['valore'],
+                    $entry['valore_anno_precedente'],
+                    $entry['nota'],
+                    $entry['id_articolo'],
+                    $entry['nome_articolo'],
+                    $fondo_template,
+                    $anno_template,
+                    $version_template,
+                    $template_name);
+                $res = $stmt->execute();
+            }
+        }
+        else{
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+            $sql = "SELECT id_articolo,nome_articolo,valore,valore_anno_precedente,nota
+FROM DATE_template_fondo WHERE fondo=? AND anno=? AND version=? AND id_articolo IS NOT NULL";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sii", $fondo, $year, $version);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+
+            $sql = 'UPDATE DATE_template_fondo SET valore=?, valore_anno_precedente=?,nota=? WHERE id_articolo=? AND nome_articolo=? AND fondo=? AND anno=? AND version=? AND template_name=?';
+            $stmt = $mysqli->prepare($sql);
+            foreach ($rows as $entry) {
+                $stmt->bind_param("ssssssiis",
+                    $entry['valore'],
+                    $entry['valore_anno_precedente'],
+                    $entry['nota'],
+                    $entry['id_articolo'],
+                    $entry['nome_articolo'],
+                    $fondo_template,
+                    $anno_template,
+                    $version_template,
+                    $template_name);
+                $res = $stmt->execute();
+            }
         }
         $mysqli->close();
         return $res;

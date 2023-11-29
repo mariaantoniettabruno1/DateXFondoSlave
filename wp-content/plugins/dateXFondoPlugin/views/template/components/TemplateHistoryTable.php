@@ -46,7 +46,7 @@ class TemplateHistoryTable
             function renderFondoSelectForDuplicate() {
                 $('#selectTemplateFondo').html('<option >Seleziona Fondo</option>');
                 template_fondo.forEach(fondo => {
-                    if (fondo.principale === '1')
+                    if (fondo.ufficiale === '1')
                         $('#selectTemplateFondo').append(`<option style="color: green">${fondo.fondo}, anno: ${fondo.anno}, versione: ${fondo.version}</option>`);
                     else
                         $('#selectTemplateFondo').append(`<option>${fondo.fondo}, anno: ${fondo.anno}, versione: ${fondo.version}</option>`);
@@ -58,13 +58,26 @@ class TemplateHistoryTable
                 $('#dataTemplateTableBody').html('');
 
                 articoli.forEach(art => {
+                    if(art.ufficiale === 0 || art.ufficiale === '0'){
+                        art.ufficiale = ` <div class="text-center" style="padding-top:20px">
+                                    <p>Non ufficiale</p>
+                                </div>
+                                    `;
+                    }
+                    else{
+                        art.ufficiale = ` <div class="text-center" style="padding-top:20px">
+                                    <p><b>Non ufficiale</b></p>
+                                </div>
+                                    `;
+                    }
                     $('#dataTemplateTableBody').append(`
                                  <tr>
-                                       <td >${art.fondo}</td>
-                                       <td >${art.anno}</td>
-                                       <td >${art.descrizione_fondo}</td>
-                                       <td >${art.version}</td>
-                                       <td >${art.template_name}</td>
+                                       <td >${art.ufficiale}</td>
+                                       <td ><div class="text-center" style="padding-top:20px">${art.fondo}</div></td>
+                                       <td ><div class="text-center" style="padding-top:20px">${art.anno}</div></td>
+                                       <td ><div class="text-center" style="padding-top:20px">${art.descrizione_fondo}</div></td>
+                                       <td ><div class="text-center" style="padding-top:20px">${art.version}</div></td>
+                                       <td ><div class="text-center" style="padding-top:20px">${art.template_name}</div></td>
                                            <td>
                 <button class="btn btn-link btn-visualize-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-desc ='${art.descrizione_fondo}' data-version='${art.version}' data-template='${art.template_name}' data-toggle="tooltip" title="Visualizza template"><i class="fa-regular fa-eye"></i></button>
                 <button class="btn btn-link btn-duplicate-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#duplicateModal" data-toggle="tooltip" title="Duplica template"><i class="fa-regular fa-copy"></i></button>
@@ -136,7 +149,7 @@ class TemplateHistoryTable
                         type: "POST",
                         success: function (response) {
                             console.log(response);
-                            template_name = template_name + ' - ipotesi';
+                            template_name = template_name + ' - duplicato';
                             console.log(template_name);
                             $("#duplicateModal").modal('hide');
                             location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
@@ -175,7 +188,7 @@ class TemplateHistoryTable
                         success: function (response) {
                             console.log(response);
                             $("#createModal").modal('hide');
-                            template_name = template_name + ' - ipotesi';
+                            template_name = template_name + ' - nuovo';
                             console.log(template_name);
                             location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
                         },
@@ -198,6 +211,7 @@ class TemplateHistoryTable
         <table class="table" style="table-layout: fixed">
             <thead>
             <tr>
+                <th style="width: 12.5rem">Template Ufficiale</th>
                 <th style="width: 200px">Fondo</th>
                 <th style="width: 100px">Anno</th>
                 <th>Descrizione fondo</th>

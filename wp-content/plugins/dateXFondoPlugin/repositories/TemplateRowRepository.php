@@ -10,13 +10,9 @@ class TemplateRowRepository
 
     public static function delete_row($request)
     {
-        if($request['city'] == ''){
+        if($request['city'] == '' || !isset($request['city'])){
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
-            $sql = "UPDATE DATE_template_fondo SET attivo=0  WHERE id=?";
-            $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("i", $request['id']);
-            $res = $stmt->execute();
         }
         else{
             $url = DB_HOST . ":" . DB_PORT . "/";
@@ -24,31 +20,21 @@ class TemplateRowRepository
             $password = DB_PASSWORD;
             $dbname = 'c1date_'.$request['city'];
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            $sql = "UPDATE DATE_template_fondo SET attivo=0  WHERE id=?";
-            $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("i", $request['id']);
-            $res = $stmt->execute();
-        }
 
+        }
+        $sql = "UPDATE DATE_template_fondo SET attivo=0  WHERE id=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $request['id']);
+        $res = $stmt->execute();
         $mysqli->close();
+        return $res;
 
     }
     public function make_template_main($request)
     {
-        if($request['citySelected'] == ''){
+        if($request['citySelected'] == '' || !isset($request['citySelected'])){
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
-            print_r($request['check']);
-            if($request['check'] ==='1'){
-                $sql = "UPDATE DATE_template_fondo SET principale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
-
-            }
-            else{
-                $sql = "UPDATE DATE_template_fondo SET principale=0  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
-            }
-            $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("sissi", $request['fondo'], $request['anno'],$request['descrizione'],$request['template_name'],$request['version']);
-            $res = $stmt->execute();
         }
         else{
             $url = DB_HOST . ":" . DB_PORT . "/";
@@ -56,17 +42,18 @@ class TemplateRowRepository
             $password = DB_PASSWORD;
             $dbname = 'c1date_'.$request['citySelected'];
             $mysqli = new mysqli($url, $username, $password, $dbname);
-            if($request['check'] ==='1'){
-                $sql = "UPDATE DATE_template_fondo SET principale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
-            }
-            else{
-                $sql = "UPDATE DATE_template_fondo SET principale=0  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
-            }            $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("sissi", $request['fondo'], $request['anno'],$request['descrizione'],$request['template_name'],$request['version']);
-            $res = $stmt->execute();
-        }
 
+        }
+        if($request['check'] ==='1'){
+            $sql = "UPDATE DATE_template_fondo SET ufficiale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+        }
+        else{
+            $sql = "UPDATE DATE_template_fondo SET ufficiale=0  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+        }            $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("sissi", $request['fondo'], $request['anno'],$request['descrizione'],$request['template_name'],$request['version']);
+        $res = $stmt->execute();
         $mysqli->close();
+        return $res;
 
     }
 }

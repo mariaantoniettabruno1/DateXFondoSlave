@@ -23,6 +23,28 @@ function esegui_modifica_riga($params)
 
 add_action('rest_api_init', 'create_endpoint_datefondo_edit_row');
 
+function create_endpoint_datefondo_edit_template_header()
+{
+
+    register_rest_route('datexfondoplugin/v1', 'templateheader', array(
+        'methods' => 'POST',
+        'callback' => 'esegui_modifica_header'
+    ));
+
+
+}
+
+function esegui_modifica_header($params)
+{
+    $bool_res = (new dateXFondoPlugin\MasterTemplateRepository)->edit_header($params);
+    $data = ['update' => $bool_res, 'message' => 'Modifica header effettuata correttamente'];
+    $response = new WP_REST_Response($data);
+    $response->set_status(201);
+    return $response;
+}
+
+add_action('rest_api_init', 'create_endpoint_datefondo_edit_template_header');
+
 
 
 function create_endpoint_datefondo_active_row()
@@ -135,27 +157,27 @@ function esegui_creazione_history_template($params)
 
 add_action('rest_api_init', 'create_endpoint_datefondo_create_history_template');
 
-function create_endpoint_datefondo_principal_template()
+function create_endpoint_datefondo_official_template()
 {
 
     register_rest_route('datexfondoplugin/v1', 'checkmaintmpl', array(
         'methods' => 'POST',
-        'callback' => 'esegui_modifica_template_principale'
+        'callback' => 'esegui_modifica_template_ufficiale'
     ));
 
 
 }
 
-function esegui_modifica_template_principale($params)
+function esegui_modifica_template_ufficiale($params)
 {
     $bool_res = (new dateXFondoPlugin\TemplateRowRepository)->make_template_main($params);
-    $data = ['main template' => $bool_res, 'message' => 'TemplateFondo modificato in principale'];
+    $data = ['main template' => $bool_res, 'message' => 'TemplateFondo modificato in ufficiale'];
     $response = new WP_REST_Response($data);
     $response->set_status(201);
     return $response;
 }
 
-add_action('rest_api_init', 'create_endpoint_datefondo_principal_template');
+add_action('rest_api_init', 'create_endpoint_datefondo_official_template');
 
 
 
