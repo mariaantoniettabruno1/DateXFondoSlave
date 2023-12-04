@@ -2,6 +2,7 @@
 
 namespace dateXFondoPlugin;
 
+use mysql_xdevapi\Exception;
 use mysqli;
 
 class TemplateRowRepository
@@ -35,6 +36,7 @@ class TemplateRowRepository
         if($request['citySelected'] == '' || !isset($request['citySelected'])){
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
+
         }
         else{
             $url = DB_HOST . ":" . DB_PORT . "/";
@@ -44,16 +46,18 @@ class TemplateRowRepository
             $mysqli = new mysqli($url, $username, $password, $dbname);
 
         }
-        if($request['check'] ==='1'){
-            $sql = "UPDATE DATE_template_fondo SET ufficiale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
+        if($request['check'] ==='1' || $request['check'] === 1){
+            $query = $mysqli->prepare("UPDATE DATE_template_fondo SET ufficiale=1  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=? ");
         }
         else{
-            $sql = "UPDATE DATE_template_fondo SET ufficiale=0  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=?";
-        }            $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("sissi", $request['fondo'], $request['anno'],$request['descrizione'],$request['template_name'],$request['version']);
-        $res = $stmt->execute();
+            $query = $mysqli->prepare("UPDATE DATE_template_fondo SET ufficiale=0  WHERE fondo=? AND anno=? AND descrizione_fondo=? AND template_name=? AND version=? ");
+        }
+
+        $query->bind_param("sissi", $request['fondo'],$request['anno'],$request['descrizione'],$request['template_name'],$request['version']);
+        $result = $query->execute();
+
         $mysqli->close();
-        return $res;
+        return $result;
 
     }
 }

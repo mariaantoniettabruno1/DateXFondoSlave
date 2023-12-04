@@ -2,6 +2,7 @@
 
 namespace dateXFondoPlugin;
 use mysqli;
+use PHPMailer\PHPMailer\Exception;
 
 /**
 classe per la connessione al db di dateXFondo al comune di Rubiana

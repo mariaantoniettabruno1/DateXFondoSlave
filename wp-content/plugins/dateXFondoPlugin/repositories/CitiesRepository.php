@@ -8,12 +8,17 @@ class CitiesRepository
 {
     public function get_data($params)
     {
+        if ($params['citySelected'] !== "" && isset($params['citySelected'])) {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $params['citySelected'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+        }
 
-        $url = DB_HOST . ":" . DB_PORT . "/";
-        $username = DB_USER;
-        $password = DB_PASSWORD;
-        $dbname = 'c1date_' . $params['citySelected'];
-        $mysqli = new mysqli($url, $username, $password, $dbname);
         $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,template_name,version,ufficiale FROM DATE_template_fondo  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
@@ -25,11 +30,16 @@ class CitiesRepository
     public function get_history_data($params)
     {
 
-        $url = DB_HOST . ":" . DB_PORT . "/";
-        $username = DB_USER;
-        $password = DB_PASSWORD;
-        $dbname = 'c1date_' . $params['citySelected'];
-        $mysqli = new mysqli($url, $username, $password, $dbname);
+        if ($params['citySelected'] !== "" && isset($params['citySelected'])) {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $params['citySelected'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+        }
         $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name,ufficiale FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
@@ -40,11 +50,16 @@ class CitiesRepository
     public function get_row_data($params)
     {
 
-        $url = DB_HOST . ":" . DB_PORT . "/";
-        $username = DB_USER;
-        $password = DB_PASSWORD;
-        $dbname = 'c1date_' . $params['citySelected'];
-        $mysqli = new mysqli($url, $username, $password, $dbname);
+        if ($params['citySelected'] !== "" && isset($params['citySelected'])) {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $params['citySelected'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+        }
         $sql = "SELECT * FROM DATE_template_fondo WHERE attivo = 0 and row_type='special' ORDER BY ordinamento ASC";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
@@ -54,11 +69,16 @@ class CitiesRepository
 
     public function get_city_user_data($params)
     {
-        $url = DB_HOST . ":" . DB_PORT . "/";
-        $username = DB_USER;
-        $password = DB_PASSWORD;
-        $dbname = 'c1date_' . $params['citySelected'];
-        $mysqli = new mysqli($url, $username, $password, $dbname);
+        if ($params['citySelected'] !== "" && isset($params['citySelected'])) {
+            $url = DB_HOST . ":" . DB_PORT . "/";
+            $username = DB_USER;
+            $password = DB_PASSWORD;
+            $dbname = 'c1date_' . $params['citySelected'];
+            $mysqli = new mysqli($url, $username, $password, $dbname);
+        } else {
+            $conn = new ConnectionFirstCity();
+            $mysqli = $conn->connect();
+        }
         $sql = "SELECT * FROM DATE_user_form";
         $result = $mysqli->query($sql);
         $rows = $result->fetch_all(MYSQLI_ASSOC);
@@ -83,6 +103,50 @@ class CitiesRepository
         );
 
         return $documents;
+    }
+
+    public function getAllCities()
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+
+        $sql = "SELECT id,nome,descrizione,data_creazione,data_scadenza,id_consulente,attivo FROM DATE_ente";
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_all(MYSQLI_ASSOC);
+
+        $sql = "SELECT id,user_login FROM wp_users WHERE id=?";
+        $stmt = $mysqli->prepare($sql);
+        foreach ($row as $entry) {
+            $stmt->bind_param("i", $entry['id_consulente']);
+            $res = $stmt->execute();
+        }
+
+        if ($res = $stmt->get_result()) {
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        } else
+            $rows = [];
+        return array($row, $rows);
+    }
+
+    public function edit_city_row($params)
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+        if ($params['id'] != '') {
+            $query = $mysqli->prepare("UPDATE DATE_ente SET nome=?, descrizione=?, data_creazione=?, data_scadenza=?, attivo=?  WHERE id=?");
+            $query->bind_param("ssssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo'], $params['id']);
+            $result = $query->execute();
+        } else {
+
+            $sql = "INSERT INTO DATE_ente (nome, descrizione, data_creazione, data_scadenza, attivo)  VALUES (?,?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo']);
+            $res = $stmt->execute();
+        }
+
+
+        $mysqli->close();
+        return $stmt->insert_id;
     }
 
 }

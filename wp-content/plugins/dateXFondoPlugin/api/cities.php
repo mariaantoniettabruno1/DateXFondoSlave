@@ -111,3 +111,25 @@ function get_city_user_infos($params)
 }
 
 add_action('rest_api_init', 'create_endpoint_datefondo_get_city_user_infos');
+
+function create_endpoint_datefondo_edit_cities_row()
+{
+
+    register_rest_route('datexfondoplugin/v1', 'editcityrow', array(
+        'methods' => 'POST',
+        'callback' => 'edit_cities_row'
+    ));
+
+
+}
+
+function edit_cities_row($params)
+{
+   $data =  (new dateXFondoPlugin\CitiesRepository)->edit_city_row($params);
+    $data = ['data'=> $data, 'message' => 'Operazione andata a buon fine'];
+    $response = new WP_REST_Response($data);
+    $response->set_status(201);
+    return $response;
+}
+
+add_action('rest_api_init', 'create_endpoint_datefondo_edit_cities_row');
