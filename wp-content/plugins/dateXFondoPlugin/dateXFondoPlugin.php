@@ -63,8 +63,8 @@ require_once(plugin_dir_path(__FILE__) . 'views/formula/components/FormulaSideba
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/PreviewArticolo.php');
 require_once(plugin_dir_path(__FILE__) . 'views/settings/UserSettings.php');
 require_once(plugin_dir_path(__FILE__) . 'views/settings/components/UserSettingsForm.php');
-require_once(plugin_dir_path(__FILE__) . 'views/management_account/UserManagement.php');
-require_once(plugin_dir_path(__FILE__) . 'views/management_account/components/AllCitiesTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/management_cities/CitiesManagement.php');
+require_once(plugin_dir_path(__FILE__) . 'views/management_cities/components/AllCitiesTable.php');
 require_once(plugin_dir_path(__FILE__) . 'api/formula.php');
 require_once(plugin_dir_path(__FILE__) . 'api/document.php');
 require_once(plugin_dir_path(__FILE__) . 'api/regionidocument.php');
@@ -109,7 +109,7 @@ function shortcodes_init()
     add_shortcode('post_determina_costituzione_template', 'determina_costituzione_template');
     add_shortcode('post_relazione_illustrativa_template', 'relazione_illustrativa_template');
     add_shortcode('post_user_settings', 'slave_user_settings');
-    add_shortcode('post_user_management', 'slave_user_management');
+    add_shortcode('post_cities_management', 'slave_cities_management');
 }
 
 
@@ -194,9 +194,9 @@ function slave_user_settings()
     $document = new \dateXFondoPlugin\UserSettings();
     $document->render();
 }
-function slave_user_management()
+function slave_cities_management()
 {
-    $document = new \dateXFondoPlugin\UserManagement();
+    $document = new \dateXFondoPlugin\CitiesManagement();
     $document->render();
 }
 

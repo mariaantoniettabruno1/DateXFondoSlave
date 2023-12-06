@@ -1,5 +1,6 @@
 <?php
 
+use dateXFondoPlugin\CitiesRepository;
 use dateXFondoPlugin\DateXFondoCommon;
 
 class AllCitiesTable
@@ -37,15 +38,19 @@ class AllCitiesTable
 
                     edit_button = ` <button class="btn btn-link btn-edit-row" data-id='${city.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button>`;
 
+                    consultants.forEach(consultant => {
+                        if (consultant.id === city.id_consulente)
+                            city.id_consulente = consultant.user_login
+                    })
                     $('#dataCitiesTableBody').append(`
                                  <tr>
-                                        <td ><div class="text-center" style="padding-top:20px">${city.nome}</div></td>
-                                       <td ><div class="text-center" style="padding-top:20px">${city.descrizione}</div></td>
-                                       <td ><div class="text-center" style="padding-top:20px">${city.data_creazione}</div></td>
-                                       <td ><div class="text-center" style="padding-top:20px">${city.data_scadenza}</div></td>
-                                       <td ><div class="text-center" style="padding-top:20px">${city.id_consulente}</div></td>
-                                       <td ><div class="text-center" style="padding-top:20px">${city.attivo}</div></td>
-                                       <td ><div class="text-center" style="padding-top:20px">${edit_button}</div></td>
+                                        <td ><div style="padding-top:20px">${city.nome}</div></td>
+                                       <td ><div style="padding-top:20px">${city.descrizione}</div></td>
+                                       <td ><div style="padding-top:20px">${city.data_creazione}</div></td>
+                                       <td ><div style="padding-top:20px">${city.data_scadenza}</div></td>
+                                       <td ><div style="padding-top:20px">${city.id_consulente}</div></td>
+                                       <td ><div style="padding-top:20px">${city.attivo}</div></td>
+                                       <td ><div style="padding-top:20px">${edit_button}</div></td>
                 </tr>
                              `);
                 });
@@ -57,6 +62,8 @@ class AllCitiesTable
                     $('#idDescrizione').val(city.descrizione)
                     $('#idDataCreazione').val(city.data_creazione)
                     $('#idDataScadenza').val(city.data_scadenza)
+                    $('#idConsulenteSelezionato').val(city.id_consulente);
+
                     if (city.attivo === 1 || city.attivo === '1' || city.attivo === 'Attivo')
                         $('#idDataAttivo').prop('checked', true);
 
@@ -81,6 +88,7 @@ class AllCitiesTable
                     let data_creazione = $('#idDataCreazione').val();
                     let data_scadenza = $('#idDataCreazione').val();
                     let attivo = $("input:radio[name=typeActiveEdit]:checked").val();
+                    let id_consulente = $('#idConsulenteSelezionato').val();
 
                     const payload = {
                         id,
@@ -88,7 +96,8 @@ class AllCitiesTable
                         descrizione,
                         data_creazione,
                         data_scadenza,
-                        attivo
+                        attivo,
+                        id_consulente
                     }
                     console.log(payload);
 
@@ -99,16 +108,16 @@ class AllCitiesTable
                         success: function (response) {
                             console.log(response);
                             $("#editModal").modal('hide');
-                            if(id!==''){
+                            if (id !== '') {
                                 const city = cities.find(city => Number(city.id) === Number(id));
                                 city.nome = nome;
                                 city.descrizione = descrizione;
                                 city.data_creazione = data_creazione;
                                 city.data_scadenza = data_scadenza;
                                 city.attivo = attivo;
+                                city.id_consulente = id_consulente;
 
-                            }
-                            else{
+                            } else {
                                 cities.push({...payload, id: response['id']});
                             }
                             renderDataCitiesTable();
@@ -133,6 +142,9 @@ class AllCitiesTable
 
     public static function render()
     {
+        $data = new CitiesRepository();
+        $consulenti = $data->getConsultants();
+
         ?>
         <div style="padding-bottom:12px; margin-left: 1148px">
             <button type="button" class="btn btn-primary btn-create-ente" data-toggle="modal" data-target="#editModal">
@@ -142,13 +154,13 @@ class AllCitiesTable
         <table class="table" style="table-layout: fixed">
             <thead>
             <tr>
-                <th style="width: 12.5rem" class="text-center">Nome Ente</th>
-                <th class="text-center">Descrizione</th>
-                <th style="width: 7rem" class="text-center">Data creazione</th>
-                <th style="width: 7rem" class="text-center">Data scadenza</th>
-                <th style="width: 7rem" class="text-center">Consulente</th>
-                <th style="width: 6.25rem" class="text-center">Attivo</th>
-                <th style="width: 6.25rem" class="text-center">Azioni</th>
+                <th style="width: 12.5rem">Nome Ente</th>
+                <th>Descrizione</th>
+                <th style="width: 10rem">Data creazione</th>
+                <th style="width: 10rem">Data scadenza</th>
+                <th style="width: 7rem">Consulente</th>
+                <th style="width: 6.25rem">Stato</th>
+                <th style="width: 6.25rem">Azioni</th>
             </tr>
 
             </thead>
@@ -188,14 +200,19 @@ class AllCitiesTable
                         <input type="date" id="idDataScadenza">
                     </div>
                     <div class="form-group">
-                        <label for="selectConsulente">Seleziona opzioni:</label>
-                        <select multiple class="form-control" id="selectConsulente">
-                            <option value="opzione1">Opzione 1</option>
-                            <option value="opzione2">Opzione 2</option>
-                            <option value="opzione3">Opzione 3</option>
-                            <option value="opzione4">Opzione 4</option>
-                            <option value="opzione5">Opzione 5</option>
-                        </select>
+                        <form>
+                            <div class="form-group">
+                                <label>Seleziona Consulente:</label>
+                                <select name="consulenteSelezionato" id="idConsulenteSelezionato">
+                                    <?php
+                                    foreach ($consulenti as $consulente) {
+                                        ?>
+                                        <option><?= $consulente['user_login']; ?></option>
+                                    <?php }
+                                    ?>
+                                </select>
+                            </div>
+                        </form>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="typeActiveEdit"

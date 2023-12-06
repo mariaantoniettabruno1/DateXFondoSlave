@@ -3,6 +3,7 @@
 namespace dateXFondoPlugin;
 
 use mysqli;
+use PHPMailer\PHPMailer\Exception;
 
 class CitiesRepository
 {
@@ -114,7 +115,7 @@ class CitiesRepository
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
 
-        $sql = "SELECT id,user_login FROM wp_users WHERE id=?";
+        $sql = "SELECT DISTINCT id,user_login FROM wp_users WHERE id=?";
         $stmt = $mysqli->prepare($sql);
         foreach ($row as $entry) {
             $stmt->bind_param("i", $entry['id_consulente']);
@@ -132,21 +133,42 @@ class CitiesRepository
     {
         $conn = new Connection();
         $mysqli = $conn->connect();
+        $sql = "SELECT id FROM wp_users WHERE user_login=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $params['id_consulente']);
+        $res = $stmt->execute();
+
+        if ($res = $stmt->get_result()) {
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        } else
+            $rows = [];
         if ($params['id'] != '') {
-            $query = $mysqli->prepare("UPDATE DATE_ente SET nome=?, descrizione=?, data_creazione=?, data_scadenza=?, attivo=?  WHERE id=?");
-            $query->bind_param("ssssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo'], $params['id']);
-            $result = $query->execute();
+            $query = $mysqli->prepare("UPDATE DATE_ente SET nome=?, descrizione=?, data_creazione=?, data_scadenza=?, attivo=?, id_consulente=?  WHERE id=?");
+            $query->bind_param("sssssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo'], $rows[0]['id'], $params['id']);
+            $query->execute();
         } else {
 
-            $sql = "INSERT INTO DATE_ente (nome, descrizione, data_creazione, data_scadenza, attivo)  VALUES (?,?,?,?,?)";
+            $sql = "INSERT INTO DATE_ente (nome, descrizione, data_creazione, data_scadenza, attivo, id_consulente)  VALUES (?,?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("sssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo']);
-            $res = $stmt->execute();
+            $stmt->bind_param("ssssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo'], $rows[0]['id']);
+            $stmt->execute();
         }
 
 
         $mysqli->close();
         return $stmt->insert_id;
+    }
+
+    public function getConsultants()
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+
+        $sql = "SELECT DISTINCT id,user_login FROM wp_users ";
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_all(MYSQLI_ASSOC);
+        $mysqli->close();
+        return $row;
     }
 
 }

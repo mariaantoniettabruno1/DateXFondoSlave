@@ -4,25 +4,25 @@ namespace dateXFondoPlugin;
 
 use AllCitiesTable;
 
-class UserManagement
+class CitiesManagement
 {
     public static function render()
     {
         $data = new CitiesRepository();
 
         $results_cities = $data->getAllCities();
+        $results_consultants = $data->getConsultants();
 
 
-        foreach ($results_cities[0] as $city){
-            foreach ($results_cities[1] as $entry){
-                if($entry['id'] == $city['id_consulente']){
+        foreach ($results_cities[0] as $city) {
+            foreach ($results_cities[1] as $entry) {
+                if ($entry['id'] == $city['id_consulente']) {
                     $city['id_consulente'] = $entry['user_login'];
 
                 }
             }
         }
 
-        //sistemare il cambio del consulente perchè non funziona dopo il foreach
         ?>
         <!DOCTYPE html>
 
@@ -41,11 +41,12 @@ class UserManagement
                   integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
                   crossorigin="anonymous" referrerpolicy="no-referrer"/>
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+            <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
         </head>
-            <link rel="stylesheet"
-                  href="<?= DateXFondoCommon::get_base_url() ?>/wp-content/plugins/dateXFondoPlugin/assets/styles/main.css">
+        <link rel="stylesheet"
+              href="<?= DateXFondoCommon::get_base_url() ?>/wp-content/plugins/dateXFondoPlugin/assets/styles/main.css">
 
 
         </head>
@@ -53,6 +54,8 @@ class UserManagement
 
         <script>
             let cities = JSON.parse((`<?=json_encode($results_cities[0]);?>`));
+            let consultants = JSON.parse((`<?=json_encode($results_consultants);?>`));
+
         </script>
         <div class="row">
             <?php
