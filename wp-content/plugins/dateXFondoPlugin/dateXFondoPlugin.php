@@ -277,7 +277,7 @@ function custom_login_log($user_login, $user) {
     $login_time = current_time('mysql');
 
     // Costruisci il messaggio di log
-    $log_message = "L'utente con il login '$user_login' si è connesso dall'IP $user_ip in data $login_time.";
+    $log_message = "L'utente con il login '$user_login' si è connesso dall'IP $user_ip in data $login_time.".'<br>';
 
     // Registra il messaggio nel tuo file di log o ovunque tu desideri
     error_log($log_message, 3, 'wp-content/plugins/dateXFondoPlugin/log/logDatexFondo.log');

@@ -15,6 +15,7 @@ public static function render(){
         // Visualizza o elabora il contenuto del file di log
         echo '<pre>';
         print_r($log_content);
+        echo '<br>';
         echo '</pre>';
 
     } else {
