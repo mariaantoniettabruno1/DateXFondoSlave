@@ -34,8 +34,9 @@ class AllTemplateTable
                 border-color: #870e12;
                 background-color: #870e12;
             }
+
             .btn-not-main-template {
-                width:65%;
+                width: 65%;
             }
         </style>
         <script>
@@ -71,6 +72,24 @@ class AllTemplateTable
                            `;
                         check_variable = true;
                     }
+                    <?php if (current_user_can('subscriber')) {
+                    ?>
+                    if (art.ufficiale === '0' || art.ufficiale === 0) {
+                        ufficiale_button = ` <div class="text-center" style="padding-top:20px">
+                                   <button  id='${id_db}' type="button" disabled class="btn btn-outline-dark btn-main-template" data-id='${id_db}' data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' data-toggle="modal" data-target="#mainTemplateModal"> Non Ufficiale</button>
+                                   </div>
+                                    `;
+                    } else {
+                        ufficiale_button = `
+                            <div class="text-center" style="padding-top:20px;">
+                            <button type="button" id='${id_db}' disabled class="btn btn-success btn-not-main-template" data-id='${id_db}' data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' data-toggle="modal" data-target="#notMainTemplateModal">Ufficiale</button>
+                           </div>
+                           `;
+                        check_variable = true;
+                    }
+                    <?php
+                    }
+                    ?>
                     $('#dataAllTemplateTableBody').append(`
                                  <tr>
                                     <td>${ufficiale_button}</td>
@@ -81,9 +100,14 @@ class AllTemplateTable
                                        <td ><div class="text-center" style="padding-top:20px">${art.version}</div></td>
                                            <td>
                 <button class="btn btn-link btn-vis-templ" data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}' data-descrizione='${art.descrizione_fondo}' data-toggle="tooltip" title="Visualizza e modifica template"><i class="fa-solid fa-eye"></i></button>
+                               <button class="btn btn-link btn-visualize-complete-template" data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}'  data-descrizione='${art.descrizione_fondo}'>Fondo Completo <i class="fa-solid fa-chevron-right"></i></button>
+
+               <?php if (!current_user_can('subscriber')) {
+                    ?>
                 <button class="btn btn-link btn-duplicate-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#duplicateModal" data-toggle="tooltip" title="Duplica template"><i class="fa-regular fa-copy"></i></button>
                 <button class="btn btn-link btn-create-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#createModal" data-toggle="tooltip" title="Crea nuovo"><i class="fa-solid fa-plus"></i></button>
-                <button class="btn btn-link btn-visualize-complete-template" data-name='${art.template_name}' data-fondo='${art.fondo}' data-anno='${art.anno}' data-version='${art.version}'  data-descrizione='${art.descrizione_fondo}'>Fondo Completo <i class="fa-solid fa-chevron-right"></i></button>
+                <?php
+                    } ?>
                 </td>
                 </tr>
                              `);
@@ -318,113 +342,115 @@ class AllTemplateTable
         </script>
     <?php }
 
-    public static function render()
-    {
-        ?>
-        <table class="table" style="table-layout: fixed">
-            <thead>
-            <tr>
-                <th style="width: 12.5rem">Template Ufficiale</th>
-                <th style="width: 12.5rem">Fondo</th>
-                <th style="width: 6.25rem">Anno</th>
-                <th>Descrizione fondo</th>
-                <th style="width: 6.25rem">Nome Template</th>
-                <th style="width: 6.25rem">Versione</th>
-                <th style="width:15rem">Azioni</th>
-            </tr>
+        public
+        static function render()
+        {
+            ?>
+            <table class="table" style="table-layout: fixed">
+                <thead>
+                <tr>
+                    <th style="width: 12.5rem">Template Ufficiale</th>
+                    <th style="width: 12.5rem">Fondo</th>
+                    <th style="width: 6.25rem">Anno</th>
+                    <th>Descrizione fondo</th>
+                    <th style="width: 6.25rem">Nome Template</th>
+                    <th style="width: 6.25rem">Versione</th>
+                    <th style="width:15rem">Azioni</th>
+                </tr>
 
-            </thead>
-            <tbody id="dataAllTemplateTableBody">
-            </tbody>
-        </table>
-        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createModalLabel">Crea Template </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Vuoi creare questo template?
-                    </div>
-                    <div class="form-group" style="width: 90%;padding-left: 40px">
-                        <label for="selectFondo"><b>Seleziona Fondo dal quale prendere i valori:</b></label>
-                        <select class="custom-select" id="selectTemplateFondo">
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="createTemplateButton">Crea</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="duplicateModal" tabindex="-1" role="dialog" aria-labelledby="duplicateModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="duplicateModalLabel">Duplica Template </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Vuoi duplicare questo template?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="duplicateTemplateButton">Duplica</button>
+                </thead>
+                <tbody id="dataAllTemplateTableBody">
+                </tbody>
+            </table>
+            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createModalLabel">Crea Template </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Vuoi creare questo template?
+                        </div>
+                        <div class="form-group" style="width: 90%;padding-left: 40px">
+                            <label for="selectFondo"><b>Seleziona Fondo dal quale prendere i valori:</b></label>
+                            <select class="custom-select" id="selectTemplateFondo">
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" id="createTemplateButton">Crea</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal fade" id="mainTemplateModal" tabindex="-1" role="dialog"
-             aria-labelledby="mainTemplateModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="mainTemplateModalLabel">Rendi template ufficiale </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Vuoi rendere questo template il ufficiale?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="mainTemplateButton">Conferma</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="notMainTemplateModal" tabindex="-1" role="dialog"
-             aria-labelledby="notMainTemplateModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="notMainTemplateModal">Cancella template da ufficiale </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Vuoi che il template selezionato venga rimosso da quelli ufficiali?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="notMainTemplateButton">Conferma</button>
+            <div class="modal fade" id="duplicateModal" tabindex="-1" role="dialog"
+                 aria-labelledby="duplicateModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="duplicateModalLabel">Duplica Template </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Vuoi duplicare questo template?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" id="duplicateTemplateButton">Duplica</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <?php
-        self::render_scripts();
+            <div class="modal fade" id="mainTemplateModal" tabindex="-1" role="dialog"
+                 aria-labelledby="mainTemplateModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mainTemplateModalLabel">Rendi template ufficiale </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Vuoi rendere questo template il ufficiale?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" id="mainTemplateButton">Conferma</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="notMainTemplateModal" tabindex="-1" role="dialog"
+                 aria-labelledby="notMainTemplateModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="notMainTemplateModal">Cancella template da ufficiale </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Vuoi che il template selezionato venga rimosso da quelli ufficiali?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                            <button type="button" class="btn btn-primary" id="notMainTemplateButton">Conferma</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+            self::render_scripts();
+        }
     }
-}

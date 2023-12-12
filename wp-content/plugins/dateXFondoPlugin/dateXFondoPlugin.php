@@ -63,8 +63,11 @@ require_once(plugin_dir_path(__FILE__) . 'views/formula/components/FormulaSideba
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/PreviewArticolo.php');
 require_once(plugin_dir_path(__FILE__) . 'views/settings/UserSettings.php');
 require_once(plugin_dir_path(__FILE__) . 'views/settings/components/UserSettingsForm.php');
+require_once(plugin_dir_path(__FILE__) . 'views/cities_and_user/CitiesAndUserManagement.php');
+require_once(plugin_dir_path(__FILE__) . 'views/cities_and_user/components/CitiesAndUserTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/management_cities/CitiesManagement.php');
 require_once(plugin_dir_path(__FILE__) . 'views/management_cities/components/AllCitiesTable.php');
+require_once(plugin_dir_path(__FILE__) . 'views/logfile/FileLog.php');
 require_once(plugin_dir_path(__FILE__) . 'api/formula.php');
 require_once(plugin_dir_path(__FILE__) . 'api/document.php');
 require_once(plugin_dir_path(__FILE__) . 'api/regionidocument.php');
@@ -110,6 +113,8 @@ function shortcodes_init()
     add_shortcode('post_relazione_illustrativa_template', 'relazione_illustrativa_template');
     add_shortcode('post_user_settings', 'slave_user_settings');
     add_shortcode('post_cities_management', 'slave_cities_management');
+    add_shortcode('post_cities_and_user', 'slave_cities_and_user');
+    add_shortcode('post_log', 'slave_log_file');
 }
 
 
@@ -199,6 +204,16 @@ function slave_cities_management()
     $document = new \dateXFondoPlugin\CitiesManagement();
     $document->render();
 }
+function slave_cities_and_user()
+{
+    $document = new \dateXFondoPlugin\CitiesAndUserManagement();
+    $document->render();
+}
+function slave_log_file(){
+    $document = new \dateXFondoPlugin\FileLog();
+    $document->render();
+}
+
 
 
 function admin_default_page()
@@ -253,3 +268,20 @@ function your_namespace() {
 }
 
 add_action( 'admin_init','your_namespace');
+
+function custom_login_log($user_login, $user) {
+    // Ottieni l'indirizzo IP dell'utente
+    $user_ip = $_SERVER['REMOTE_ADDR'];
+
+    // Ottieni la data e l'orario del login
+    $login_time = current_time('mysql');
+
+    // Costruisci il messaggio di log
+    $log_message = "L'utente con il login '$user_login' si è connesso dall'IP $user_ip in data $login_time.";
+
+    // Registra il messaggio nel tuo file di log o ovunque tu desideri
+    error_log($log_message, 3, 'wp-content/plugins/dateXFondoPlugin/log/logDatexFondo.log');
+}
+
+// Aggiungi il tuo hook per il login
+add_action('wp_login', 'custom_login_log', 10, 2);

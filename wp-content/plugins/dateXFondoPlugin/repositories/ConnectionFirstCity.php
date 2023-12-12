@@ -28,15 +28,16 @@ class ConnectionFirstCity
     public function __construct()
     {
 
-        $id = my_get_current_user_id()[0];
+        $id = get_current_user_id();
         $conn = new Connection();
         $mysqli = $conn->connect();
-        $sql = "SELECT db FROM DATE_users WHERE id_user=?";
+        $sql = "SELECT db FROM DATE_users WHERE id_user=? AND attivo=1";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("i", $id);
         $res = $stmt->execute();
         $res = $stmt->get_result();
         $db_name = $res->fetch_all(MYSQLI_ASSOC);
+        mysqli_close($mysqli);
         $this->url = DB_HOST . ":" . DB_PORT . "/";
         $this->username = DB_USER;
         $this->password = DB_PASSWORD;

@@ -88,6 +88,7 @@ class AllCitiesTable
                     let data_creazione = $('#idDataCreazione').val();
                     let data_scadenza = $('#idDataCreazione').val();
                     let attivo = $("input:radio[name=typeActiveEdit]:checked").val();
+                    console.log(attivo);
                     let id_consulente = $('#idConsulenteSelezionato').val();
 
                     const payload = {
@@ -215,7 +216,7 @@ class AllCitiesTable
                         </form>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="typeActiveEdit"
+                        <input class="form-check-input" type="checkbox" name="typeActiveEdit"
                                id="idDataAttivo"
                                value="1">
                         <label class="form-check-label" for="attivoSelected">

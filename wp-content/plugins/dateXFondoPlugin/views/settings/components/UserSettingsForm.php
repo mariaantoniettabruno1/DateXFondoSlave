@@ -16,6 +16,7 @@ class UserSettingsForm
                 width: 300px;
                 margin: 0 auto;
             }
+
             #saveSettings, #saveSettings:hover {
                 border-color: #26282f;
                 color: white;
@@ -41,7 +42,6 @@ class UserSettingsForm
                     let responsabile_documento = $('#responsabileDocumento').val();
                     let firma = $('#firma').val();
                     let riduzione_spesa = $('input:radio[name=typeRiduzione]:checked').val();
-
 
 
                     const payload = {
@@ -85,74 +85,129 @@ class UserSettingsForm
 
     public static function render()
     {
-        ?>
-        <div class="card" style="width: 400px">
-            <div class="card-header">
-                <b>Impostazioni Utente</b>
+        if (current_user_can('subscriber')) {
+            ?>
+            <div class="card" style="width: 400px">
+                <div class="card-header">
+                    <b>Impostazioni Utente</b>
+                </div>
+                <div class="card-body">
+                    <form>
+
+
+                        <div class="form-group">
+                            <label for="titoloEnte"><b>Titolo ente</b></label>
+                            <input type="text" class="form-control" id="titoloEnte"
+                                   placeholder="Inserisci il titolo ente" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="soggettoDeliberante"><b>Nome soggetto deliberante</b></label>
+                            <input type="text" class="form-control" id="soggettoDeliberante"
+                                   placeholder="Inserisci il nome" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="responsabileDocumento"><b>Responsabile documento</b></label>
+                            <input type="text" class="form-control" id="responsabileDocumento"
+                                   placeholder="Inserisci il nome" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firma"><b>Documento a firma di</b></label>
+                            <input type="text" class="form-control" id="firma" placeholder="Inserisci il nome" readonly>
+                        </div>
+
+                        <label for="inputRiduzioneSpesa">
+                            <b>Riduzione spesa</b> </label>
+                        <div class="form-check user-checked">
+                            <input class="form-check-input" type="radio" name="typeRiduzione" id="duemilaotto"
+                                   value="2008" disabled>
+                            <label class="form-check-label" for="duemilaotto">
+                                2008
+                            </label>
+                        </div>
+                        <div class="form-check pb-4">
+                            <input class="form-check-input" type="radio" name="typeRiduzione" id="mediaTriennio"
+                                   value="Media Triennio 2011/2013" disabled>
+                            <label class="form-check-label" for="mediaTriennio">
+                                Media Triennio 2011/2013
+                            </label>
+                        </div>
+
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <form>
+            <?php
+        } else {
+
+            ?>
+            <div class="card" style="width: 400px">
+                <div class="card-header">
+                    <b>Impostazioni Utente</b>
+                </div>
+                <div class="card-body">
+                    <form>
 
 
-                    <div class="form-group">
-                        <label for="titoloEnte"><b>Titolo ente</b></label>
-                        <input type="text" class="form-control" id="titoloEnte"
-                               placeholder="Inserisci il titolo ente">
-                    </div>
-                    <div class="form-group">
-                        <label for="soggettoDeliberante"><b>Nome soggetto deliberante</b></label>
-                        <input type="text" class="form-control" id="soggettoDeliberante"
-                               placeholder="Inserisci il nome">
-                    </div>
-                    <div class="form-group">
-                        <label for="responsabileDocumento"><b>Responsabile documento</b></label>
-                        <input type="text" class="form-control" id="responsabileDocumento"
-                               placeholder="Inserisci il nome">
-                    </div>
+                        <div class="form-group">
+                            <label for="titoloEnte"><b>Titolo ente</b></label>
+                            <input type="text" class="form-control" id="titoloEnte"
+                                   placeholder="Inserisci il titolo ente">
+                        </div>
+                        <div class="form-group">
+                            <label for="soggettoDeliberante"><b>Nome soggetto deliberante</b></label>
+                            <input type="text" class="form-control" id="soggettoDeliberante"
+                                   placeholder="Inserisci il nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="responsabileDocumento"><b>Responsabile documento</b></label>
+                            <input type="text" class="form-control" id="responsabileDocumento"
+                                   placeholder="Inserisci il nome">
+                        </div>
 
-                    <div class="form-group">
-                        <label for="firma"><b>Documento a firma di</b></label>
-                        <input type="text" class="form-control" id="firma" placeholder="Inserisci il nome">
-                    </div>
+                        <div class="form-group">
+                            <label for="firma"><b>Documento a firma di</b></label>
+                            <input type="text" class="form-control" id="firma" placeholder="Inserisci il nome">
+                        </div>
 
-                    <label for="inputRiduzioneSpesa">
-                        <b>Riduzione spesa</b> </label>
-                    <div class="form-check user-checked">
-                        <input class="form-check-input" type="radio" name="typeRiduzione" id="duemilaotto"
-                               value="2008">
-                        <label class="form-check-label" for="duemilaotto">
-                            2008
-                        </label>
-                    </div>
-                    <div class="form-check pb-4">
-                        <input class="form-check-input" type="radio" name="typeRiduzione" id="mediaTriennio"
-                               value="Media Triennio 2011/2013">
-                        <label class="form-check-label" for="mediaTriennio">
-                            Media Triennio 2011/2013
-                        </label>
-                    </div>
+                        <label for="inputRiduzioneSpesa">
+                            <b>Riduzione spesa</b> </label>
+                        <div class="form-check user-checked">
+                            <input class="form-check-input" type="radio" name="typeRiduzione" id="duemilaotto"
+                                   value="2008">
+                            <label class="form-check-label" for="duemilaotto">
+                                2008
+                            </label>
+                        </div>
+                        <div class="form-check pb-4">
+                            <input class="form-check-input" type="radio" name="typeRiduzione" id="mediaTriennio"
+                                   value="Media Triennio 2011/2013">
+                            <label class="form-check-label" for="mediaTriennio">
+                                Media Triennio 2011/2013
+                            </label>
+                        </div>
 
-                </form>
-                <button class="btn btn-primary" id="saveSettings">Salva Modifiche</button>
+                    </form>
+                    <button class="btn btn-primary" id="saveSettings">Salva Modifiche</button>
+                </div>
             </div>
-        </div>
 
 
-        <div class="alert alert-success alert-save-success" role="alert"
-             style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
-            Modifiche salvate con successo!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="alert alert-danger alert-save-wrong" role="alert"
-             style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
-            Modifica non riuscita
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <?php
+            <div class="alert alert-success alert-save-success" role="alert"
+                 style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
+                Modifiche salvate con successo!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger alert-save-wrong" role="alert"
+                 style="position:fixed; top: <?= is_admin_bar_showing() ? 47 : 15 ?>px; right: 15px; display:none">
+                Modifica non riuscita
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php
+        }
         self::render_scripts();
     }
 }

@@ -146,17 +146,81 @@ class CitiesRepository
             $query = $mysqli->prepare("UPDATE DATE_ente SET nome=?, descrizione=?, data_creazione=?, data_scadenza=?, attivo=?, id_consulente=?  WHERE id=?");
             $query->bind_param("sssssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo'], $rows[0]['id'], $params['id']);
             $query->execute();
-        } else {
+            $query = $mysqli->prepare("UPDATE DATE_users SET attivo=?  WHERE id_ente=?");
+            $query->bind_param("ss", $params['attivo'], $params['id']);
+            $query->execute();
 
-            $sql = "INSERT INTO DATE_ente (nome, descrizione, data_creazione, data_scadenza, attivo, id_consulente)  VALUES (?,?,?,?,?,?)";
+        } else {
+            $sql = "INSERT INTO DATE_ente (nome,descrizione,data_creazione,data_scadenza,id_consulente)  VALUES (?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("ssssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $params['attivo'], $rows[0]['id']);
+            $stmt->bind_param("sssss", $params['nome'], $params['descrizione'], $params['data_creazione'], $params['data_scadenza'], $rows[0]['id']);
             $stmt->execute();
+
+            $idente = $stmt->insert_id;
+            $dbente = strtolower('c1date_' . $params['nome']);
+
+            $sql = "INSERT INTO DATE_users (id_user, db, id_ente)  VALUES (?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sss", $rows[0]['id'], $dbente, $idente);
+            $stmt->execute();
+
+            $sql = "SELECT ALL id_user FROM DATE_users WHERE tutti=1";
+            $result = $mysqli->query($sql);
+            $ids_user = $result->fetch_all(MYSQLI_ASSOC);
+            $tutti = 1;
+
+            //TODO capire perchè mette il tutti a true solo all'ultimo
+            $sql = "INSERT INTO DATE_users (id_user,db,id_ente,tutti)  VALUES (?,?,?,?)";
+            $stmt = $mysqli->prepare($sql);
+            foreach ($ids_user as $id) {
+                $stmt->bind_param("sssi", $id['id_user'], $dbente, $idente, $tutti);
+                $stmt->execute();
+            }
         }
 
 
         $mysqli->close();
         return $stmt->insert_id;
+    }
+
+    public function edit_cities_user($params)
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+        $sql = "SELECT id FROM wp_users WHERE user_login=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $params['nome_utente']);
+        $res = $stmt->execute();
+
+        if ($res = $stmt->get_result()) {
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        } else
+            $rows = [];
+
+        $sql = "UPDATE DATE_users SET attivo=0 WHERE id_user=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $rows[0]['id']);
+        $res = $stmt->execute();
+
+        $sql = "INSERT INTO DATE_users (id_user,id_ente,db)  VALUES (?,?,?)";
+        $stmt = $mysqli->prepare($sql);
+        foreach ($params['citiesArray'] as $ente) {
+            $stmt->bind_param("sss", $rows[0]['id'], $ente['id'], $ente['db']);
+            $res = $stmt->execute();
+        }
+        if ($params['tuttiButton'])
+            $params['tuttiButton'] = 1;
+        else
+            $params['tuttiButton'] = 0;
+        $sql = "UPDATE DATE_users SET attivo=1,tutti=? WHERE id_user=? AND id_ente=?";
+        $stmt = $mysqli->prepare($sql);
+        foreach ($params['citiesArray'] as $ente) {
+            $stmt->bind_param("iss", $params['tuttiButton'], $rows[0]['id'], $ente['id']);
+            $res = $stmt->execute();
+        }
+        $rows = $this->getCheckedCities($params['nome_utente']);
+        $mysqli->close();
+        return $rows;
     }
 
     public function getConsultants()
@@ -169,6 +233,60 @@ class CitiesRepository
         $row = $result->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();
         return $row;
+    }
+
+    public function getCities()
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+        $sql = "SELECT DISTINCT id,nome FROM DATE_ente WHERE attivo=1";
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_all(MYSQLI_ASSOC);
+        $mysqli->close();
+        return $row;
+    }
+
+    public function getCheckedCities($user)
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+
+        if ($user['bool'] === 1 || $user['bool'] === '1') {
+
+            $sql = "SELECT id FROM wp_users WHERE user_login=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("s", $user['selectedValue']);
+            $res = $stmt->execute();
+
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+
+        } else {
+            $sql = "SELECT id FROM wp_users WHERE user_login=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("s", $user);
+            $res = $stmt->execute();
+
+            if ($res = $stmt->get_result()) {
+                $rows = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $rows = [];
+        }
+
+
+        $sql = "SELECT id_ente FROM DATE_users WHERE id_user=? AND attivo=1";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $rows[0]['id']);
+        $res = $stmt->execute();
+
+        if ($res = $stmt->get_result()) {
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        } else
+            $rows = [];
+
+        return $rows;
     }
 
 }

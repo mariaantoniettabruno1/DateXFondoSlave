@@ -9,11 +9,8 @@ class UserSettings
         $data = new UserRepository();
         $results_infos = $data->getUserInfos();
         your_namespace();
-
-       /* $results_new_template = $data->checkNewTemplate();
-        $check = 0;
-        if (sizeof($results_new_template) != 0)
-            $check = 1;*/
+        $id_user = my_get_current_user_id();
+        $results_new_template = $data->checkNewTemplate($id_user[0]);
 
 
         ?>
@@ -94,10 +91,11 @@ class UserSettings
         </body>
         <script>
             let infos = JSON.parse((`<?=json_encode($results_infos);?>`));
-         /*   let check = JSON.parse((`<?=json_encode();?>`));
+            let check = JSON.parse((`<?=json_encode($results_new_template);?>`));
+            console.log(check)
 
-            if (check === 1)
-                $('#newTemplateModal').modal('show');*/
+            if (check)
+                $('#newTemplateModal').modal('show');
 
             let citySelected = '';
             $('#selectedCity').click(function () {
@@ -137,22 +135,6 @@ class UserSettings
                     }
                 });
             });
-                /*$.ajax({
-                    url: '<?= DateXFondoCommon::get_website_url() ?>/wp-json/datexfondoplugin/v1/cityusertemplate',
-                    data: payload,
-                    type: "POST",
-                    success: function (response) {
-                        console.log(response);
-                        if (response['check done'].length !== 0)
-                            $('#newTemplateModal').modal('show');
-
-
-                    },
-                    error: function (response) {
-                        console.error(response);
-                    }
-                });
-            });*/
 
         </script>
         <div class="alert alert-success alert-data-success" role="alert"

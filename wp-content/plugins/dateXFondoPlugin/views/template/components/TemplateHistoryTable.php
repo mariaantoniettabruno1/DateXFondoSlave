@@ -80,8 +80,13 @@ class TemplateHistoryTable
                                        <td ><div class="text-center" style="padding-top:20px">${art.template_name}</div></td>
                                            <td>
                 <button class="btn btn-link btn-visualize-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-desc ='${art.descrizione_fondo}' data-version='${art.version}' data-template='${art.template_name}' data-toggle="tooltip" title="Visualizza template"><i class="fa-regular fa-eye"></i></button>
-                <button class="btn btn-link btn-duplicate-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#duplicateModal" data-toggle="tooltip" title="Duplica template"><i class="fa-regular fa-copy"></i></button>
+                    <?php if (!current_user_can('subscriber')) {
+                        ?>
+                        <button class="btn btn-link btn-duplicate-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#duplicateModal" data-toggle="tooltip" title="Duplica template"><i class="fa-regular fa-copy"></i></button>
                 <button class="btn btn-link btn-create-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-descrizione ='${art.descrizione_fondo}' data-version='${art.version}' data-name='${art.template_name}' data-toggle="modal" data-target="#createModal" data-toggle="tooltip" title="Crea nuovo"><i class="fa-solid fa-plus"></i></button>
+                        <?php
+                    }
+                        ?>
                 <button class="btn btn-link btn-all-template" data-fondo='${art.fondo}' data-anno='${art.anno}' data-desc ='${art.descrizione_fondo}' data-version='${art.version}' data-template='${art.template_name}'>Fondo Completo <i class="fa-solid fa-chevron-right"></i></button>
                 </td>
                 </tr>

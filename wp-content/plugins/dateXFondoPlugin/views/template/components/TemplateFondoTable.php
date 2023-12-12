@@ -59,15 +59,13 @@ class TemplateFondoTable
 
                     if (art.link !== null) {
                         link_button = ` <button class="btn btn-link btn-art-link" data-link='${art.link}'><i class="fa-solid fa-arrow-up-right-from-square"></i></button>`;
-                    }
-                    else{
-                        link_button='';
+                    } else {
+                        link_button = '';
                     }
                     //sistemare meglio
-                    if(new Date().getFullYear()!==art.anno){
+                    if (new Date().getFullYear() !== art.anno) {
                         edit_button = '';
-                    }
-                    else{
+                    } else {
                         // if(art.version !== 0){
                         //     edit_button = ` <button class="btn btn-link btn-edit-row" data-id='${art.id}' data-toggle="modal" data-target="#editModal"><i class="fa-solid fa-pen"></i></button>`;
                         // }
@@ -98,10 +96,14 @@ class TemplateFondoTable
 ${link_button}</div>
 </div>
 </td>
+<?php
+                    if (!current_user_can('subscriber')) {
+                    ?>
                                        <td><div class="row pr-3">
                 <div class="col-3">${edit_button}</div>
                 <div class="col-3">${delete_button}</div>
                 </div></td>
+                <?php } ?>
                                  </tr>
                              `);
                 });
@@ -261,11 +263,11 @@ ${link_button}</div>
     {
         $data = new MasterTemplateRepository();
         if (isset($_GET['fondo']) && isset($_GET['anno']) && isset($_GET['descrizione']) && isset($_GET['version'])) {
-            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name'],$_GET['city']);
+            $results_articoli = $data->visualize_template($_GET['fondo'], $_GET['anno'], $_GET['descrizione'], $_GET['version'], $_GET['template_name'], $_GET['city']);
 
         } else {
             if (isset($_GET['template_name']) && isset($_GET['fondo']) && isset($_GET['version']))
-                $results_articoli = $data->getArticoli($_GET['template_name'],$_GET['city'],$_GET['fondo'],$_GET['version']);
+                $results_articoli = $data->getArticoli($_GET['template_name'], $_GET['city'], $_GET['fondo'], $_GET['version']);
         }
         $sezioni = [];
         $tot_array = [];
@@ -329,7 +331,11 @@ ${link_button}</div>
                                     <th>Valore</th>
                                     <th>Valore Anno Precedente</th>
                                     <th style="width: 170px">Link</th>
-                                    <th>Azioni</th>
+                                    <?php
+                                    if (!current_user_can('subscriber')) {
+                                        ?>
+                                        <th>Azioni</th>
+                                    <?php } ?>
                                 </tr>
 
                                 </thead>
