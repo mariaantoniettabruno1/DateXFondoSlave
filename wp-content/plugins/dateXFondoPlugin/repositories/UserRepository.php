@@ -85,6 +85,7 @@ class UserRepository
         $mysqli->close();
         return $res;
     }
+
     /*function check_new_template($request){
         if($request['citySelected'] == ''){
             $conn = new ConnectionFirstCity();
@@ -107,6 +108,25 @@ class UserRepository
         $mysqli->close();
         return $rows;
     }*/
+    public static function getAllUserCities($id_user)
+    {
+        $conn = new Connection();
+        $mysqli = $conn->connect();
+        $sql = "SELECT id_ente FROM DATE_users WHERE id_user=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $id_user);
+        $res = $stmt->execute();
+        $res = $stmt->get_result();
+        $cities = $res->fetch_all(MYSQLI_ASSOC);
+        $sql = "SELECT nome FROM DATE_ente WHERE id=?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $id_user);
+        $res = $stmt->execute();
+        $res = $stmt->get_result();
+        $cities = $res->fetch_all(MYSQLI_ASSOC);
 
 
+        mysqli_close($mysqli);
+        return $cities;
+    }
 }

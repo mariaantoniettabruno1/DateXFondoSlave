@@ -81,23 +81,13 @@ class AllCitiesTable
 
             $(document).ready(function () {
                 renderDataCitiesTable();
-                let data_scadenza_precedente = $('#idDataScadenza').val();
-                let attivo_precedente = document.getElementById("idDataAttivo");
-                if (attivo_precedente.checked)
-                    attivo_precedente = 1;
-                else
-                    attivo_precedente = 0;
 
                 $('#editRowButton').click(function () {
                     let nome = $('#idNome').val();
                     let descrizione = $('#idDescrizione').val();
                     let data_creazione = $('#idDataCreazione').val();
-                    let data_scadenza = $('#idDataScadenza').val();
-                    let attivo = document.getElementById("idDataAttivo");
-                    if (attivo.checked)
-                        attivo = 1;
-                    else
-                        attivo = 0;
+                    let data_scadenza = $('#idDataCreazione').val();
+                    let attivo = $("input:radio[name=typeActiveEdit]:checked").val();
                     let id_consulente = $('#idConsulenteSelezionato').val();
 
                     const payload = {
@@ -107,9 +97,7 @@ class AllCitiesTable
                         data_creazione,
                         data_scadenza,
                         attivo,
-                        id_consulente,
-                        data_scadenza_precedente,
-                        attivo_precedente
+                        id_consulente
                     }
                     console.log(payload);
 
@@ -133,13 +121,10 @@ class AllCitiesTable
                                 cities.push({...payload, id: response['id']});
                             }
                             renderDataCitiesTable();
-
-
                             $(".alert-edit-success").show();
                             $(".alert-edit-success").fadeTo(2000, 500).slideUp(500, function () {
                                 $(".alert-edit-success").slideUp(500);
                             });
-
                         },
                         error: function (response) {
                             console.error(response);
@@ -159,14 +144,6 @@ class AllCitiesTable
     {
         $data = new CitiesRepository();
         $consulenti = $data->getConsultants();
-        $results_cons = [];
-        foreach ($consulenti as $consultant){
-            $utente_info = get_userdata($consultant['id']);
-            $ruoli_utente = $utente_info->roles;
-            if($ruoli_utente[0] == 'editor'){
-                array_push($results_cons,$consultant);
-            }
-        }
 
         ?>
         <div style="padding-bottom:12px; margin-left: 1148px">
@@ -228,7 +205,7 @@ class AllCitiesTable
                                 <label>Seleziona Consulente:</label>
                                 <select name="consulenteSelezionato" id="idConsulenteSelezionato">
                                     <?php
-                                    foreach ($results_cons as $consulente) {
+                                    foreach ($consulenti as $consulente) {
                                         ?>
                                         <option><?= $consulente['user_login']; ?></option>
                                     <?php }
@@ -238,7 +215,7 @@ class AllCitiesTable
                         </form>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="typeActiveEdit"
+                        <input class="form-check-input" type="radio" name="typeActiveEdit"
                                id="idDataAttivo"
                                value="1">
                         <label class="form-check-label" for="attivoSelected">

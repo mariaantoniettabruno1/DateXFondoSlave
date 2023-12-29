@@ -13,6 +13,7 @@ class AllTemplate
         $results_old_articoli = $data->getStoredArticoli();
         $results_all_articoli = array_merge($results_articoli, $results_old_articoli);
 
+
         ?>
 
         <!DOCTYPE html>
@@ -36,7 +37,7 @@ class AllTemplate
 
         <body>
         <div class="container-fluid">
-            <?php if (my_get_current_user_roles()[0] == 'subscriber'): ?>
+            <?php if (my_get_current_user_roles()[0] != 'subscriber'): ?>
                 <div class="row pb-3" style="width: 20%">
                     <div class="col-10">
 

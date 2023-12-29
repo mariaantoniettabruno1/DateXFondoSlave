@@ -4,7 +4,7 @@ namespace dateXFondoPlugin;
 
 use AllCitiesTable;
 
-class CitiesManagement
+class UserManagement
 {
     public static function render()
     {
@@ -12,7 +12,7 @@ class CitiesManagement
 
         $results_cities = $data->getAllCities();
         $results_consultants = $data->getConsultants();
-        $consultants = [];
+
 
         foreach ($results_cities[0] as $city) {
             foreach ($results_cities[1] as $entry) {
@@ -22,13 +22,7 @@ class CitiesManagement
                 }
             }
         }
-        foreach ($results_consultants as $consultant){
-            $utente_info = get_userdata($consultant['id']);
-            $ruoli_utente = $utente_info->roles;
-             if($ruoli_utente[0] == 'editor'){
-                 array_push($consultants,$consultant);
-             }
-        }
+
         ?>
         <!DOCTYPE html>
 
@@ -60,7 +54,7 @@ class CitiesManagement
 
         <script>
             let cities = JSON.parse((`<?=json_encode($results_cities[0]);?>`));
-            let consultants = JSON.parse((`<?=json_encode($consultants);?>`));
+            let consultants = JSON.parse((`<?=json_encode($results_consultants);?>`));
 
         </script>
         <div class="row">

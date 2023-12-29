@@ -150,6 +150,46 @@ class CitiesRepository
             $query->bind_param("ss", $params['attivo'], $params['id']);
             $query->execute();
 
+            //aggiorna il flag per l'email inerente alla data di scadenza
+            if ($params['data_scadenza'] != $params['data_scadenza_precedente']) {
+                $query = $mysqli->prepare("UPDATE DATE_ente SET giorni_scadenza=0  WHERE id=?");
+                $query->bind_param("s", $params['id']);
+                $query->execute();
+            }
+            //funzione che mi disattiva o attiva un account
+            //disabilita l'account se la data di scadenza è superata
+            $sql = "SELECT id_user,ruolo,attivo FROM DATE_users WHERE id_ente=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("s", $params['id']);
+            $res = $stmt->execute();
+            if ($res = $stmt->get_result()) {
+                $users = $res->fetch_all(MYSQLI_ASSOC);
+            } else
+                $users = [];
+
+
+            //cerco gli account che hanno come ruolo contributor o subscriber e li disabilito
+
+            for ($i = 0; $i<sizeof($users); $i++) {
+                $utente_info = get_userdata($users[$i]['id_user']);
+
+                $ruoli_utente = $utente_info->roles;
+                if ($users[$i]['attivo'] === 0 || $users[$i]['attivo'] === '0') {
+                    if ($ruoli_utente[0] === 'contributor' || $ruoli_utente[0] === 'subscriber') {
+                        $utente_info->set_role('');
+
+
+                    }
+                } else {
+
+                    if ($ruoli_utente[0] === '' || empty($ruoli_utente)) {
+                        $utente_info->set_role($users[$i]['ruolo']);
+                        print_r($users[$i]['ruolo']);
+                        print_r($utente_info->roles);
+                    }
+
+                }
+            }
         } else {
             $sql = "INSERT INTO DATE_ente (nome,descrizione,data_creazione,data_scadenza,id_consulente)  VALUES (?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
@@ -159,9 +199,12 @@ class CitiesRepository
             $idente = $stmt->insert_id;
             $dbente = strtolower('c1date_' . $params['nome']);
 
-            $sql = "INSERT INTO DATE_users (id_user, db, id_ente)  VALUES (?,?,?)";
+            //per settare il ruolo dell'utente nella tabella DATE_users
+            $utente_info = get_userdata($rows[0]['id']);
+            $ruoli_utente = $utente_info->roles;
+            $sql = "INSERT INTO DATE_users (id_user, db, id_ente,ruolo)  VALUES (?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("sss", $rows[0]['id'], $dbente, $idente);
+            $stmt->bind_param("ssss", $rows[0]['id'], $dbente, $idente, $ruoli_utente[0]);
             $stmt->execute();
 
             $sql = "SELECT ALL id_user FROM DATE_users WHERE tutti=1";
@@ -170,18 +213,22 @@ class CitiesRepository
             $tutti = 1;
 
             //TODO capire perchè mette il tutti a true solo all'ultimo
-            $sql = "INSERT INTO DATE_users (id_user,db,id_ente,tutti)  VALUES (?,?,?,?)";
+            $sql = "INSERT INTO DATE_users (id_user,db,id_ente,tutti,ruolo)  VALUES (?,?,?,?,?)";
             $stmt = $mysqli->prepare($sql);
             foreach ($ids_user as $id) {
-                $stmt->bind_param("sssi", $id['id_user'], $dbente, $idente, $tutti);
+                $utente_info = get_userdata($id['id_user']);
+                $ruoli_utente = $utente_info->roles;
+                $stmt->bind_param("sssis", $id['id_user'], $dbente, $idente, $tutti, $ruoli_utente[0]);
                 $stmt->execute();
             }
         }
 
 
         $mysqli->close();
-        return $stmt->insert_id;
+
+        return $users;
     }
+
 
     public function edit_cities_user($params)
     {
@@ -202,10 +249,12 @@ class CitiesRepository
         $stmt->bind_param("s", $rows[0]['id']);
         $res = $stmt->execute();
 
-        $sql = "INSERT INTO DATE_users (id_user,id_ente,db)  VALUES (?,?,?)";
+        $sql = "INSERT INTO DATE_users (id_user,id_ente,db,ruolo)  VALUES (?,?,?,?)";
         $stmt = $mysqli->prepare($sql);
         foreach ($params['citiesArray'] as $ente) {
-            $stmt->bind_param("sss", $rows[0]['id'], $ente['id'], $ente['db']);
+            $utente_info = get_userdata($rows[0]['id']);
+            $ruoli_utente = $utente_info->roles;
+            $stmt->bind_param("ssss", $rows[0]['id'], $ente['id'], $ente['db'], $ruoli_utente[0]);
             $res = $stmt->execute();
         }
         if ($params['tuttiButton'])
@@ -228,7 +277,7 @@ class CitiesRepository
         $conn = new Connection();
         $mysqli = $conn->connect();
 
-        $sql = "SELECT DISTINCT id,user_login FROM wp_users ";
+        $sql = "SELECT DISTINCT id,user_login FROM wp_users";
         $result = $mysqli->query($sql);
         $row = $result->fetch_all(MYSQLI_ASSOC);
         $mysqli->close();

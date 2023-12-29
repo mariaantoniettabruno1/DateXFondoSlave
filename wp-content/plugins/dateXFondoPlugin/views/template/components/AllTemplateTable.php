@@ -332,8 +332,11 @@ class AllTemplateTable
                             location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
                         },
                         error: function (response) {
-                            console.error(response);
+                            console.log(response);
                             $("#createModal").modal('hide');
+                            template_name = template_name + ' - nuovo';
+                            console.log(template_name);
+                            location.href = '<?= DateXFondoCommon::get_website_url() ?>/visualizza-template-fondo/?template_name=' + template_name + '&city=' + citySelected + '&fondo=' + fondo + '&version=' + version;
                         }
                     });
                 });

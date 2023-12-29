@@ -14,6 +14,7 @@ require_once(plugin_dir_path(__FILE__) . 'common.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/Connection.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/ConnectionFirstCity.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/MasterTemplateRepository.php');
+require_once(plugin_dir_path(__FILE__) . 'repositories/MailSenderRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/TemplateRowRepository.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/DisabledTemplateRow.php');
 require_once(plugin_dir_path(__FILE__) . 'repositories/DocumentRepository.php');
@@ -34,7 +35,6 @@ require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFond
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/AllTemplateTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateHistoryTable.php');
 require_once(plugin_dir_path(__FILE__) . 'views/template/components/TemplateFondoToActiveRow.php');
-require_once(plugin_dir_path(__FILE__) . 'views/template/ShortCodeDisabledTemplateRow.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/Formula.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/AllDocument.php');
 require_once(plugin_dir_path(__FILE__) . 'views/document/DocumentHistory.php');
@@ -61,6 +61,7 @@ require_once(plugin_dir_path(__FILE__) . 'views/document/components/delibera/Del
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/FormulaCard.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/FormulaSidebar.php');
 require_once(plugin_dir_path(__FILE__) . 'views/formula/components/PreviewArticolo.php');
+require_once(plugin_dir_path(__FILE__) . 'views/emailSender/EnteMailSender.php');
 require_once(plugin_dir_path(__FILE__) . 'views/settings/UserSettings.php');
 require_once(plugin_dir_path(__FILE__) . 'views/settings/components/UserSettingsForm.php');
 require_once(plugin_dir_path(__FILE__) . 'views/cities_and_user/CitiesAndUserManagement.php');
@@ -77,6 +78,7 @@ require_once(plugin_dir_path(__FILE__) . 'api/newrow.php');
 require_once(plugin_dir_path(__FILE__) . 'api/user.php');
 require_once(plugin_dir_path(__FILE__) . 'api/joinTable.php');
 require_once(plugin_dir_path(__FILE__) . 'api/cities.php');
+require_once(plugin_dir_path(__FILE__) .'shedulingEmail/dateXFondoEmail.php');
 
 
 /**
@@ -199,30 +201,42 @@ function slave_user_settings()
     $document = new \dateXFondoPlugin\UserSettings();
     $document->render();
 }
+
 function slave_cities_management()
 {
     $document = new \dateXFondoPlugin\CitiesManagement();
     $document->render();
 }
+
 function slave_cities_and_user()
 {
     $document = new \dateXFondoPlugin\CitiesAndUserManagement();
     $document->render();
 }
-function slave_log_file(){
+
+function slave_log_file()
+{
     $document = new \dateXFondoPlugin\FileLog();
     $document->render();
 }
 
 
-
 function admin_default_page()
 {
     return DateXFondoCommon::get_website_url() . '/impostazioni-utente/';
+
 }
 
 add_filter('login_redirect', 'admin_default_page');
 
+function email_sender_function()
+{
+    $document = new \dateXFondoPlugin\EnteMailSender;
+    $document->render();
+
+}
+
+add_action('init', 'email_sender_function');
 
 add_action('wp_head', 'my_get_current_user_roles');
 
@@ -244,6 +258,7 @@ function my_get_current_user_roles()
     }
 
 }
+
 function my_get_current_user_id()
 {
 
@@ -262,14 +277,17 @@ function my_get_current_user_id()
     }
 
 }
-function your_namespace() {
-    wp_register_style('your_namespace', plugins_url('main.css','wp-content/plugins/dateXFondoPlugin/assets/styles/main.css' ));
+
+function your_namespace()
+{
+    wp_register_style('your_namespace', plugins_url('main.css', 'wp-content/plugins/dateXFondoPlugin/assets/styles/main.css'));
     wp_enqueue_style('your_namespace');
 }
 
-add_action( 'admin_init','your_namespace');
+add_action('admin_init', 'your_namespace');
 
-function custom_login_log($user_login, $user) {
+function custom_login_log($user_login, $user)
+{
     // Ottieni l'indirizzo IP dell'utente
     $user_ip = $_SERVER['REMOTE_ADDR'];
 
@@ -277,11 +295,9 @@ function custom_login_log($user_login, $user) {
     $login_time = current_time('mysql');
 
     // Costruisci il messaggio di log
-    $log_message = "L'utente con il login '$user_login' si è connesso dall'IP $user_ip in data $login_time.".'<br>';
+    $log_message = "L'utente con il login '$user_login' si è connesso dall'IP $user_ip in data $login_time." . '<br>';
 
     // Registra il messaggio nel tuo file di log o ovunque tu desideri
     error_log($log_message, 3, 'wp-content/plugins/dateXFondoPlugin/log/logDatexFondo.log');
 }
 
-// Aggiungi il tuo hook per il login
-add_action('wp_login', 'custom_login_log', 10, 2);

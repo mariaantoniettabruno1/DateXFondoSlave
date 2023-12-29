@@ -408,7 +408,7 @@ FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND ve
             $mysqli = $conn->connect();
             $sql = "SELECT fondo,anno,descrizione_fondo,ordinamento,id_articolo,sezione,sottosezione,
                      nome_articolo,descrizione_articolo,sottotitolo_articolo,nota,link,attivo,version,row_type,heredity,template_name,valore,valore_anno_precedente
-FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL AND attivo=1";
+FROM DATE_template_fondo WHERE fondo=? AND anno=? AND descrizione_fondo=? AND version=? AND template_name=? AND id_articolo IS NOT NULL";
             $stmt = $mysqli->prepare($sql);
             $stmt->bind_param("sisis", $request['fondo'], $request['anno'], $request['descrizione'], $request['version'], $request['template_name']);
             $res = $stmt->execute();
