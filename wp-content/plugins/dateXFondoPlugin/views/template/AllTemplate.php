@@ -6,13 +6,15 @@ class AllTemplate
 {
     public static function render()
     {
-
+        your_namespace();
+        $id_user = my_get_current_user_id();
+        $data_user = new UserRepository();
         $data = new MasterTemplateRepository();
 
         $results_articoli = $data->getAllTemplate();
         $results_old_articoli = $data->getStoredArticoli();
         $results_all_articoli = array_merge($results_articoli, $results_old_articoli);
-
+        $user_cities = $data_user->getAllUserCities($id_user[0]);
 
         ?>
 
@@ -43,10 +45,15 @@ class AllTemplate
 
                         <label>Seleziona comune per visualizzare i suoi dati:</label>
 
-                        <select name="comune" id="idComune">
-                            <option value="rubiana">Rubiana</option>
-                            <option value="spotorno">Spotorno</option>
-                            <option value="robassomero">Robassomero</option>
+                        <select name="enteSelezionato" id="idEnteSelezionato">
+                            <?php
+                            foreach ($user_cities as $city) {
+                                if ($city[0]['nome'] != '' || $city[0]['nome'] != null){
+                                    ?>
+                                    <option><?= $city[0]['nome']; ?></option>
+
+                                <?php }}
+                            ?>
                         </select>
 
 
@@ -73,7 +80,7 @@ class AllTemplate
 
             function getDataByCitySelected() {
                 $('#selectedCity').click(function () {
-                    citySelected = $("#idComune").val();
+                    citySelected = $('#idEnteSelezionato').val().toLowerCase();
                     const payload = {
                         citySelected
                     }

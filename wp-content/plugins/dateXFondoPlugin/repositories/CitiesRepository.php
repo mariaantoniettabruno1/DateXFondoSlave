@@ -41,11 +41,17 @@ class CitiesRepository
             $conn = new ConnectionFirstCity();
             $mysqli = $conn->connect();
         }
-        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name,ufficiale FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1  ORDER BY ordinamento ASC";
-        $result = $mysqli->query($sql);
-        $row = $result->fetch_all(MYSQLI_ASSOC);
+        $annoPrecedente = date("Y")-1;
+        $sql = "SELECT DISTINCT fondo,anno,descrizione_fondo,editable,version,template_name,ufficiale FROM DATE_storico_template_fondo WHERE id_articolo IS NOT NULL and attivo=1 AND anno=? ORDER BY ordinamento ASC";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("s", $annoPrecedente);
+        $res = $stmt->execute();
+        if ($res = $stmt->get_result()) {
+            $rows = $res->fetch_all(MYSQLI_ASSOC);
+        } else
+            $rows = [];
         mysqli_close($mysqli);
-        return $row;
+        return $rows;
     }
 
     public function get_row_data($params)

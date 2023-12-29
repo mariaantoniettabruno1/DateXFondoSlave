@@ -10,12 +10,11 @@ class UserSettings
         $id_user = my_get_current_user_id();
         $utente_info = get_userdata($id_user[0]);
         $ruoli_utente = $utente_info->roles;
-        if ($ruoli_utente[0]!='') {
+        if ($ruoli_utente[0] != '') {
             $data = new UserRepository();
             $results_infos = $data->getUserInfos();
             $results_new_template = $data->checkNewTemplate($id_user[0]);
             $user_cities = $data->getAllUserCities($id_user[0]);
-            print_r($user_cities);
             ?>
             <!DOCTYPE html>
 
@@ -47,11 +46,15 @@ class UserSettings
                         <div class="col-10">
 
                             <label>Seleziona comune per visualizzare i suoi dati:</label>
+                            <select name="enteSelezionato" id="idEnteSelezionato">
+                                <?php
+                                foreach ($user_cities as $city) {
+                                    if ($city[0]['nome'] != '' || $city[0]['nome'] != null){
+                                        ?>
+                                        <option><?= $city[0]['nome']; ?></option>
 
-                            <select name="comune" id="idComune">
-                                <option value="rubiana">Rubiana</option>
-                                <option value="spotorno">Spotorno</option>
-                                <option value="robassomero">Robassomero</option>
+                                <?php }}
+                                ?>
                             </select>
 
 
@@ -103,7 +106,7 @@ class UserSettings
 
                 let citySelected = '';
                 $('#selectedCity').click(function () {
-                    citySelected = $("#idComune").val();
+                    citySelected = $('#idEnteSelezionato').val().toLowerCase();
                     const payload = {
                         citySelected
                     }
@@ -187,10 +190,14 @@ class UserSettings
             <div class="container mt-4" style="display: flex;align-items: center; justify-content: center">
                 <div class="card mb-3" style="max-width: 36rem;">
                     <div class="card-body">
-                       <a style="font-size: 3em; color:red; display: flex;align-items: center; justify-content: center"><i class="fa-solid fa-triangle-exclamation"></i></a>
-                        <h5 class="card-title" style="display: flex;align-items: center; justify-content: center"><b>Utente Disabilitato</b></h5>
-                        <p class="card-text" style="display: flex;align-items: center; justify-content: center">L'utente è stato disabilitato.</p>
-                        <p class="card-text" style="display: flex;align-items: center; justify-content: center"> Si prega di contattare l'assistenza per ulteriori informazioni.</p>
+                        <a style="font-size: 3em; color:red; display: flex;align-items: center; justify-content: center"><i
+                                    class="fa-solid fa-triangle-exclamation"></i></a>
+                        <h5 class="card-title" style="display: flex;align-items: center; justify-content: center"><b>Utente
+                                Disabilitato</b></h5>
+                        <p class="card-text" style="display: flex;align-items: center; justify-content: center">L'utente
+                            è stato disabilitato.</p>
+                        <p class="card-text" style="display: flex;align-items: center; justify-content: center"> Si
+                            prega di contattare l'assistenza per ulteriori informazioni.</p>
                     </div>
                 </div>
             </div>

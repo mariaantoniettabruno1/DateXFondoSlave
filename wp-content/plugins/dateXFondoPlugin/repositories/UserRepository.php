@@ -118,15 +118,22 @@ class UserRepository
         $res = $stmt->execute();
         $res = $stmt->get_result();
         $cities = $res->fetch_all(MYSQLI_ASSOC);
-        $sql = "SELECT nome FROM DATE_ente WHERE id=?";
+        $sql = "SELECT nome FROM DATE_ente WHERE id=? AND attivo=1";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $id_user);
-        $res = $stmt->execute();
-        $res = $stmt->get_result();
-        $cities = $res->fetch_all(MYSQLI_ASSOC);
+        foreach ($cities as $city) {
+            $stmt->bind_param("s", $city['id_ente']);
+            $res = $stmt->execute();
 
+            if ($res === false) {
+                die('Errore nell\'esecuzione della query: ' . $stmt->error);
+            }
 
+            // Ottieni i risultati e aggiungili all'array
+            $res = $stmt->get_result();
+            $risultati[] = $res->fetch_all(MYSQLI_ASSOC);
+
+        }
         mysqli_close($mysqli);
-        return $cities;
+        return $risultati;
     }
 }

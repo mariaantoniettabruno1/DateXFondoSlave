@@ -11,18 +11,19 @@ class DocumentHistory
 
     public function __construct()
     {
+
         $document_repository = new \DocumentRepository();
         $this->documents = array_merge(
             array_map(function ($doc) {
                 $doc['page'] = 'documento-modello-fondo';
                 return $doc;
-            }, $document_repository->getDataDocument('DATE_documento_modello_fondo_storico','')),
+            }, $document_repository->getDataDocument('DATE_documento_modello_fondo_storico', '')),
             array_map(function ($doc) {
                 $doc['page'] = 'regioni_autonomie_locali_storico';
 
                 return $doc;
-            }, $document_repository->getDataDocument('DATE_documento_regioni_autonomie_locali_storico','')),
-            $document_repository->getDataOdtDocument('DATE_documenti_odt_storico','')
+            }, $document_repository->getDataDocument('DATE_documento_regioni_autonomie_locali_storico', '')),
+            $document_repository->getDataOdtDocument('DATE_documenti_odt_storico', '')
         );
 
 
@@ -31,7 +32,10 @@ class DocumentHistory
 
     public function render()
     {
-
+        your_namespace();
+        $id_user = my_get_current_user_id();
+        $data_user = new UserRepository();
+        $user_cities = $data_user->getAllUserCities($id_user[0]);
         ?>
 
         <!DOCTYPE html>
@@ -65,10 +69,16 @@ class DocumentHistory
 
                         <label>Seleziona comune per visualizzare i suoi dati:</label>
 
-                        <select name="comune" id="idComune">
-                            <option value="rubiana">Rubiana</option>
-                            <option value="spotorno">Spotorno</option>
-                            <option value="robassomero">Robassomero</option>
+                        <select name="enteSelezionato" id="idEnteSelezionato">
+                            <?php
+                            foreach ($user_cities as $city) {
+                                if ($city[0]['nome'] != '' || $city[0]['nome'] != null) {
+                                    ?>
+                                    <option><?= $city[0]['nome']; ?></option>
+
+                                <?php }
+                            }
+                            ?>
                         </select>
 
 
@@ -87,9 +97,11 @@ class DocumentHistory
         </body>
         <script>
             let documents = JSON.parse((`<?= json_encode($this->documents); ?>`));
-            let citySelected = $("#idComune").val();
+            let citySelected = $('#idEnteSelezionato').val().toLowerCase();
+
             $('#selectedCity').click(function () {
-                citySelected = $("#idComune").val();
+                citySelected = $('#idEnteSelezionato').val().toLowerCase();
+
                 const payload = {
                     citySelected
                 }
